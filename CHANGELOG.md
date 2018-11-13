@@ -7,6 +7,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 
 - DMOGSM-139 : Added scrolling to the site admin menu site switcher dropdown if
   the list contains more sites then the screen height.
+- PPL-1240 : Added permission to access the site structure overview page.
 
 ## [7.x-1.15]
 
