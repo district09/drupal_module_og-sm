@@ -1,13 +1,17 @@
 # Changelog
+
 All Notable changes to **Organic Groups Site Manager** module suite.
 
-## [Unreleased]
+## [7.x-1.16]
+
+### Added
+
+- PPL-1240 : Added permission to access the site structure overview page.
 
 ### Fixed
 
 - DMOGSM-139 : Added scrolling to the site admin menu site switcher dropdown if
   the list contains more sites then the screen height.
-- PPL-1240 : Added permission to access the site structure overview page.
 
 ## [7.x-1.15]
 
@@ -31,14 +35,14 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - DMOGSM-108 : Overwrite Site content types filter handler in og_sm_feature to
   exclude types based on feature dependencies.
 
-## [7.x-1.13]
+## 7.x-1.13
 
 ### Changed
 
 - DMOGSM-106 : Added the old & new path values to the 
   hook_og_sm_site_path_change hook.
 
-## [7.x-1.12]
+## 7.x-1.12
 
 ### Added
 
@@ -50,13 +54,13 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - DMOGSM-105 : Changed width of the Site items in the admin menu and moved
   the Platform item to the top.
 
-## [7.x-1.11]
+## 7.x-1.11
 
 ### Fixed
 
 - PPL-909 : Fixed double encoded username in Views links.
 
-## [7.x-1.10]
+## 7.x-1.10
 
 ### Added
 
@@ -68,7 +72,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
   Site comments admin overview page.
 - PPL-831 : Added the possibility to override the title on node add forms.
 
-## [7.x-1.9]
+## 7.x-1.9
 
 ### Added
 
@@ -80,7 +84,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - PPL-805 : Fixed action link classes to avoid name clashing with other 
   modules & themes.
 
-## [7.x-1.8]
+## 7.x-1.8
 
 ### Added
 
@@ -111,13 +115,13 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - DMOGSM-102 : Fixed fallback "file path" to the info retrieved from
   hook_og_sm_menu().
 
-## [7.x-1.7]
+## 7.x-1.7
 
 ### Fixed
 
 - DMOGSM-66 : Fixed orphan form submit handlers in feature settings form.
 
-## [7.x-1.6]
+## 7.x-1.6
 
 ### Added
 
@@ -126,7 +130,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - DMOGSM-66 : Automatically clear Site variable cache when an
   og_sm_variable_settings_form is submitted.
 
-## [7.x-1.5]
+## 7.x-1.5
 
 ### Added
 
@@ -150,7 +154,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
   included in the breadcrumb.
 - DMOGSM-86 : Fixed broken tests introduced in DMOGSM-84.
 
-## [7.x-1.4]
+## 7.x-1.4
 
 ### Added
 
@@ -177,7 +181,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
   Fix added to the og_sm_content_get_types_by_site() function. That function is
   used to check access to the content/add pages within a Site.
 
-## [7.x-1.3]
+## 7.x-1.3
 
 ### Added
 
@@ -191,13 +195,13 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - DMOGSM-60 : Added fix for entityreference_prepopulate and Site taxonomy terms
   that are created with hidden group fields.
 
-## [7.x-1.2]
+## 7.x-1.2
 
 ### Added
 
 - DMOGSM-12 : Functionality to enable/disable & configure features per Site.
 
-## [7.x-1.1]
+## 7.x-1.1
 
 ### Added
 
@@ -220,7 +224,7 @@ All Notable changes to **Organic Groups Site Manager** module suite.
 - DMOGSM-16 : Removed the default OG UI admin overview page as this is replaced
   by the functionality provided by og_sm_admin_menu.
 
-## [7.x-1.0]
+## 7.x-1.0
 
 First stable release of the og_sm module.
 
@@ -252,20 +256,7 @@ First stable release of the og_sm module.
 - PPL-310 : Rewrite the paths of ajax callbacks to they get the proper Site
   context.
 
-[Unreleased]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.x-dev%0D7.x-1.x
-[7.x-1.15]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.15%0D7.x-1.14#diff
-[7.x-1.14]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.14%0D7.x-1.13#diff
-[7.x-1.13]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.13%0D7.x-1.12#diff
-[7.x-1.12]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.12%0D7.x-1.11#diff
-[7.x-1.11]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.11%0D7.x-1.10#diff
-[7.x-1.10]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.10%0D7.x-1.9#diff
-[7.x-1.9]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.9%0D7.x-1.8#diff
-[7.x-1.8]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.8%0D7.x-1.7#diff
-[7.x-1.7]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.7%0D7.x-1.6#diff
-[7.x-1.6]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.6%0D7.x-1.5#diff
-[7.x-1.5]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.5%0D7.x-1.4#diff
-[7.x-1.4]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.4%0D7.x-1.3#diff
-[7.x-1.3]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.3%0D7.x-1.2#diff
-[7.x-1.2]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.2%0D7.x-1.1#diff
-[7.x-1.1]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/branches/compare/7.x-1.1%0D7.x-1.0#diff
-[7.x-1.0]: https://bitbucket.org/digipolisgent/drupal_module_og-sm/commits/tag/7.x-1.0
+[7.x-1.16]: https://github.com/digipolisgent/drupal_module_og-sm/compare/7.x-1.15...7.x-1.16
+[7.x-1.15]: https://github.com/digipolisgent/drupal_module_og-sm/compare/7.x-1.14...7.x-1.15
+[7.x-1.14]: https://github.com/digipolisgent/drupal_module_og-sm/releases/tag/7.x-1.14
+[Unreleased]: https://github.com/digipolisgent/drupal_module_og-sm/tree/7.x-1.x
