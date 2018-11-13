@@ -8,6 +8,9 @@
 // Menu name.
 define('OG_SM_ADMIN_MENU_NAME', 'og-sm-admin-menu');
 
+// Permission to access the site structure settings.
+define('OG_SM_ADMIN_MENU_PERMISSION_SITE_STRUCTURE', 'administer site structure');
+
 /**
  * Implements hook_hook_info().
  */
@@ -70,11 +73,25 @@ function og_sm_admin_menu_menu() {
     'page callback' => 'og_sm_admin_menu_overview',
     'page arguments' => array(2, 'structure'),
     'access callback' => 'og_sm_site_permission_access',
-    'access arguments' => array(2, OG_SM_PERMISSION_SITE_ADMIN),
+    'access arguments' => array(2, OG_SM_ADMIN_MENU_PERMISSION_SITE_STRUCTURE),
     'file' => $file,
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_og_permission().
+ */
+function og_sm_admin_menu_og_permission() {
+  return array(
+    OG_SM_ADMIN_MENU_PERMISSION_SITE_STRUCTURE => array(
+      'title' => t('Administer Site structure'),
+      'description' => t('View the Site structure administration pages.'),
+      'roles' => array(OG_AUTHENTICATED_ROLE),
+      'default role' => array(OG_ADMINISTRATOR_ROLE),
+    ),
+  );
 }
 
 /**
