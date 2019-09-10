@@ -2,7 +2,7 @@
 
 namespace Drupal\og_sm_content\Plugin\EntityReferenceSelection;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Plugin\EntityReferenceSelection\NodeSelection as NodeSelectionBase;
@@ -39,7 +39,7 @@ class NodeSelection extends NodeSelectionBase {
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler service.
@@ -48,7 +48,7 @@ class NodeSelection extends NodeSelectionBase {
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager, ModuleHandlerInterface $module_handler, AccountInterface $current_user, SiteManagerInterface $site_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, AccountInterface $current_user, SiteManagerInterface $site_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_manager, $module_handler, $current_user);
     $this->siteManager = $site_manager;
   }
@@ -61,7 +61,7 @@ class NodeSelection extends NodeSelectionBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity.manager'),
+      $container->get('entity_type.manager'),
       $container->get('module_handler'),
       $container->get('current_user'),
       $container->get('og_sm.site_manager')
