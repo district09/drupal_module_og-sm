@@ -37,7 +37,7 @@ class AdminNegotiator extends AdminNegotiatorBase {
    *   The current user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
    * @param \Drupal\Core\Routing\AdminContext $admin_context
    *   The route admin context to determine whether the route is an admin one.
@@ -46,7 +46,7 @@ class AdminNegotiator extends AdminNegotiatorBase {
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The og access service.
    */
-  public function __construct(AccountInterface $user, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_manager, AdminContext $admin_context, SiteManagerInterface $site_manager, OgAccessInterface $og_access) {
+  public function __construct(AccountInterface $user, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, AdminContext $admin_context, SiteManagerInterface $site_manager, OgAccessInterface $og_access) {
     parent::__construct($user, $config_factory, $entity_manager, $admin_context);
     $this->siteManager = $site_manager;
     $this->ogAccess = $og_access;
