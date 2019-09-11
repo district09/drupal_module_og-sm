@@ -47,7 +47,7 @@ class AdminNegotiator extends AdminNegotiatorBase {
    *   The og access service.
    */
   public function __construct(AccountInterface $user, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, AdminContext $admin_context, SiteManagerInterface $site_manager, OgAccessInterface $og_access) {
-    parent::__construct($user, $config_factory, $entity_manager, $admin_context);
+    parent::__construct($user, $config_factory, $entity_type_manager, $admin_context);
     $this->siteManager = $site_manager;
     $this->ogAccess = $og_access;
   }
