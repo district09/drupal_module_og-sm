@@ -353,7 +353,7 @@ class SiteManager implements SiteManagerInterface {
     if (!$this->isSite($site)) {
       return NULL;
     }
-    return $this->membershipManager->getMembership($site, $account);
+    return $this->membershipManager->getMembership($site, $account->id());
   }
 
 }
