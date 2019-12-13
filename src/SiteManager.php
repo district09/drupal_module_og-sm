@@ -10,6 +10,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\Og;
 use Drupal\og\OgContextInterface;
 use Drupal\og_sm\Event\SiteEvent;
 use Drupal\og_sm\Event\SiteEvents;
@@ -264,6 +265,10 @@ class SiteManager implements SiteManagerInterface {
    * {@inheritdoc}
    */
   public function getSitesFromEntity(EntityInterface $node) {
+    if (!Og::isGroupContent($node->getEntityTypeId(), $node->bundle())) {
+      return [];
+    }
+
     $groups = $this->membershipManager->getGroups($node);
     return $this->filterSitesFromGroups($groups);
   }
