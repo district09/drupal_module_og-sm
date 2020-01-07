@@ -330,7 +330,7 @@ class SiteManager implements SiteManagerInterface {
     if ($account->hasPermission('administer group')) {
       return $this->getAllSites();
     }
-    $groups = $this->membershipManager->getUserGroups($account);
+    $groups = $this->membershipManager->getUserGroups($account->id());
     return $this->filterSitesFromGroups($groups);
   }
 
