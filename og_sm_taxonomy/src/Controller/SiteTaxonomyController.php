@@ -61,13 +61,23 @@ class SiteTaxonomyController extends ControllerBase {
       '#empty' => $this->t('No vocabularies available.'),
     ];
 
-    foreach ($this->siteTaxonomyManager->getSiteVocabularies() as $vocabulary) {
+    foreach ($this->siteTaxonomyManager->getSiteVocabularies($node->getEntityTypeId(), $node->bundle()) as $vocabulary) {
+      $operations = [];
+      foreach ($this->getVocabularyOperations($node, $vocabulary) as $key => $link) {
+        if ($link['url']->access()) {
+          $operations[$key] = $link;
+        }
+      }
+
       $row = [];
       $row['label'] = $vocabulary->label();
       $row['description'] = $vocabulary->getDescription();
       $row['operations']['data'] = [
         '#type' => 'operations',
-        '#links' => $this->getVocabularyOperations($node, $vocabulary),
+        '#links' => $operations,
+        '#cache' => [
+          'contexts' => ['og_group_context', 'og_role'],
+        ],
       ];
 
       $build['#rows'][$vocabulary->id()] = $row;

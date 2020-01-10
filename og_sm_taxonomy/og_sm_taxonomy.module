@@ -42,11 +42,9 @@ function og_sm_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $ope
   $og_access = \Drupal::service('og.access');
 
   $term_permissions = [
-    "create {$entity->id()} taxonomy_term",
-    "update any {$entity->id()} taxonomy_term",
-    "update own {$entity->id()} taxonomy_term",
-    "delete any {$entity->id()} taxonomy_term",
-    "delete own {$entity->id()} taxonomy_term",
+    "create terms in {$entity->id()}",
+    "edit terms in {$entity->id()}",
+    "delete terms in {$entity->id()}",
   ];
   foreach ($term_permissions as $term_permission) {
     if ($og_access->userAccess($site, $term_permission, $account)->isAllowed()) {
@@ -69,7 +67,7 @@ function og_sm_taxonomy_taxonomy_term_create_access(AccountInterface $account, $
 
   /* @var \Drupal\og\OgAccessInterface $og_access */
   $og_access = \Drupal::service('og.access');
-  if ($og_access->userAccess($site, "create $entity_bundle taxonomy_term", $account)->isAllowed()) {
+  if ($og_access->userAccess($site, "create terms in $entity_bundle", $account)->isAllowed()) {
     return AccessResult::allowed();
   }
 

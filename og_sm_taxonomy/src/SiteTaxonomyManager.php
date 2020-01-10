@@ -7,6 +7,10 @@ use Drupal\Core\Database\Query\ConditionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\GroupTypeManager;
+use Drupal\og\GroupTypeManagerInterface;
+use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\taxonomy\VocabularyInterface;
 
 /**
@@ -17,7 +21,7 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
   /**
    * The group type manager.
    *
-   * @var \Drupal\og\GroupTypeManager
+   * @var \Drupal\og\GroupTypeManagerInterface
    */
   protected $groupTypeManager;
 
@@ -38,14 +42,14 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
   /**
    * Constructs a SiteTaxonomyManager object.
    *
-   * @param \Drupal\og\GroupTypeManager $group_type_manager
+   * @param \Drupal\og\GroupTypeManagerInterface $group_type_manager
    *   The group type manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
    */
-  public function __construct(GroupTypeManager $group_type_manager, EntityTypeManagerInterface $entity_type_manager, Connection $database) {
+  public function __construct(GroupTypeManagerInterface $group_type_manager, EntityTypeManagerInterface $entity_type_manager, Connection $database) {
     $this->groupTypeManager = $group_type_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->database = $database;
@@ -54,21 +58,21 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSiteVocabularyNames() {
-    try {
-      return $this->groupTypeManager->getAllGroupContentBundlesByEntityType('taxonomy_term');
+  public function getSiteVocabularyNames($entity_type_id, $bundle) {
+    $bundles = $this->groupTypeManager->getGroupContentBundleIdsByGroupBundle($entity_type_id, $bundle);
+
+    if (isset($bundles['taxonomy_term'])) {
+      return $bundles['taxonomy_term'];
     }
-    catch (\InvalidArgumentException $exception) {
-      return [];
-    }
+
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSiteVocabularies() {
-    $vids = $this->getSiteVocabularyNames();
-    if (!$vids) {
+  public function getSiteVocabularies($entity_type_id, $bundle) {
+    if (!$vids = $this->getSiteVocabularyNames($entity_type_id, $bundle)) {
       return [];
     }
 
@@ -126,7 +130,7 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
    * {@inheritdoc}
    */
   public function isSiteVocabulary($name) {
-    $names = $this->getSiteVocabularyNames();
+    $names = $this->groupTypeManager->getAllGroupContentBundlesByEntityType('taxonomy_term');
     return array_key_exists($name, $names);
   }
 

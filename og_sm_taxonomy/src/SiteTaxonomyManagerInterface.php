@@ -11,20 +11,32 @@ use Drupal\taxonomy\VocabularyInterface;
 interface SiteTaxonomyManagerInterface {
 
   /**
-   * Get a list of vocabulary names that have the OG group audience field.
+   * Get a list of vocabulary names that may reference an OG group of the
+   * specified type and bundle.
+   *
+   * @param string $entity_type_id
+   *   The group entity ID.
+   * @param string $bundle
+   *   The group bundle.
    *
    * @return string[]
    *   Vocabulary names (labels) keyed by their machine name.
    */
-  public function getSiteVocabularyNames();
+  public function getSiteVocabularyNames($entity_type_id, $bundle);
 
   /**
-   * Get all vocabulary objects that have the OG group audience field.
+   * Get all vocabulary objects that may reference an OG group of the
+   * specified type and bundle.
+   *
+   * @param string $entity_type_id
+   *   The group entity ID.
+   * @param string $bundle
+   *   The group bundle.
    *
    * @return \Drupal\taxonomy\VocabularyInterface[]
    *   Vocabulary objects keyed by their machine name.
    */
-  public function getSiteVocabularies();
+  public function getSiteVocabularies($entity_type_id, $bundle);
 
   /**
    * Fetches an array vocabularies referenced in an array query conditions.
