@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\og_sm\Entity\Plugin\EntityReferenceSelection;
+namespace Drupal\og_sm\Plugin\EntityReferenceSelection;
 
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection as DefaultSelectionBase;
