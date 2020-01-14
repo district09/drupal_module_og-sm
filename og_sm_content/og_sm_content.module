@@ -78,7 +78,7 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
       // Get the group content bundles of $entity_type.
       $group_content_bundle_ids = $group_type_manager->getAllGroupContentBundlesByEntityType($entity_type);
 
-      // Return neutral if none fo the bundles are group content or
+      // Return neutral if none of the bundles are group content or
       // if at least one none-group content bundle can be referenced.
       if (!$group_content_bundle_ids || array_diff($bundle_ids, $group_content_bundle_ids)) {
         return AccessResult::neutral();
