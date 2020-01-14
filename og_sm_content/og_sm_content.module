@@ -96,7 +96,6 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
         }
       }
       catch (Exception $ex) {
-        // An exception occured, be neutral by default.
         return AccessResult::neutral();
       }
     }
