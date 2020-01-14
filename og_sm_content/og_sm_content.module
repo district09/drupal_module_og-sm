@@ -30,28 +30,72 @@ function og_sm_content_theme_registry_alter(&$theme_registry) {
 
 /**
  * Implements hook_entity_field_access().
- *
- * Normally the permission "administer nodes" is required to change the node
- * author, options, etc. That global role might not be granted in a Site
- * context. We add an extra check on the Site role "administer site" to allow
- * access to these fields.
  */
 function og_sm_content_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
-  $administrative_fields = ['uid', 'status', 'created', 'promote', 'sticky'];
-  if ($operation !== 'edit' || !in_array($field_definition->getName(), $administrative_fields, TRUE)) {
-    return AccessResult::neutral();
-  }
-
-  $site = OgSm::siteManager()->currentSite();
-  if (!$site) {
+  if (!$site = OgSm::siteManager()->currentSite()) {
     return AccessResult::neutral();
   }
 
   /* @var \Drupal\og\OgAccessInterface $og_access */
   $og_access = \Drupal::service('og.access');
-  if ($og_access->userAccess($site, 'administer site', $account)->isAllowed()) {
-    return AccessResult::allowed();
+
+  // Normally the permission "administer nodes" is required to change the node
+  // author, options, etc. That global role might not be granted in a site context.
+  // We add an extra check on the Site role "administer site" to allow
+  // access to these fields.
+  if (in_array($field_definition->getName(), ['uid', 'status', 'created', 'promote', 'sticky'], TRUE)) {
+    if ($operation === 'edit' && $og_access->userAccess($site, 'administer site', $account)->isAllowed()) {
+      return AccessResult::allowed();
+    }
+
+    return AccessResult::neutral();
   }
+
+  // Deny access to entity reference fields that require another type of group.
+  if ($field_definition->getType() === 'entity_reference') {
+    $handler = $field_definition->getSetting('handler');
+    $handler_settings = $field_definition->getSetting('handler_settings');
+
+    if (strpos($handler, ':') !== FALSE) {
+      // Extract the entity type from the handler.
+      $entity_type = substr(strstr($handler, ':'), 1);
+
+      // Get all bundles of the referenced entity type.
+      if (!$bundle_ids = Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type)) {
+        return AccessResult::neutral();
+      }
+
+      $bundle_ids = array_keys($bundle_ids);
+
+      // Filter out the bundles that cannot be referenced.
+      if (!empty($handler_settings['target_bundles'])) {
+        $bundle_ids = array_intersect($bundle_ids, $handler_settings['target_bundles']);
+      }
+
+      /** @var \Drupal\og\GroupTypeManagerInterface $group_type_manager */
+      $group_type_manager = Drupal::service('og.group_type_manager');
+
+      // Get the group content bundles of $entity_type.
+      $group_content_bundle_ids = $group_type_manager->getAllGroupContentBundlesByEntityType($entity_type);
+
+      // Return neutral if none fo the bundles are group content or
+      // if at least one none-group content bundle can be referenced.
+      if (!$group_content_bundle_ids || array_diff($bundle_ids, $group_content_bundle_ids)) {
+        return AccessResult::neutral();
+      }
+
+      // Get the group content bundles of $entity_type that may be referenced
+      // by the current site.
+      $group_content_bundle_ids = $group_type_manager->getGroupContentBundleIdsByGroupBundle($site->getEntityTypeId(), $site->bundle());
+      $group_content_bundle_ids  = $group_content_bundle_ids[$entity_type] ?? [];
+
+      // Deny access if none of the allowed bundles are listed.
+      if (!$group_content_bundle_ids || !array_intersect($bundle_ids, $group_content_bundle_ids)) {
+        return AccessResult::forbidden();
+      }
+    }
+  }
+
   return AccessResult::neutral();
 }
 
