@@ -87,7 +87,7 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
       // Get the group content bundles of $entity_type that may be referenced
       // by the current site.
       $group_content_bundle_ids = $group_type_manager->getGroupContentBundleIdsByGroupBundle($site->getEntityTypeId(), $site->bundle());
-      $group_content_bundle_ids  = $group_content_bundle_ids[$entity_type] ?? [];
+      $group_content_bundle_ids = $group_content_bundle_ids[$entity_type] ?? [];
 
       // Deny access if none of the allowed bundles are listed.
       if (!$group_content_bundle_ids || !array_intersect($bundle_ids, $group_content_bundle_ids)) {
