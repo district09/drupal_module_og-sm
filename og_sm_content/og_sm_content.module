@@ -60,38 +60,44 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
       // Extract the entity type from the handler.
       $entity_type = substr(strstr($handler, ':'), 1);
 
-      // Get all bundles of the referenced entity type.
-      if (!$bundle_ids = Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type)) {
+      try {
+        // Get all bundles of the referenced entity type.
+        if (!$bundle_ids = Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type)) {
+          return AccessResult::neutral();
+        }
+
+        $bundle_ids = array_keys($bundle_ids);
+
+        // Filter out the bundles that cannot be referenced.
+        if (!empty($handler_settings['target_bundles'])) {
+          $bundle_ids = array_intersect($bundle_ids, $handler_settings['target_bundles']);
+        }
+
+        /** @var \Drupal\og\GroupTypeManagerInterface $group_type_manager */
+        $group_type_manager = Drupal::service('og.group_type_manager');
+
+        // Get the group content bundles of $entity_type.
+        $group_content_bundle_ids = $group_type_manager->getAllGroupContentBundlesByEntityType($entity_type);
+
+        // Return neutral if none of the bundles are group content or
+        // if at least one none-group content bundle can be referenced.
+        if (!$group_content_bundle_ids || array_diff($bundle_ids, $group_content_bundle_ids)) {
+          return AccessResult::neutral();
+        }
+
+        // Get the group content bundles of $entity_type that may be referenced
+        // by the current site.
+        $group_content_bundle_ids = $group_type_manager->getGroupContentBundleIdsByGroupBundle($site->getEntityTypeId(), $site->bundle());
+        $group_content_bundle_ids = $group_content_bundle_ids[$entity_type] ?? [];
+
+        // Deny access if none of the allowed bundles are listed.
+        if (!$group_content_bundle_ids || !array_intersect($bundle_ids, $group_content_bundle_ids)) {
+          return AccessResult::forbidden();
+        }
+      }
+      catch (Exception $ex) {
+        // An exception occured, be neutral by default.
         return AccessResult::neutral();
-      }
-
-      $bundle_ids = array_keys($bundle_ids);
-
-      // Filter out the bundles that cannot be referenced.
-      if (!empty($handler_settings['target_bundles'])) {
-        $bundle_ids = array_intersect($bundle_ids, $handler_settings['target_bundles']);
-      }
-
-      /** @var \Drupal\og\GroupTypeManagerInterface $group_type_manager */
-      $group_type_manager = Drupal::service('og.group_type_manager');
-
-      // Get the group content bundles of $entity_type.
-      $group_content_bundle_ids = $group_type_manager->getAllGroupContentBundlesByEntityType($entity_type);
-
-      // Return neutral if none of the bundles are group content or
-      // if at least one none-group content bundle can be referenced.
-      if (!$group_content_bundle_ids || array_diff($bundle_ids, $group_content_bundle_ids)) {
-        return AccessResult::neutral();
-      }
-
-      // Get the group content bundles of $entity_type that may be referenced
-      // by the current site.
-      $group_content_bundle_ids = $group_type_manager->getGroupContentBundleIdsByGroupBundle($site->getEntityTypeId(), $site->bundle());
-      $group_content_bundle_ids = $group_content_bundle_ids[$entity_type] ?? [];
-
-      // Deny access if none of the allowed bundles are listed.
-      if (!$group_content_bundle_ids || !array_intersect($bundle_ids, $group_content_bundle_ids)) {
-        return AccessResult::forbidden();
       }
     }
   }
