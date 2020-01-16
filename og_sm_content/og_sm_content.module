@@ -6,11 +6,25 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\og_sm\OgSm;
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function og_sm_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook !== 'paragraph_create_access' && $hook !== 'paragraph_access') {
+    return;
+  }
+
+  if (isset($implementations['paragraphs_type_permissions'])) {
+    unset($implementations['paragraphs_type_permissions']);
+  }
+}
 
 /**
  * Implements hook_theme_registry_alter().
@@ -102,6 +116,47 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create_access().
+ */
+function og_sm_content_paragraph_create_access(AccountInterface $account, array $context, $entity_bundle) {
+  if (!Drupal::moduleHandler()->moduleExists('paragraphs_type_permissions')) {
+    return AccessResult::neutral();
+  }
+
+  if (!$site = OgSm::siteManager()->currentSite()) {
+    return paragraphs_type_permissions_paragraph_create_access($account, $context, $entity_bundle);
+  }
+
+  /* @var \Drupal\og\OgAccessInterface $og_access */
+  $og_access = \Drupal::service('og.access');
+
+  return $og_access->userAccess($site, "create paragraph content $entity_bundle", $account);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function og_sm_content_paragraph_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if (!Drupal::moduleHandler()->moduleExists('paragraphs_type_permissions')) {
+    return AccessResult::neutral();
+  }
+
+  if (!$site = OgSm::siteManager()->currentSite()) {
+    return paragraphs_type_permissions_paragraph_access($entity, $operation, $account);
+  }
+
+  if (!in_array($operation, array('view', 'update', 'delete'), TRUE)) {
+    return AccessResult::neutral();
+  }
+
+  /* @var \Drupal\og\OgAccessInterface $og_access */
+  $og_access = \Drupal::service('og.access');
+  $entity_bundle = $entity->bundle();
+
+  return $og_access->userAccess($site, "$operation paragraph content $entity_bundle", $account);
 }
 
 /**
