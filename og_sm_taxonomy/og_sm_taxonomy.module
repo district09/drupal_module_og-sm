@@ -114,8 +114,12 @@ function og_sm_taxonomy_query_term_access_alter(AlterableInterface $query) {
       continue;
     }
 
-    $query->join('taxonomy_term__og_audience', 'og_audience', 'og_audience.entity_id = ' . $table_alias . '.tid');
-    $query->condition('og_audience.og_audience_target_id', $site->id());
+    $query->leftJoin('taxonomy_term__og_audience', 'og_audience', 'og_audience.entity_id = ' . $table_alias . '.tid');
+    $query->condition(
+      $query->orConditionGroup()
+        ->condition('og_audience.og_audience_target_id', $site->id())
+        ->isNull('og_audience.og_audience_target_id')
+    );
     return;
   }
 }

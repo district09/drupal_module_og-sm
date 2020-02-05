@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -56,6 +57,31 @@ function og_sm_form_node_type_form_alter(array &$form, FormStateInterface $form_
  */
 function og_sm_set_breadcrumb(NodeInterface $site, array $path = []) {
   throw new DeprecatedMethodException('og_sm_set_breadcrumb() still needs to be ported.');
+}
+
+/**
+ * Implements hook_entity_field_values_init().
+ */
+function og_sm_entity_field_values_init(FieldableEntityInterface $entity) {
+  if (!$site = OgSm::siteManager()->currentSite()) {
+    return;
+  }
+
+  /** @var \Drupal\og\OgGroupAudienceHelperInterface $group_audience_helper */
+  $group_audience_helper = Drupal::service('og.group_audience_helper');
+
+  $fields = $group_audience_helper->getAllGroupAudienceFields(
+    $entity->getEntityTypeId(),
+    $entity->bundle(),
+    $site->getEntityTypeId(),
+    $site->bundle()
+  );
+
+  if (!$fields) {
+    return;
+  }
+
+  $entity->set(reset($fields)->getName(), $site->id());
 }
 
 /**
@@ -150,32 +176,6 @@ function og_sm_node_type_delete(NodeTypeInterface $node_type) {
   if (OgSm::isSiteType($node_type)) {
     $event = new SiteTypeEvent($node_type);
     \Drupal::service('event_dispatcher')->dispatch(SiteTypeEvents::REMOVE, $event);
-  }
-}
-
-/**
- * Implements hook_field_widget_form_alter().
- */
-function og_sm_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  // Leave the field as is if it is already filled is.
-  /* @var \Drupal\Core\Field\FieldItemListInterface $items */
-  $items = $context['items'];
-  if (!$items->isEmpty()) {
-    return;
-  }
-
-  // Only intervene with audience fields.
-  if (!OgGroupAudienceHelper::isGroupAudienceField($items->getFieldDefinition())) {
-    return;
-  }
-
-  $site = OgSm::siteManager()->currentSite();
-  if ($site) {
-    // Prepopulate the audience field with the current site content.
-    $element['target_id'] = [
-      '#type' => 'hidden',
-      '#value' => $site->id(),
-    ];
   }
 }
 
