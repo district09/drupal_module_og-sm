@@ -188,9 +188,8 @@ function og_sm_entity_field_access($operation, FieldDefinitionInterface $field_d
     return AccessResult::neutral();
   }
 
-  $site = OgSm::siteManager()->currentSite();
   // Don't intervene when we are not within site context.
-  if (!$site) {
+  if (!OgSm::siteManager()->currentSite()) {
     return AccessResult::neutral();
   }
 

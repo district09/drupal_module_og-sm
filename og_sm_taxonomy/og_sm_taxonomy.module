@@ -42,10 +42,13 @@ function og_sm_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $ope
   $og_access = \Drupal::service('og.access');
 
   $term_permissions = [
-    "create terms in {$entity->id()}",
-    "edit terms in {$entity->id()}",
-    "delete terms in {$entity->id()}",
+    "create {$entity->id()} taxonomy_term",
+    "update any {$entity->id()} taxonomy_term",
+    "update own {$entity->id()} taxonomy_term",
+    "delete any {$entity->id()} taxonomy_term",
+    "delete own {$entity->id()} taxonomy_term",
   ];
+
   foreach ($term_permissions as $term_permission) {
     if ($og_access->userAccess($site, $term_permission, $account)->isAllowed()) {
       return AccessResult::allowed();
@@ -59,15 +62,13 @@ function og_sm_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $ope
  * Implements hook_ENTITY_TYPE_create_access() for 'taxonomy_term'.
  */
 function og_sm_taxonomy_taxonomy_term_create_access(AccountInterface $account, $context, $entity_bundle) {
-  $site_manager = OgSm::siteManager();
-  $site = $site_manager->currentSite();
-  if (!$site) {
+  if (!$site = OgSm::siteManager()->currentSite()) {
     return AccessResult::neutral();
   }
 
   /* @var \Drupal\og\OgAccessInterface $og_access */
   $og_access = \Drupal::service('og.access');
-  if ($og_access->userAccess($site, "create terms in $entity_bundle", $account)->isAllowed()) {
+  if ($og_access->userAccess($site, "create $entity_bundle taxonomy_term", $account)->isAllowed()) {
     return AccessResult::allowed();
   }
 

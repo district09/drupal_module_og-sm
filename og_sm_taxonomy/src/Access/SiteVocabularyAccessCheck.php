@@ -66,8 +66,11 @@ class SiteVocabularyAccessCheck implements AccessInterface {
     }
 
     foreach ($this->siteTaxonomyManager->getSiteVocabularyNames($node->getEntityTypeId(), $node->bundle()) as $vocabulary_name) {
-      $access = $this->ogAccess->userAccess($node, "create terms in $vocabulary_name", $account);
-      $access->orIf($this->ogAccess->userAccess($node, "edit terms in $vocabulary_name", $account));
+      $access = $this->ogAccess->userAccess($node, "create $vocabulary_name taxonomy_term", $account);
+      $access->orIf($this->ogAccess->userAccess($node, "edit any $vocabulary_name taxonomy_term", $account));
+      $access->orIf($this->ogAccess->userAccess($node, "edit own $vocabulary_name taxonomy_term", $account));
+      $access->orIf($this->ogAccess->userAccess($node, "delete any $vocabulary_name taxonomy_term", $account));
+      $access->orIf($this->ogAccess->userAccess($node, "delete own $vocabulary_name taxonomy_term", $account));
 
       if ($access->isAllowed()) {
         return AccessResult::allowed();
