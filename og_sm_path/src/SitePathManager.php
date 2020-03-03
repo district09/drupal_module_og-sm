@@ -4,8 +4,8 @@ namespace Drupal\og_sm_path;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Path\AliasStorage;
 use Drupal\Core\Path\AliasStorageInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
@@ -13,6 +13,7 @@ use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface;
 use Drupal\og_sm_path\Event\SitePathEvent;
 use Drupal\og_sm_path\Event\SitePathEvents;
+use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -23,9 +24,9 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * The path alias storage.
    *
-   * @var \Drupal\Core\Path\AliasStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $aliasStorage;
+  protected $pathAliasStorage;
 
   /**
    * The language manager.
@@ -69,7 +70,6 @@ class SitePathManager implements SitePathManagerInterface {
    */
   protected $invalidator;
 
-
   /**
    * Key value array where the key is the path and the value the site node.
    *
@@ -80,8 +80,8 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * Constructs a SitePathManager object.
    *
-   * @param \Drupal\Core\Path\AliasStorageInterface $alias_storage
-   *   The path alias storage.
+   * @param \Drupal\path_alias\AliasManagerInterface $alias_manager
+   *   The path alias manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
@@ -94,28 +94,33 @@ class SitePathManager implements SitePathManagerInterface {
    *   A database connection for reading and writing path aliases.
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator
    *   The cache tag invalidator service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(AliasStorageInterface $alias_storage, LanguageManagerInterface $language_manager, SiteManagerInterface $site_manager, SiteConfigFactoryOverrideInterface $config_factory_override, EventDispatcherInterface $event_dispatcher, Connection $connection, CacheTagsInvalidatorInterface $invalidator) {
-    $this->aliasStorage = $alias_storage;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager, SiteManagerInterface $site_manager, SiteConfigFactoryOverrideInterface $config_factory_override, EventDispatcherInterface $event_dispatcher, Connection $connection, CacheTagsInvalidatorInterface $invalidator) {
+    $this->pathAliasStorage = $entity_type_manager->getStorage('path_alias');
     $this->languageManager = $language_manager;
     $this->siteManager = $site_manager;
     $this->configFactoryOverride = $config_factory_override;
     $this->eventDispatcher = $event_dispatcher;
     $this->connection = $connection;
     $this->invalidator = $invalidator;
-
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPathFromSite(NodeInterface $site) {
-    $site_path = $site->site_path;
-    if (!empty($site_path)) {
-      return $site_path;
+    if (!empty($site->site_path)) {
+      return $site->site_path;
     }
-    $config = $this->configFactoryOverride->getOverride($site, 'site_settings');
-    return $config->get('path');
+
+    return $this->configFactoryOverride
+      ->getOverride($site, 'site_settings')
+      ->get('path');
   }
 
   /**
@@ -123,13 +128,19 @@ class SitePathManager implements SitePathManagerInterface {
    */
   public function lookupPathAlias($path) {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
-    $path_alias = $this->aliasStorage->lookupPathAlias($path, $langcode);
+    $path_alias = $this->pathAliasStorage->loadByProperties([
+      'alias' => $path,
+      'langcode' => $langcode,
+    ]);
 
     if (!$path_alias) {
-      $source = $this->aliasStorage->lookupPathSource($path, $langcode);
-      $path_alias = $source ? $path : $path_alias;
+      $path_alias = $this->pathAliasStorage->loadByProperties([
+        'path' => $path,
+        'langcode' => $langcode,
+      ]);
     }
-    return $path_alias;
+
+    return $path_alias ? $path_alias->getAlias() : $path;
   }
 
   /**
@@ -154,35 +165,41 @@ class SitePathManager implements SitePathManagerInterface {
    * {@inheritdoc}
    */
   public function deleteSiteAliases(NodeInterface $site) {
-    $path = $this->getPathFromSite($site);
-    if (!$path) {
+    if (!$path = $this->getPathFromSite($site)) {
       return;
     }
 
-    $path = $this->connection->escapeLike($path) . '/%';
+    $path_alias_ids = $this->pathAliasStorage->getQuery()
+      ->condition('alias', $path, 'STARTS_WITH')
+      ->execute();
 
-    $select = $this->connection->select(AliasStorage::TABLE);
-    $select->condition('source', $path, 'LIKE');
-    $select->fields(AliasStorage::TABLE, ['pid', 'source']);
-    $path_ids = (array) $select->execute()->fetchAllKeyed();
+    if (!$path_alias_ids) {
+      return;
+    }
+
+    /** @var \Drupal\path_alias\Entity\PathAlias[] $path_aliasses */
+    $path_aliasses = $this->pathAliasStorage->loadMultiple($path_alias_ids);
 
     $tags = [];
-    foreach ($path_ids as $pid => $source) {
+    foreach ($path_aliasses as $path_alias) {
       // Try to find the route parameters from the path source so we can use
       // them to construct cache tags which should be invalidated.
       // @todo: Remove once https://www.drupal.org/node/2480077 is fixed.
-      $url = Url::fromUserInput($source);
-      if (!$url->isRouted()) {
-        continue;
+      $url = Url::fromUserInput($path_alias->getPath());
+
+      if ($url->isRouted()) {
+        foreach ($url->getRouteParameters() as $name => $value) {
+          $tag = $name . ':' . $value;
+          $tags[$tag] = $tag;
+        }
       }
 
-      foreach ($url->getRouteParameters() as $name => $value) {
-        $tag = $name . ':' . $value;
-        $tags[$tag] = $tag;
-      }
-      $this->aliasStorage->delete(['pid' => $pid]);
+      $path_alias->delete();
     }
-    $this->invalidator->invalidateTags($tags);
+
+    if ($tags) {
+      $this->invalidator->invalidateTags($tags);
+    }
   }
 
   /**
