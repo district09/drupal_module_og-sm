@@ -6,14 +6,12 @@ use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Path\AliasStorageInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface;
 use Drupal\og_sm_path\Event\SitePathEvent;
 use Drupal\og_sm_path\Event\SitePathEvents;
-use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -140,7 +138,12 @@ class SitePathManager implements SitePathManagerInterface {
       ]);
     }
 
-    return $path_alias ? $path_alias->getAlias() : $path;
+    if ($path_alias) {
+      $path_alias = reset($path_alias);
+      return $path_alias->getAlias();
+    }
+
+    return $path;
   }
 
   /**
