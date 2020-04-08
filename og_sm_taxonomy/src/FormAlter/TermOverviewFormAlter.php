@@ -3,11 +3,13 @@
 namespace Drupal\og_sm_taxonomy\FormAlter;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\og\OgAccessInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_context\Plugin\OgGroupResolver\QueryParamGroupResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,13 +31,21 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
   protected $siteManager;
 
   /**
+   * The OG access service.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
    * Construct a TermOverviewFormAlter object.
    *
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
    */
-  public function __construct(SiteManagerInterface $site_manager) {
+  public function __construct(SiteManagerInterface $site_manager, OgAccessInterface $og_access) {
     $this->siteManager = $site_manager;
+    $this->ogAccess = $og_access;
   }
 
   /**
@@ -43,7 +53,8 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('og_sm.site_manager')
+      $container->get('og_sm.site_manager'),
+      $container->get('og.access')
     );
   }
 
@@ -59,6 +70,7 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
     $site = $this->siteManager->currentSite();
 
     if ($site) {
+      $this->removeInaccessibleTerms($form);
       $this->alterEmptyText($form, $form_state, $site);
       $this->alterAlphabeticalSubmitHandler($form, $form_state, $site);
     }
@@ -89,6 +101,30 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
       }
 
       $element['term']['#suffix'] = ' <small>(' . $site->label() . ')</small>';
+    }
+  }
+
+  /**
+   * Remove inaccesibe terms.
+   *
+   * @param array $form
+   *   The form structure.
+   */
+  public function removeInaccessibleTerms(array &$form) {
+    foreach (Element::children($form['terms']) as $key) {
+      if (!isset($form['terms'][$key]['#term'])) {
+        continue;
+      }
+
+      /** @var \Drupal\taxonomy\TermInterface $term */
+      $term = $form['terms'][$key]['#term'];
+
+      $result = $term->access('view', NULL, TRUE);
+      $result->andIf($this->ogAccess->userAccessEntity('view', $form['terms'][$key]['#term']));
+
+      if ($result->isForbidden()) {
+        unset($form['terms'][$key]);
+      }
     }
   }
 
