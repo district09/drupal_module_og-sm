@@ -5,11 +5,12 @@
  * Site Manager Administration module.
  */
 
-use Drupal\Core\Session\AccountInterface;
+use Drupal\admin_toolbar\Render\Element\AdminToolbar;
 use Drupal\Core\Template\Attribute;
 use Drupal\og_sm\OgSm;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
+use Drupal\toolbar\Controller\ToolbarController;
 
 /**
  * Implements hook_local_tasks_alter().
@@ -146,7 +147,7 @@ function og_sm_admin_menu_prerender_toolbar_administration_tray(array $element) 
 
   if (!$site_manager->currentSite()) {
     // If there's no site context, render the toolbar as usual.
-    return $admin_toolbar_exists ? admin_toolbar_prerender_toolbar_administration_tray($element) : toolbar_prerender_toolbar_administration_tray($element);
+    return $admin_toolbar_exists ? AdminToolbar::preRenderTray($element) : ToolbarController::preRenderAdministrationTray($element);
   }
 
   // @todo: This can be simplified once https://www.drupal.org/node/1869638 has
