@@ -96,18 +96,20 @@ function _og_sm_path_tokens_entity(array $tokens, EntityInterface $entity, array
 function _og_sm_path_tokens_site_path(EntityInterface $entity, $sanitize) {
   $site_manager = OgSm::siteManager();
 
-  $site = FALSE;
   if ($entity instanceof NodeInterface && $site_manager->isSite($entity)) {
     $site = $entity;
   }
-  if (!$site) {
-    $site = $site_manager->getSiteFromEntity($entity);
-  }
+  else {
+    $sites = $site_manager->getSitesFromEntity($entity);
 
-  if (!$site) {
-    return NULL;
+    if (count($sites) !== 1) {
+      return NULL;
+    }
+
+    $site = reset($sites);
   }
 
   $path = OgSmPath::sitePathManager()->getPathFromSite($site);
+
   return $sanitize ? Html::escape($path) : $path;
 }
