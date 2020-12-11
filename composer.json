@@ -1,5 +1,5 @@
 {
-    "name": "drupal/og_sm",
+    "name": "gent-drupal/og_sm",
     "type": "drupal-module",
     "description": "Support to setup a platform supporting multiple (sub)sites using Organic Groups.",
     "keywords": [
