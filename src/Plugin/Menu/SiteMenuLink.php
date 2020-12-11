@@ -33,7 +33,7 @@ class SiteMenuLink extends MenuLinkDefault {
   /**
    * The entity type manager.
    *
-   * @var
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -88,7 +88,8 @@ class SiteMenuLink extends MenuLinkDefault {
   /**
    * Gets the ogmenu_instance for the current og group.
    *
-   * @return mixed The instance of the og menu or null if no instance is found.
+   * @return mixed
+   *   The instance of the og menu or null if no instance is found.
    */
   protected function getOgMenuInstance($menu_type) {
     $site = $this->siteManager->currentSite();

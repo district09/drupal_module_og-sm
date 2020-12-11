@@ -244,7 +244,7 @@ class SiteManager implements SiteManagerInterface {
       return $sites;
     }
 
-    /* @var \Drupal\node\NodeInterface $group */
+    /** @var \Drupal\node\NodeInterface $group */
     foreach ($groups['node'] as $group) {
       if ($this->isSite($group)) {
         $sites[$group->id()] = $group;
@@ -257,13 +257,6 @@ class SiteManager implements SiteManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSitesFromContent(NodeInterface $node) {
-    return $this->getSitesFromEntity($node);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getSitesFromEntity(EntityInterface $node) {
     if (!Og::isGroupContent($node->getEntityTypeId(), $node->bundle())) {
       return [];
@@ -271,13 +264,6 @@ class SiteManager implements SiteManagerInterface {
 
     $groups = $this->membershipManager->getGroups($node);
     return $this->filterSitesFromGroups($groups);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSiteFromContent(NodeInterface $node) {
-    return $this->getSiteFromEntity($node);
   }
 
   /**

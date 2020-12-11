@@ -2,7 +2,6 @@
 
 namespace Drupal\og_sm\Access;
 
-use Drupal\Component\Annotation\Plugin;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
@@ -67,7 +66,7 @@ class SitePermissionAccessCheck implements AccessInterface {
    *   The permissions to check.
    * @param string $conjunction
    *   (optional) 'AND' if all permissions are required, 'OR' in case just one.
-   *   Defaults to 'AND'
+   *   Defaults to 'AND'.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   If the account has the permissions, isAllowed() will be TRUE, otherwise

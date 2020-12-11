@@ -48,7 +48,7 @@ class SiteMenuController extends ControllerBase {
    *
    * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
    *   The class resolver service.
-   * @param SiteMenuManagerInterface $site_menu_manager
+   * @param \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager
    *   The site menu manager service.
    */
   public function __construct(ClassResolverInterface $class_resolver, SiteMenuManagerInterface $site_menu_manager) {

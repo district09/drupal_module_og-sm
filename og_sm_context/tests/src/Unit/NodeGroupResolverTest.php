@@ -92,7 +92,7 @@ class NodeGroupResolverTest extends OgSmGroupResolverTestBase {
     return [
       $this->routeMatch->reveal(),
       $this->siteManager->reveal(),
-      $this->entityTypeManager->reveal()
+      $this->entityTypeManager->reveal(),
     ];
   }
 

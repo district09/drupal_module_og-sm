@@ -4,7 +4,6 @@ namespace Drupal\og_sm;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 /**
@@ -115,19 +114,6 @@ interface SiteManagerInterface {
   public function filterSitesFromGroups(array $groups);
 
   /**
-   * Get all the Sites a node belongs to.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The site content.
-   *
-   * @return \Drupal\node\NodeInterface[]
-   *   All Site nodes keyed by their nid.
-   *
-   * @deprecated Use ::getSitesFromEntity() instead.
-   */
-  public function getSitesFromContent(NodeInterface $node);
-
-  /**
    * Get all the Sites a content entity belongs to.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -137,22 +123,6 @@ interface SiteManagerInterface {
    *   All Site nodes keyed by their nid.
    */
   public function getSitesFromEntity(EntityInterface $entity);
-
-  /**
-   * Get the Site object the Site content node belongs to.
-   *
-   * If a content node belongs to multiple Sites, only the first will be
-   * returned.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The site content.
-   *
-   * @return \Drupal\node\NodeInterface|false
-   *   The site node (if any).
-   *
-   * @deprecated Use ::getSiteFromEntity() instead.
-   */
-  public function getSiteFromContent(NodeInterface $node);
 
   /**
    * Get the Site object the Site content entity belongs to.

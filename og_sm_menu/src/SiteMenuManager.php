@@ -30,7 +30,7 @@ class SiteMenuManager implements SiteMenuManagerInterface {
    * Constructs a SiteMenuManager object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager
+   *   The entity type manager.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager service.
    */
@@ -66,7 +66,6 @@ class SiteMenuManager implements SiteMenuManagerInterface {
     return NULL;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -98,6 +97,7 @@ class SiteMenuManager implements SiteMenuManagerInterface {
    * Gets the og-menu instance storage object.
    *
    * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The OG menu storage.
    */
   protected function ogMenuInstanceStorage() {
     return $this->entityTypeManager->getStorage('ogmenu_instance');

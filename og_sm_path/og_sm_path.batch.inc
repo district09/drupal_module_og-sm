@@ -62,7 +62,7 @@ function og_sm_path_site_alias_update_content_process(NodeInterface $site, array
     $tags[] = 'node:' . $node->id();
     $context['sandbox']['last_id'] = $node->id();
   }
-  // @todo: This can probably be removed once
+  // @todo This can probably be removed once
   // https://www.drupal.org/node/2480077 is fixed.
   Cache::invalidateTags($tags);
 

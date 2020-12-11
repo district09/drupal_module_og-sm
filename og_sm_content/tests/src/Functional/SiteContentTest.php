@@ -203,8 +203,7 @@ class SiteContentTest extends OgSmWebTestBase {
 
     // Login as the site editor.
     $this->drupalLogin($this->userSiteEditor);
-    // Verify that the editor is still redirected when visiting the content/add
-    // page since he doesn't have permission to create the new content type.
+    // Verify that the editor is redirected when visiting content/add.
     $this->drupalGet($site1_path . '/content/add');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->addressEquals($site1_path . '/content/add/' . $this->siteContentType->id());
@@ -244,11 +243,10 @@ class SiteContentTest extends OgSmWebTestBase {
     // it belongs to site 2.
     $this->drupalGet('node/' . $site2_node->id() . '/edit');
     $this->assertSession()->statusCodeEquals(403);
-    // He can edit the node created by admin for site 1.
+    // Can edit the node created by admin for site 1.
     $this->drupalGet('node/' . $site1_node->id() . '/edit');
     $this->assertSession()->statusCodeEquals(200);
-    // Verify that the site manager can access the promote checkbox, event
-    // though he does not have the global "administer nodes" permission.
+    // Verify that the site manager can access the promote checkbox.
     $this->assertSession()->fieldExists('promote[value]');
 
     $this->drupalPostForm($site1_path . '/content/add', [
@@ -258,8 +256,7 @@ class SiteContentTest extends OgSmWebTestBase {
 
     // Login as site editor.
     $this->drupalLogin($this->userSiteEditor);
-    // Verify that site editor cannot edit any of the created nodes for site 1
-    // since he can only edit his own content.
+    // Verify that site editor cannot edit teh content of someone else.
     $this->drupalGet('node/' . $site1_node->id() . '/edit');
     $this->assertSession()->statusCodeEquals(403);
     $this->drupalGet('node/' . $site1_node2->id() . '/edit');
@@ -268,7 +265,7 @@ class SiteContentTest extends OgSmWebTestBase {
       'title[0][value]' => 'test site 1 content by site editor',
     ], 'Save');
     $site1_node3 = $this->getNodeByTitle('test site 1 content by site editor');
-    // Verify that the site editor can access his own content.
+    // Verify that the site editor can access its own content.
     $this->drupalGet('node/' . $site1_node3->id() . '/edit');
     $this->assertSession()->statusCodeEquals(200);
     // Verify that the site manager cannot access the promote checkbox.

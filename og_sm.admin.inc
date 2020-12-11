@@ -81,7 +81,7 @@ function og_sm_node_type_form_field_validate(array $element, FormStateInterface 
  * @param array $form
  *   The complete form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.*
+ *   The current state of the form.
  */
 function og_sm_node_type_form_builder($entity_type, NodeTypeInterface $type, array &$form, FormStateInterface $form_state) {
   OgSm::setSiteType($type, $form_state->getValue('og_sm_site_type'));

@@ -35,7 +35,7 @@ class SiteMenuForm extends FormBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param SiteMenuManagerInterface $site_menu_manager
+   * @param \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager
    *   The site menu manager service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, SiteMenuManagerInterface $site_menu_manager) {
@@ -82,7 +82,7 @@ class SiteMenuForm extends FormBase {
       }
 
       foreach ($form['links'][$key]['operations']["#links"] as &$operation) {
-        /* @var \Drupal\Core\Url $url */
+        /** @var \Drupal\Core\Url $url */
         $url = $operation['url'];
         $site = $menu->getGroup();
 

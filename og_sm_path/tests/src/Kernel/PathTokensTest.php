@@ -55,7 +55,7 @@ class PathTokensTest extends OgSmKernelTestBase {
   public function setUp() {
     parent::setUp();
 
-    // Create the Site node with his path.
+    // Create the Site node.
     $type = $this->createGroupNodeType(OgSmKernelTestBase::TYPE_IS_GROUP);
     OgSm::siteTypeManager()->setIsSiteType($type, TRUE);
     $type->save();

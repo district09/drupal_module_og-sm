@@ -26,7 +26,7 @@ class SiteRoutingEvent extends SiteEvent {
    * @param \Drupal\node\NodeInterface $site
    *   The site node.
    * @param \Symfony\Component\Routing\RouteCollection $route_collection
-   *  The site route collection object.
+   *   The site route collection object.
    */
   public function __construct(NodeInterface $site, RouteCollection $route_collection) {
     parent::__construct($site);

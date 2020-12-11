@@ -7,7 +7,7 @@ use Drupal\og\OgResolvedGroupCollectionInterface;
 use Drupal\og_sm_context\Plugin\OgGroupResolver\OgSmGroupResolverBase;
 
 /**
- * Tries to get the context for site routes
+ * Tries to get the context for site routes.
  *
  * Will check if:
  * - The site routes has a "og_sm_routing:site" parameter.

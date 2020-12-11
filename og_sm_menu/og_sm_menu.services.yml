@@ -4,6 +4,7 @@ services:
     arguments: ['@entity_type.manager', '@og_sm.site_manager']
   og_sm_menu.group_permission_event_subscriber:
     class: Drupal\og_sm_menu\EventSubscriber\GroupPermissionEventSubscriber
+    arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
   og_sm_menu.route_subscriber:

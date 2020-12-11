@@ -3,7 +3,6 @@
 namespace Drupal\og_sm_taxonomy\FormAlter;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -42,6 +41,8 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
    *
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
    */
   public function __construct(SiteManagerInterface $site_manager, OgAccessInterface $og_access) {
     $this->siteManager = $site_manager;
@@ -93,7 +94,7 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
 
       $element = &$form['terms'][$key];
 
-      /* @var \Drupal\taxonomy\TermInterface $term */
+      /** @var \Drupal\taxonomy\TermInterface $term */
       $term = $element['#term'];
       $site = $this->siteManager->getSiteFromEntity($term);
       if (!$site) {
@@ -143,7 +144,7 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
     if (empty($form['terms']['#empty'])) {
       return;
     }
-    /* @var \Drupal\taxonomy\VocabularyInterface $vocabulary */
+    /** @var \Drupal\taxonomy\VocabularyInterface $vocabulary */
     $vocabulary = $form_state->get(['taxonomy', 'vocabulary']);
     $add_term_link = Url::fromRoute('og_sm_taxonomy.vocabulary.term_add', [
       'node' => $site->id(),
@@ -165,7 +166,7 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
    *
    * @see og_sm_taxonomy_form_taxonomy_overview_terms_alter()
    */
-  public function alterAlphabeticalSubmitHandler(&$form, FormStateInterface $form_state, NodeInterface $site) {
+  public function alterAlphabeticalSubmitHandler(array &$form, FormStateInterface $form_state, NodeInterface $site) {
     $form_state->set('site', $site);
 
     // Custom submit handler.
@@ -183,8 +184,8 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    */
-  public function submitReset($form, FormStateInterface $form_state) {
-    /* @var \Drupal\Core\Url $redirect_url */
+  public function submitReset(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\Core\Url $redirect_url */
     $redirect_url = $form_state->getRedirect();
     $redirect_url->setRouteParameter(QueryParamGroupResolver::SITE_ID_ARGUMENT, $form_state->get('site')->id());
   }

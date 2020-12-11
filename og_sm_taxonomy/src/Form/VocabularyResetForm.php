@@ -31,8 +31,10 @@ class VocabularyResetForm extends VocabularyResetFormBase {
   protected $siteTaxonomyManager;
 
   /**
-   * Constructs a new VocabularyResetForm object.
+   * Class constructor.
    *
+   * @param \Drupal\taxonomy\TermStorageInterface $term_storage
+   *   The taxonomy term storage.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
    * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager
@@ -40,6 +42,7 @@ class VocabularyResetForm extends VocabularyResetFormBase {
    */
   public function __construct(TermStorageInterface $term_storage, SiteManagerInterface $site_manager, SiteTaxonomyManagerInterface $site_taxonomy_manager) {
     parent::__construct($term_storage);
+
     $this->siteManager = $site_manager;
     $this->siteTaxonomyManager = $site_taxonomy_manager;
   }
@@ -91,7 +94,7 @@ class VocabularyResetForm extends VocabularyResetFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /* @var \Drupal\node\NodeInterface $site */
+    /** @var \Drupal\node\NodeInterface $site */
     $site = $form_state->get('site');
     if (!$site) {
       parent::submitForm($form, $form_state);

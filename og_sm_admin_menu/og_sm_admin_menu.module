@@ -150,9 +150,9 @@ function og_sm_admin_menu_prerender_toolbar_administration_tray(array $element) 
     return $admin_toolbar_exists ? AdminToolbar::preRenderTray($element) : ToolbarController::preRenderAdministrationTray($element);
   }
 
-  // @todo: This can be simplified once https://www.drupal.org/node/1869638 has
+  // @todo This can be simplified once https://www.drupal.org/node/1869638 has
   // been implemented in core and the "admin_toolbar" module.
-  /* @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_tree */
+  /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_tree */
   $menu_tree = \Drupal::service('toolbar.menu_tree');
   $parameters = new MenuTreeParameters();
   // Depending on whether the 'admin_toolbar' module exists we should change the

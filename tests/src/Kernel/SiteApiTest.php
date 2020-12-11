@@ -114,7 +114,7 @@ class SiteApiTest extends OgSmKernelTestBase {
     $membership = Og::getMembership($site, $site_manager);
     $membership->addRole($og_role);
 
-    /* @var \Drupal\og\OgAccessInterface $og_access */
+    /** @var \Drupal\og\OgAccessInterface $og_access */
     $og_access = $this->container->get('og.access');
     // Always give access to user 1.
     $this->assertTrue($og_access->userAccess($site, $administer_site_permission, $user1)->isAllowed());
@@ -138,7 +138,7 @@ class SiteApiTest extends OgSmKernelTestBase {
     $site_type->save();
     $site = $this->createGroup($site_type->id());
 
-    /* @var \Drupal\og_sm\SiteManagerInterface $site_manager */
+    /** @var \Drupal\og_sm\SiteManagerInterface $site_manager */
     $site_manager = $this->container->get('og_sm.site_manager');
 
     // Default when no context is active.

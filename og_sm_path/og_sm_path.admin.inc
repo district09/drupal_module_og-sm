@@ -23,7 +23,7 @@ use Drupal\og_sm_path\OgSmPath;
  * @see og_sm_pathauto_form_node_form_alter()
  */
 function _og_sm_path_form_node_site_form_alter(array &$form, FormStateInterface $form_state) {
-  /* @var \Drupal\node\NodeInterface $site */
+  /** @var \Drupal\node\NodeInterface $site */
   $site = $form_state->getFormObject()->getEntity();
 
   $default = NULL;
@@ -84,7 +84,7 @@ function _og_sm_path_field_site_path_validate(array $element, FormStateInterface
   }
 
   // Check if the path is not already used by another Site.
-  /* @var \Drupal\node\NodeInterface $current_site */
+  /** @var \Drupal\node\NodeInterface $current_site */
   $current_site = $form_state->getFormObject()->getEntity();
   $site_path_manager = OgSmPath::sitePathManager();
   foreach (OgSm::siteManager()->getAllSites() as $site) {
@@ -131,7 +131,7 @@ function og_sm_path_site_node_form_builder($entity_type, NodeInterface $node, ar
  * @see og_sm_pathauto_form_node_form_alter()
  */
 function _og_sm_path_form_pathauto_patterns_form_alter(array &$form, FormStateInterface $form_state) {
-  /* @var \Drupal\pathauto\PathautoPatternInterface $pattern */
+  /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */
   $pattern = $form_state->getFormObject()->getEntity();
 
   if ($pattern->isNew()) {
@@ -139,7 +139,7 @@ function _og_sm_path_form_pathauto_patterns_form_alter(array &$form, FormStateIn
   }
 
   $default_bundle = NULL;
-  foreach ($pattern->getSelectionConditions() as $condition_id => $condition) {
+  foreach ($pattern->getSelectionConditions() as $condition) {
     if (in_array($condition->getPluginId(), ['entity_bundle:node', 'node_type'], TRUE)) {
       $default_bundle = reset($condition->getConfiguration()['bundles']);
       break;

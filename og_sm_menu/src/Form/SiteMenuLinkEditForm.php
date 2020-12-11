@@ -13,13 +13,23 @@ use Drupal\node\NodeInterface;
 class SiteMenuLinkEditForm extends MenuLinkEditForm {
 
   /**
-   * {@inheritdoc}
+   * Build the form.
    *
-   * @param \Drupal\node\NodeInterface $node
+   * @param array $form
+   *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   * @param \Drupal\Core\Menu\MenuLinkInterface|null $menu_link_plugin
+   *   The menu link plugin.
+   * @param \Drupal\node\NodeInterface|null $node
    *   The site node.
+   *
+   * @return array
+   *   The form array.
    */
   public function buildForm(array $form, FormStateInterface $form_state, MenuLinkInterface $menu_link_plugin = NULL, NodeInterface $node = NULL) {
     $form_state->set('site', $node);
+
     return parent::buildForm($form, $form_state, $menu_link_plugin);
   }
 
@@ -29,8 +39,9 @@ class SiteMenuLinkEditForm extends MenuLinkEditForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    /* @var \Drupal\node\NodeInterface $site */
+    /** @var \Drupal\node\NodeInterface $site */
     $site = $form_state->get('site');
+
     if ($site) {
       $form_state->setRedirect(
         'og_sm.site_menu',

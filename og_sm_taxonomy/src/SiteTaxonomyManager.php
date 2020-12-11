@@ -6,11 +6,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\ConditionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\GroupTypeManager;
 use Drupal\og\GroupTypeManagerInterface;
-use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\taxonomy\VocabularyInterface;
 
 /**

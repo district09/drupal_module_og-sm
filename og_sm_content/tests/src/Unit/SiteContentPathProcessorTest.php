@@ -53,14 +53,14 @@ class SiteContentPathProcessorTest extends UnitTestCase {
    */
   public function setUp() {
     parent::setUp();
-    /* @var \Drupal\og_sm_path\SitePathManagerInterface $site_path_manager */
+    /** @var \Drupal\og_sm_path\SitePathManagerInterface $site_path_manager */
     $site_path_manager = $this->prophesize(SitePathManagerInterface::class);
-    /* @var \Drupal\og_sm\SiteManagerInterface $site_manager */
+    /** @var \Drupal\og_sm\SiteManagerInterface $site_manager */
     $site_manager = $this->prophesize(SiteManagerInterface::class);
 
     foreach ($this->getNodePaths() as $path => $node_id) {
       if ($node_id) {
-        /* @var \Drupal\node\NodeInterface $node */
+        /** @var \Drupal\node\NodeInterface $node */
         $node = $this->prophesize(NodeInterface::class);
         $node->id()->willReturn($node_id);
         $this->testNodes[$node_id] = $node;
