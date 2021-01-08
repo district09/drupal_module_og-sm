@@ -36,7 +36,7 @@ class OgSmPath {
 
     /** @var \Drupal\og\OgAccessInterface $og_access */
     $og_access = \Drupal::service('og.access');
-    return $og_access->userAccess($site, 'change site path', $account, FALSE, TRUE)->isAllowed();
+    return $og_access->userAccess($site, 'change site path', $account, FALSE)->isAllowed();
   }
 
   /**

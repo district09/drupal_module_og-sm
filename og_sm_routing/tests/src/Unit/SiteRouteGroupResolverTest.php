@@ -34,7 +34,7 @@ class SiteRouteGroupResolverTest extends OgSmGroupResolverTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->routeMatch = $this->prophesize(RouteMatchInterface::class);
   }

@@ -4,7 +4,6 @@ namespace Drupal\Tests\og_sm_context\Unit;
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\og_sm_context\Plugin\OgGroupResolver\GroupPathGroupResolver;
-use Symfony\Component\Routing\Route;
 
 /**
  * Tests the GroupPathGroupResolver plugin.
@@ -13,6 +12,8 @@ use Symfony\Component\Routing\Route;
  * @coversDefaultClass \Drupal\og_sm_context\Plugin\OgGroupResolver\GroupPathGroupResolver
  */
 class GroupPathGroupResolverTest extends OgSmGroupResolverTestBase {
+
+  use RouteTrait;
 
   /**
    * {@inheritdoc}
@@ -25,55 +26,12 @@ class GroupPathGroupResolverTest extends OgSmGroupResolverTestBase {
   protected $pluginId = 'og_sm_context_group_path';
 
   /**
-   * The route match object.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface|\Prophecy\Prophecy\ObjectProphecy
-   */
-  protected $routeMatch;
-
-  /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
+
     $this->routeMatch = $this->prophesize(RouteMatchInterface::class);
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @param string $path
-   *   The current path.
-   * @param string $route_object_id
-   *   The ID of the object passed in the path.
-   * @param string $expected_added_group
-   *   The group that is expected to be added by the plugin. If left empty it is
-   *   explicitly expected that the plugin will not add any group to the
-   *   collection.
-   *
-   * @covers ::resolve
-   * @dataProvider resolveProvider
-   */
-  public function testResolve($path = NULL, $route_object_id = NULL, $expected_added_group = NULL) {
-    if ($path) {
-      /** @var \Symfony\Component\Routing\Route|\Prophecy\Prophecy\ObjectProphecy $route */
-      $route = $this->prophesize(Route::class);
-      $route
-        ->getPath()
-        ->willReturn($path)
-        ->shouldBeCalled();
-      $this->routeMatch
-        ->getRouteObject()
-        ->willReturn($route->reveal())
-        ->shouldBeCalled();
-    }
-
-    if ($route_object_id) {
-      $this->routeMatch->getParameter('node')
-        ->willReturn($this->testEntities[$route_object_id]);
-    }
-
-    $this->mightRetrieveSite($expected_added_group);
   }
 
   /**

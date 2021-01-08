@@ -23,8 +23,11 @@ use Drupal\og_sm_path\OgSmPath;
  * @see og_sm_pathauto_form_node_form_alter()
  */
 function _og_sm_path_form_node_site_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+
   /** @var \Drupal\node\NodeInterface $site */
-  $site = $form_state->getFormObject()->getEntity();
+  $site = $form_object->getEntity();
 
   $default = NULL;
   if (!$site->isNew()) {
@@ -84,8 +87,12 @@ function _og_sm_path_field_site_path_validate(array $element, FormStateInterface
   }
 
   // Check if the path is not already used by another Site.
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+
   /** @var \Drupal\node\NodeInterface $current_site */
-  $current_site = $form_state->getFormObject()->getEntity();
+  $current_site = $form_object->getEntity();
+
   $site_path_manager = OgSmPath::sitePathManager();
   foreach (OgSm::siteManager()->getAllSites() as $site) {
     if ($site->id() === $current_site->id()) {
@@ -131,8 +138,11 @@ function og_sm_path_site_node_form_builder($entity_type, NodeInterface $node, ar
  * @see og_sm_pathauto_form_node_form_alter()
  */
 function _og_sm_path_form_pathauto_patterns_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+
   /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */
-  $pattern = $form_state->getFormObject()->getEntity();
+  $pattern = $form_object->getEntity();
 
   if ($pattern->isNew()) {
     return;
@@ -149,14 +159,15 @@ function _og_sm_path_form_pathauto_patterns_form_alter(array &$form, FormStateIn
   if (!$default_bundle) {
     return;
   }
+
   $node_type = NodeType::load($default_bundle);
   if (!OgSm::siteTypeManager()->isSiteType($node_type)) {
     return;
   }
 
   $form['#disabled'] = TRUE;
-  $args = ['%type' => $node_type->label()];
-  drupal_set_message(
-    t('The %type node type is a Site type, these are aliased using the Site path settings. The path is set in the create/update node form.', $args)
-  );
+
+  Drupal::messenger()->addStatus(t('The %type node type is a Site type, these are aliased using the Site path settings. The path is set in the create/update node form.', [
+    '%type' => $node_type->label(),
+  ]));
 }

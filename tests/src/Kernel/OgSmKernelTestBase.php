@@ -39,6 +39,13 @@ abstract class OgSmKernelTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  public static function setUpBeforeClass() {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp();
     $this->installConfig(['field', 'og', 'og_sm']);

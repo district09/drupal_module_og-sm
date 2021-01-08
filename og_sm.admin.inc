@@ -20,8 +20,11 @@ use Drupal\og_sm\OgSm;
  * @see og_sm_form_node_type_form_alter()
  */
 function _og_sm_form_node_type_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+
   /** @var \Drupal\node\NodeTypeInterface $type */
-  $type = $form_state->getFormObject()->getEntity();
+  $type = $form_object->getEntity();
 
   $form['og_sm'] = [
     '#type' => 'details',

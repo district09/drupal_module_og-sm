@@ -43,7 +43,7 @@ class PathGroupResolverTest extends OgSmGroupResolverTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->request = $this->prophesize(Request::class);
     $this->sitePathManager = $this->prophesize(SitePathManagerInterface::class);

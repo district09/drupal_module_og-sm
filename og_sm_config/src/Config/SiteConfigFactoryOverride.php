@@ -51,7 +51,7 @@ class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Sit
   /**
    * The site node used to override configuration data.
    *
-   * @var \Drupal\node\NodeInterface
+   * @var \Drupal\node\NodeInterface|null
    */
   protected $site;
 
@@ -214,6 +214,7 @@ class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Sit
       $storage = $this->getStorage($this->site);
       return $storage->readMultiple($names);
     }
+
     return [];
   }
 

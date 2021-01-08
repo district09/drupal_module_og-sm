@@ -30,7 +30,7 @@ abstract class SiteConfigFormBase extends ConfigFormBase {
   /**
    * The current site.
    *
-   * @var \Drupal\node\NodeInterface
+   * @var \Drupal\node\NodeInterface|null
    */
   protected $currentSite;
 
@@ -70,12 +70,19 @@ abstract class SiteConfigFormBase extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Retrieves a configuration object.
+   *
+   * @param string $name
+   *   The name of the configuration object to retrieve.
+   *
+   * @return \Drupal\Core\Config\Config|\Drupal\Core\Config\ImmutableConfig|\Drupal\og_sm_config\Config\SiteConfigOverride
+   *   An configuration object.
    */
   protected function config($name) {
     if ($this->currentSite) {
       return $this->configFactoryOverride->getOverride($this->currentSite, $name);
     }
+
     return parent::config($name);
   }
 

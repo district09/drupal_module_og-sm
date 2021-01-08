@@ -84,7 +84,7 @@ class SitesFilter extends InOperator implements ContainerFactoryPluginInterface 
    */
   public function getValueOptions() {
     if (isset($this->valueOptions)) {
-      return;
+      return NULL;
     }
 
     if ($this->options['manageable_sites']) {
@@ -112,8 +112,11 @@ class SitesFilter extends InOperator implements ContainerFactoryPluginInterface 
       return;
     }
     $this->ensureMyTable();
+
+    /** @var \Drupal\views\Plugin\views\query\Sql $query */
+    $query = $this->query;
     $field = "$this->tableAlias.$this->realField";
-    $this->query->addWhere(0, $field, $this->value);
+    $query->addWhere(0, $field, $this->value);
   }
 
 }

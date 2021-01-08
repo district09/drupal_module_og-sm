@@ -25,7 +25,7 @@ interface SiteManagerInterface {
   /**
    * Get the currently active Site.
    *
-   * @return \Drupal\node\NodeInterface
+   * @return \Drupal\node\NodeInterface|null
    *   The active Site node (if any).
    */
   public function currentSite();
@@ -52,7 +52,7 @@ interface SiteManagerInterface {
    *   The optional Site node. Will use the current Site from context if no Site
    *   is provided.
    *
-   * @return \Drupal\Core\Url
+   * @return \Drupal\Core\Url|null
    *   The Site homepage url object.
    */
   public function getSiteHomePage(NodeInterface $site = NULL);
@@ -132,7 +132,7 @@ interface SiteManagerInterface {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The site content entity.
    *
-   * @return \Drupal\node\NodeInterface|false
+   * @return \Drupal\node\NodeInterface|null
    *   The site node (if any).
    */
   public function getSiteFromEntity(EntityInterface $entity);
@@ -217,7 +217,7 @@ interface SiteManagerInterface {
    * @param \Drupal\node\NodeInterface $site
    *   The Site node object.
    *
-   * @return \Drupal\og\OgMembershipInterface
+   * @return \Drupal\og\OgMembershipInterface|null
    *   Is membership entity.
    */
   public function getUserMembership(AccountInterface $account, NodeInterface $site);

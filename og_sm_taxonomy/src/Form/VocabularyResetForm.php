@@ -52,7 +52,7 @@ class VocabularyResetForm extends VocabularyResetFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager')->getStorage('taxonomy_term'),
+      $container->get('entity_type.manager')->getStorage('taxonomy_term'),
       $container->get('og_sm.site_manager'),
       $container->get('og_sm_taxonomy.site_manager')
     );
@@ -94,7 +94,7 @@ class VocabularyResetForm extends VocabularyResetFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var \Drupal\node\NodeInterface $site */
+    /** @var \Drupal\node\NodeInterface|NULL $site */
     $site = $form_state->get('site');
     if (!$site) {
       parent::submitForm($form, $form_state);
@@ -106,7 +106,7 @@ class VocabularyResetForm extends VocabularyResetFormBase {
 
     $this->siteTaxonomyManager->resetTermWeights($site, $this->entity);
 
-    drupal_set_message($this->t('Reset vocabulary %name to alphabetical order.', ['%name' => $this->entity->label()]));
+    $this->messenger()->addStatus($this->t('Reset vocabulary %name to alphabetical order.', ['%name' => $this->entity->label()]));
     $this->logger('taxonomy')->notice('Reset vocabulary %name to alphabetical order.', ['%name' => $this->entity->label()]);
     $form_state->setRedirectUrl($this->getCancelUrl($site));
   }

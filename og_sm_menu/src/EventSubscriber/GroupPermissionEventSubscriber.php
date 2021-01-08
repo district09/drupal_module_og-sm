@@ -49,12 +49,12 @@ class GroupPermissionEventSubscriber implements EventSubscriberInterface {
    *   The OG permission event.
    */
   public function provideDefaultOgPermissions(PermissionEventInterface $event) {
+    /** @var \Drupal\og_menu\OgMenuInstanceInterface[] $menus */
     $menus = $this->entityTypeManager
       ->getStorage('ogmenu_instance')
       ->loadMultiple();
 
     foreach ($menus as $menu) {
-      /** @var \Drupal\og_menu\OgMenuInstanceInterface $menu */
       $permission = new GroupPermission([
         'name' => "administer {$menu->getType()} menu items",
         'title' => $this->t('Administer %menu_name menu items'),

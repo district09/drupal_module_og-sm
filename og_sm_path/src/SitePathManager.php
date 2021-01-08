@@ -71,7 +71,7 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * Key value array where the key is the path and the value the site node.
    *
-   * @var \Drupal\node\NodeInterface[]
+   * @var array
    */
   protected $sitesByPath = [];
 
@@ -111,10 +111,12 @@ class SitePathManager implements SitePathManagerInterface {
    */
   public function getPathFromSite(NodeInterface $site) {
     if (!empty($site->site_path)) {
-      return $site->site_path;
+      /** @var string $path */
+      $path = $site->site_path;
+      return $path;
     }
 
-    return $this->configFactoryOverride
+    return (string) $this->configFactoryOverride
       ->getOverride($site, 'site_settings')
       ->get('path');
   }
@@ -124,12 +126,15 @@ class SitePathManager implements SitePathManagerInterface {
    */
   public function lookupPathAlias($path) {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
+
+    /** @var \Drupal\path_alias\PathAliasInterface[] $path_alias */
     $path_alias = $this->pathAliasStorage->loadByProperties([
       'alias' => $path,
       'langcode' => $langcode,
     ]);
 
     if (!$path_alias) {
+      /** @var \Drupal\path_alias\PathAliasInterface[] $path_alias */
       $path_alias = $this->pathAliasStorage->loadByProperties([
         'path' => $path,
         'langcode' => $langcode,

@@ -78,8 +78,10 @@ class SiteTypeManager implements SiteTypeManagerInterface {
    * {@inheritdoc}
    */
   public function getSiteTypes() {
+    /** @var \Drupal\node\NodeTypeInterface[] $types */
     $types = $this->nodeTypeStorage->loadMultiple();
     $types = array_filter($types, [$this, 'isSiteType']);
+
     return $types;
   }
 

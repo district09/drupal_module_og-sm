@@ -126,6 +126,7 @@ class SiteManager implements SiteManagerInterface {
    * {@inheritdoc}
    */
   public function currentSite() {
+    /** @var \Drupal\node\NodeInterface|NULL $entity */
     $entity = $this->ogContext->getGroup();
     if (!$entity || !$entity instanceof NodeInterface || !$this->isSite($entity)) {
       return NULL;
@@ -138,6 +139,7 @@ class SiteManager implements SiteManagerInterface {
    * {@inheritdoc}
    */
   public function load($id) {
+    /** @var \Drupal\node\NodeInterface|NULL $site */
     $site = $this->getNodeStorage()->load($id);
     if (!$site || !$this->isSite($site)) {
       return FALSE;
@@ -156,7 +158,7 @@ class SiteManager implements SiteManagerInterface {
 
     // Only if there is a Site.
     if (!$site || !$this->isSite($site)) {
-      return FALSE;
+      return NULL;
     }
 
     if (isset($this->homepageUrls[$site->id()])) {
@@ -220,8 +222,13 @@ class SiteManager implements SiteManagerInterface {
       return [];
     }
 
-    $query = $this->getNodeStorage()->getQuery()->condition('type', array_keys($siteTypes), 'IN');
-    return $query->execute();
+    /** @var int[] $ids */
+    $ids = $this->getNodeStorage()
+      ->getQuery()
+      ->condition('type', array_keys($siteTypes), 'IN')
+      ->execute();
+
+    return $ids;
   }
 
   /**
@@ -232,7 +239,11 @@ class SiteManager implements SiteManagerInterface {
     if (!$ids) {
       return [];
     }
-    return $this->getNodeStorage()->loadMultiple($ids);
+
+    /** @var \Drupal\node\NodeInterface[] $nodes */
+    $nodes = $this->getNodeStorage()->loadMultiple($ids);
+
+    return $nodes;
   }
 
   /**
@@ -273,8 +284,9 @@ class SiteManager implements SiteManagerInterface {
     $sites = $this->getSitesFromEntity($entity);
 
     if (empty($sites)) {
-      return FALSE;
+      return NULL;
     }
+
     return reset($sites);
   }
 

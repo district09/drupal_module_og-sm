@@ -107,9 +107,7 @@ class SiteMenuLink extends MenuLinkDefault {
    * {@inheritdoc}
    */
   public function getMenuName() {
-    if (!isset($this->pluginDefinition['og_menu_name'])) {
-      return parent::getMenuName();
-    }
+    return $this->pluginDefinition['og_menu_name'] ?? parent::getMenuName();
   }
 
 }

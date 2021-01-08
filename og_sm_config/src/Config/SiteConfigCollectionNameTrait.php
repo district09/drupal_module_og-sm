@@ -38,10 +38,11 @@ trait SiteConfigCollectionNameTrait {
    * @see self::createConfigCollectionName()
    */
   protected function getSiteIdFromCollectionName($collection) {
-    preg_match('/^og_sm\.(.*)\.(\d*)$/', $collection, $matches);
-    if (!isset($matches[1], $matches[2])) {
+    $matches = [];
+    if (!preg_match('/^og_sm\.(.*)\.(\d*)$/', $collection, $matches)) {
       throw new \InvalidArgumentException("'$collection' is not a valid site override collection");
     }
+
     return $matches[2];
   }
 

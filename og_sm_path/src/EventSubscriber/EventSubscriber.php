@@ -15,7 +15,9 @@ class EventSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    $events = [];
     $events[AjaxPathEvents::COLLECT][] = 'onAjaxPathCollection';
+
     return $events;
   }
 

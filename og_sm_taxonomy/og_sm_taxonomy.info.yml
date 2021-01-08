@@ -4,5 +4,5 @@ package: 'Organic Groups Site Manager'
 core_version_requirement: ^8.8 || ^9
 type: module
 dependencies:
-  - og_sm:og_sm
+  - og_sm_context:og_sm_context
   - drupal:taxonomy

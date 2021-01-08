@@ -5,7 +5,7 @@ namespace Drupal\Tests\og_sm_path\Kernel;
 use Drupal\og_sm\OgSm;
 use Drupal\og_sm_path\OgSmPath;
 use Drupal\Tests\og_sm\Kernel\OgSmKernelTestBase;
-use Drupal\token\Tests\TokenTestTrait;
+use Drupal\Tests\token\Functional\TokenTestTrait;
 
 /**
  * Tests Site Path tokens.

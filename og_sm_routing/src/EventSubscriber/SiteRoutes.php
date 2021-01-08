@@ -20,7 +20,7 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * The event dispatcher service.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcher
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
   protected $eventDispatcher;
 

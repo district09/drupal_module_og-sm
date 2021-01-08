@@ -7,6 +7,7 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -81,6 +82,10 @@ function og_sm_taxonomy_taxonomy_term_create_access(AccountInterface $account, $
  * Filters the term query by the current Site (if any).
  */
 function og_sm_taxonomy_query_term_access_alter(AlterableInterface $query) {
+  if (!$query instanceof SelectInterface) {
+    return;
+  }
+
   // Only alter when in a Site context.
   $site = OgSm::siteManager()->currentSite();
   if (!$site) {

@@ -26,7 +26,6 @@ class SiteEventSubscriber implements EventSubscriberInterface {
    *   The site manager.
    */
   public function __construct(SiteManagerInterface $site_manager) {
-
     $this->siteManager = $site_manager;
   }
 
@@ -34,7 +33,9 @@ class SiteEventSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    $events = [];
     $events[SiteEvents::DELETE][] = 'onSiteDelete';
+
     return $events;
   }
 

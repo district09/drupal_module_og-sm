@@ -1,116 +1,60 @@
-# @file
-# .travis.yml - Drupal for Travis CI Integration
-#
-# Template provided by https://github.com/LionsAd/drupal_ti.
-#
-# Based for simpletest upon:
-#   https://github.com/sonnym/travis-ci-drupal-module-example
-
+dist: bionic
 language: php
-
 sudo: false
 
 php:
-  - 5.6
-  - 7
+  - 7.3
+  - 7.4
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 env:
-  global:
-    # add composer's global bin directory to the path
-    # see: https://github.com/drush-ops/drush#install---composer
-    - PATH="$PATH:$HOME/.composer/vendor/bin"
+  - DRUPAL=8.9 PHPUNIT=7.5
+  - DRUPAL=9.0 PHPUNIT=8.5
+  - DRUPAL=9.1 PHPUNIT=8.5
 
-    # Configuration variables.
-    - DRUPAL_TI_MODULE_NAME="og_sm"
-    - DRUPAL_TI_SIMPLETEST_GROUP="og_sm"
-
-    # Define runners and environment vars to include before and after the
-    # main runners / environment vars.
-    #- DRUPAL_TI_SCRIPT_DIR_BEFORE="./drupal_ti/before"
-    #- DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after"
-
-    # The environment to use, supported are: drupal-7, drupal-8
-    - DRUPAL_TI_ENVIRONMENT="drupal-8"
-
-    # The drush version to use, by default: drush/drush:8.0.*
-    # - DRUPAL_TI_DRUSH_VERSION="drush/drush:~9.0"
-
-    # The installation profile to use:
-    #- DRUPAL_TI_INSTALL_PROFILE="testing"
-
-    # Drupal specific variables.
-    - DRUPAL_TI_DB="drupal_travis_db"
-    - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
-    # Note: Do not add a trailing slash here.
-    - DRUPAL_TI_WEBSERVER_URL="http://127.0.0.1"
-    - DRUPAL_TI_WEBSERVER_PORT="8080"
-
-    # Simpletest specific commandline arguments, the DRUPAL_TI_SIMPLETEST_GROUP is appended at the end.
-    - DRUPAL_TI_SIMPLETEST_ARGS="--verbose --color --concurrency 4 --url $DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT"
-
-    # === Behat specific variables.
-    # This is relative to $TRAVIS_BUILD_DIR
-    - DRUPAL_TI_BEHAT_DIR="./tests/behat"
-    # These arguments are passed to the bin/behat command.
-    - DRUPAL_TI_BEHAT_ARGS=""
-    # Specify the filename of the behat.yml with the $DRUPAL_TI_DRUPAL_DIR variables.
-    - DRUPAL_TI_BEHAT_YML="behat.yml.dist"
-    # This is used to setup Xvfb.
-    - DRUPAL_TI_BEHAT_SCREENSIZE_COLOR="1280x1024x16"
-    # The version of selenium that should be used.
-    - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.48.2"
-    # Set DRUPAL_TI_BEHAT_DRIVER to "selenium" to use "firefox" or "chrome" here.
-    - DRUPAL_TI_BEHAT_DRIVER="phantomjs"
-    - DRUPAL_TI_BEHAT_BROWSER="firefox"
-
-    # PHPUnit specific commandline arguments.
-    - DRUPAL_TI_PHPUNIT_ARGS=""
-    # Specifying the phpunit-core src/ directory is useful when e.g. a vendor/
-    # directory is present in the module directory, which phpunit would then
-    # try to find tests in. This option is relative to $TRAVIS_BUILD_DIR.
-    #- DRUPAL_TI_PHPUNIT_CORE_SRC_DIRECTORY="./tests/src"
-
-    # Code coverage via coveralls.io
-    - DRUPAL_TI_COVERAGE="satooshi/php-coveralls:0.6.*"
-    # This needs to match your .coveralls.yml file.
-    - DRUPAL_TI_COVERAGE_FILE="build/logs/clover.xml"
-
-    # Debug options
-    #- DRUPAL_TI_DEBUG="-x -v"
-    # Set to "all" to output all files, set to e.g. "xvfb selenium" or "selenium",
-    # etc. to only output those channels.
-    #- DRUPAL_TI_DEBUG_FILE_OUTPUT="selenium xvfb webserver"
-
-  matrix:
-    # [[[ SELECT ANY OR MORE OPTIONS ]]]
-    - DRUPAL_TI_RUNNERS="phpunit"
-    - DRUPAL_TI_RUNNERS="simpletest"
-    #- DRUPAL_TI_RUNNERS="behat"
-    #- DRUPAL_TI_RUNNERS="phpunit simpletest behat"
-    # Use phpunit-core to test modules with phpunit with Drupal 8 core.
-    #- DRUPAL_TI_RUNNERS="phpunit-core"
-
-mysql:
-  database: drupal_travis_db
-  username: root
-  encoding: utf8
+jobs:
+  fast_finish: true
+  allow_failures:
+    - php: 7.4
 
 before_install:
-  - composer self-update
-  - composer global require "lionsad/drupal_ti:1.*"
-  - drupal-ti before_install
+  # Configure the authentication mechanisms.
+  - composer config -ga github-oauth.github.com $GITHUB_TOKEN
+  - composer config -ga http-basic.digipolis.repo.repman.io token $REPMAN_TOKEN
+
+  # Require Drupal core.
+  - composer require -n --no-update --sort-packages -w --dev drupal/core:~$DRUPAL.0 phpunit/phpunit:^$PHPUNIT
+
+  # Get and run the Code Climate test reporter.
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 install:
-  - drupal-ti install
-
-before_script:
-  - drupal-ti before_script
+  - export COMPOSER_MEMORY_LIMIT=-1
+  - composer install -n
 
 script:
-  - drupal-ti script
+  - vendor/bin/grumphp run -n --tasks=composer,composer_normalize,git_branch_name,phpcpd,phpcs,phpmd,phpstan,yamllint
+
 
 after_script:
-  - drupal-ti after_script
+  # Run the Code Climate test reporter.
+  - ./cc-test-reporter after-build --coverage-input-type clover --exit-code $TRAVIS_TEST_RESULT
 
-notifications:
-  email: false
+  # Get and run the SonarQube scanner.
+  - SONAR_PROJECT_NAME="Drupal $(composer config name | cut -d / -f 2)"
+  - SONAR_PROJECT_KEY=web:$(echo "$TRAVIS_REPO_SLUG" | cut -d / -f 2)
+  - curl -L https://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/4.3.0.2102/sonar-scanner-cli-4.3.0.2102.jar > sonar-scanner.jar
+  - "[ -d tests ] || mkdir tests"
+  - >
+    java -jar sonar-scanner.jar
+    -Dsonar.host.url=https://sonarqube.stad.gent
+    -Dsonar.login=$SONAR_LOGIN
+    -Dsonar.projectKey=$SONAR_PROJECT_KEY
+    -Dsonar.projectName="$SONAR_PROJECT_NAME"
+    -Dsonar.tests=tests
+    -Dsonar.php.coverage.reportPaths=build/logs/clover.xml

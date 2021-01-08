@@ -84,6 +84,8 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
    */
   public function processInbound($path, Request $request) {
     // Translate an admin path without alias back to its original path.
+    $parts = [];
+
     if (preg_match('#^([\w/_-]+)/(admin.*)#', $path, $parts)) {
       $site = $this->sitePathManager->getSiteFromPath($parts[1]);
       if ($site) {

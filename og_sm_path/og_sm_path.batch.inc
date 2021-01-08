@@ -107,17 +107,28 @@ function og_sm_path_site_alias_update_menu_process(array &$context) {
  * @see og_sm_path_site_alias_update_content_process
  */
 function _og_sm_path_site_alias_update_content_init(NodeInterface $site, array &$context) {
-  // Initiate the batch.
-  if (empty($context['sandbox']) && FieldStorageConfig::loadByName('node', OgGroupAudienceHelperInterface::DEFAULT_FIELD)) {
-    // Count relevant nodes.
-    $query = \Drupal::entityQuery('node');
-    $total = $query
-      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $site->id())
-      ->count()->execute();
-    $context['sandbox']['progress'] = 0;
-    $context['sandbox']['last_id'] = 0;
-    $context['sandbox']['total'] = $total;
+  if (!empty($context['sandbox'])) {
+    return;
   }
+
+  /** @var \Drupal\field\Entity\FieldStorageConfig|NULL $config */
+  $config = FieldStorageConfig::loadByName(
+    'node',
+    OgGroupAudienceHelperInterface::DEFAULT_FIELD
+  );
+
+  if (!$config) {
+    return;
+  }
+
+  // Count relevant nodes.
+  $query = \Drupal::entityQuery('node');
+  $total = $query
+    ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $site->id())
+    ->count()->execute();
+  $context['sandbox']['progress'] = 0;
+  $context['sandbox']['last_id'] = 0;
+  $context['sandbox']['total'] = $total;
 }
 
 /**

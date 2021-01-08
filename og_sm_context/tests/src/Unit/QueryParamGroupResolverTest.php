@@ -34,7 +34,7 @@ class QueryParamGroupResolverTest extends OgSmGroupResolverTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->request = $this->prophesize(Request::class);
   }

@@ -34,8 +34,10 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    $events = [];
     $events[SiteTypeEvents::ADD][] = 'onSiteTypeAdd';
     $events[SiteTypeEvents::REMOVE][] = 'onSiteTypeRemove';
+
     return $events;
   }
 
@@ -109,6 +111,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
         return $pattern;
       }
     }
+
     return FALSE;
   }
 

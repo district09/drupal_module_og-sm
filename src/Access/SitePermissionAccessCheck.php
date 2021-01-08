@@ -106,24 +106,24 @@ class SitePermissionAccessCheck implements AccessInterface {
    * @param \Drupal\node\NodeInterface $node
    *   THe site node.
    *
-   * @return string
-   *   A \Drupal\Core\Access\AccessInterface constant value.
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public function access(Route $route, AccountInterface $account, NodeInterface $node) {
-    if ($this->siteManager->isSite($node)) {
-      $permission = $route->getRequirement('_site_permission');
-
-      // Allow to conjunct the permissions with OR ('+') or AND (',').
-      $split = explode(',', $permission);
-      if (count($split) > 1) {
-        return $this->allowedIfHasPermissions($node, $account, $split, 'AND');
-      }
-      else {
-        $split = explode('+', $permission);
-        return $this->allowedIfHasPermissions($node, $account, $split, 'OR');
-      }
+    if (!$this->siteManager->isSite($node)) {
+      return AccessResult::neutral();
     }
-    return AccessResult::neutral();
+
+    $permission = $route->getRequirement('_site_permission');
+
+    // Allow to conjunct the permissions with OR ('+') or AND (',').
+    $split = explode(',', $permission);
+    if (count($split) > 1) {
+      return $this->allowedIfHasPermissions($node, $account, $split, 'AND');
+    }
+
+    $split = explode('+', $permission);
+    return $this->allowedIfHasPermissions($node, $account, $split, 'OR');
   }
 
 }
