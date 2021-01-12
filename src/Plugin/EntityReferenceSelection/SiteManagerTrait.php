@@ -22,7 +22,7 @@ trait SiteManagerTrait {
   protected $siteManager;
 
   /**
-   * Constructs a NodeSelection object.
+   * Class constructor.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
