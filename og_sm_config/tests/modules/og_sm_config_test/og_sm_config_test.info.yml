@@ -1,8 +1,8 @@
 name: 'Site Configuration test module'
 description: 'Site specific configuration implementation test.'
 package: 'Organic Groups Site Manager'
-core: 8.x
+core_version_requirement: ^8.8 || ^9
 type: module
 dependencies:
-  - og_sm
-  - og_sm_config
+  - og_sm:og_sm
+  - og_sm:og_sm_config

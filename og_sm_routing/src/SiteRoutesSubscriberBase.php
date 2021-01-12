@@ -27,7 +27,9 @@ abstract class SiteRoutesSubscriberBase implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    $events = [];
     $events[SiteRoutingEvents::COLLECT] = 'onCollectRoutes';
+
     return $events;
   }
 

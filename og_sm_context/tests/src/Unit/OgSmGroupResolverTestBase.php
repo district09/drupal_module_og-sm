@@ -22,7 +22,7 @@ abstract class OgSmGroupResolverTestBase extends OgGroupResolverTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->siteManager = $this->prophesize(SiteManager::class);

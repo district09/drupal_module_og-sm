@@ -85,14 +85,14 @@ class SitePathProcessorTest extends UnitTestCase {
     $this->eventDispatcher = new EventDispatcher();
     $this->eventDispatcher->addSubscriber(new EventSubscriber());
 
-    /* @var \Drupal\Core\Utility\UnroutedUrlAssemblerInterface|\Prophecy\Prophecy\ObjectProphecy $unrouted_url_assembler */
+    /** @var \Drupal\Core\Utility\UnroutedUrlAssemblerInterface|\Prophecy\Prophecy\ObjectProphecy $unrouted_url_assembler */
     // We need to mock the unrouted_url_assembler service to allow the
     // Url::fromUserInput method to work.
     $unrouted_url_assembler = $this->prophesize(UnroutedUrlAssemblerInterface::class);
 
     foreach ($this->getNodePaths() as $path => $node_id) {
       if ($node_id) {
-        /* @var \Drupal\node\NodeInterface $node */
+        /** @var \Drupal\node\NodeInterface $node */
         $node = $this->prophesize(NodeInterface::class);
         $node->id()->willReturn($node_id);
         $this->testNodes[$node_id] = $node;

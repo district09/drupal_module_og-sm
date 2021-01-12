@@ -7,6 +7,7 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -19,7 +20,7 @@ use Drupal\og_sm_taxonomy\FormAlter\TermOverviewFormAlter;
  * Implements hook_entity_type_alter().
  */
 function og_sm_taxonomy_entity_type_alter(array &$entity_types) {
-  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
   $entity_types['taxonomy_vocabulary']->setFormClass('reset', VocabularyResetForm::class);
   $entity_types['taxonomy_term']->setFormClass('delete', TermDeleteForm::class);
 }
@@ -38,7 +39,7 @@ function og_sm_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $ope
     return AccessResult::neutral();
   }
 
-  /* @var \Drupal\og\OgAccessInterface $og_access */
+  /** @var \Drupal\og\OgAccessInterface $og_access */
   $og_access = \Drupal::service('og.access');
 
   $term_permissions = [
@@ -66,7 +67,7 @@ function og_sm_taxonomy_taxonomy_term_create_access(AccountInterface $account, $
     return AccessResult::neutral();
   }
 
-  /* @var \Drupal\og\OgAccessInterface $og_access */
+  /** @var \Drupal\og\OgAccessInterface $og_access */
   $og_access = \Drupal::service('og.access');
   if ($og_access->userAccess($site, "create $entity_bundle taxonomy_term", $account)->isAllowed()) {
     return AccessResult::allowed();
@@ -81,6 +82,10 @@ function og_sm_taxonomy_taxonomy_term_create_access(AccountInterface $account, $
  * Filters the term query by the current Site (if any).
  */
 function og_sm_taxonomy_query_term_access_alter(AlterableInterface $query) {
+  if (!$query instanceof SelectInterface) {
+    return;
+  }
+
   // Only alter when in a Site context.
   $site = OgSm::siteManager()->currentSite();
   if (!$site) {
@@ -104,7 +109,7 @@ function og_sm_taxonomy_query_term_access_alter(AlterableInterface $query) {
   }
   $table_alias = reset($table_aliases);
 
-  /* @var \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager */
+  /** @var \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager */
   $site_taxonomy_manager = \Drupal::service('og_sm_taxonomy.site_manager');
 
   // Get the vocabularies from the query conditions.

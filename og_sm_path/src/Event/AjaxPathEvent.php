@@ -23,9 +23,6 @@ class AjaxPathEvent extends Event {
    *
    * @param string $ajax_path
    *   An ajax path.
-   *
-   * @return string
-   *   The original site path.
    */
   public function addPath($ajax_path) {
     $this->ajaxPaths[] = $ajax_path;

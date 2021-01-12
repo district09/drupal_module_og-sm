@@ -4,7 +4,6 @@ namespace Drupal\og_sm;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 /**
@@ -26,7 +25,7 @@ interface SiteManagerInterface {
   /**
    * Get the currently active Site.
    *
-   * @return \Drupal\node\NodeInterface
+   * @return \Drupal\node\NodeInterface|null
    *   The active Site node (if any).
    */
   public function currentSite();
@@ -53,7 +52,7 @@ interface SiteManagerInterface {
    *   The optional Site node. Will use the current Site from context if no Site
    *   is provided.
    *
-   * @return \Drupal\Core\Url
+   * @return \Drupal\Core\Url|null
    *   The Site homepage url object.
    */
   public function getSiteHomePage(NodeInterface $site = NULL);
@@ -115,19 +114,6 @@ interface SiteManagerInterface {
   public function filterSitesFromGroups(array $groups);
 
   /**
-   * Get all the Sites a node belongs to.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The site content.
-   *
-   * @return \Drupal\node\NodeInterface[]
-   *   All Site nodes keyed by their nid.
-   *
-   * @deprecated Use ::getSitesFromEntity() instead.
-   */
-  public function getSitesFromContent(NodeInterface $node);
-
-  /**
    * Get all the Sites a content entity belongs to.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -139,22 +125,6 @@ interface SiteManagerInterface {
   public function getSitesFromEntity(EntityInterface $entity);
 
   /**
-   * Get the Site object the Site content node belongs to.
-   *
-   * If a content node belongs to multiple Sites, only the first will be
-   * returned.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The site content.
-   *
-   * @return \Drupal\node\NodeInterface|false
-   *   The site node (if any).
-   *
-   * @deprecated Use ::getSiteFromEntity() instead.
-   */
-  public function getSiteFromContent(NodeInterface $node);
-
-  /**
    * Get the Site object the Site content entity belongs to.
    *
    * If the entity belongs to multiple Sites, only the first will be returned.
@@ -162,7 +132,7 @@ interface SiteManagerInterface {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The site content entity.
    *
-   * @return \Drupal\node\NodeInterface|false
+   * @return \Drupal\node\NodeInterface|null
    *   The site node (if any).
    */
   public function getSiteFromEntity(EntityInterface $entity);
@@ -247,7 +217,7 @@ interface SiteManagerInterface {
    * @param \Drupal\node\NodeInterface $site
    *   The Site node object.
    *
-   * @return \Drupal\og\OgMembershipInterface
+   * @return \Drupal\og\OgMembershipInterface|null
    *   Is membership entity.
    */
   public function getUserMembership(AccountInterface $account, NodeInterface $site);

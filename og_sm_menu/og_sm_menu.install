@@ -12,7 +12,7 @@ use Drupal\og_sm\OgSm;
  */
 function og_sm_menu_install() {
   $site_manager = OgSm::siteManager();
-  /* @var \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager */
+  /** @var \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager */
   $site_menu_manager = \Drupal::service('og_sm.site_menu_manager');
 
   foreach ($site_manager->getAllSites() as $site) {
@@ -24,7 +24,7 @@ function og_sm_menu_install() {
  * Implements hook_install().
  */
 function og_sm_menu_uninstall() {
-  /* @var \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager */
+  /** @var \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager */
   $site_menu_manager = \Drupal::service('og_sm.site_menu_manager');
 
   foreach ($site_menu_manager->getAllMenus() as $og_menu_instance) {

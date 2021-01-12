@@ -71,15 +71,15 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * Key value array where the key is the path and the value the site node.
    *
-   * @var \Drupal\node\NodeInterface[]
+   * @var array
    */
   protected $sitesByPath = [];
 
   /**
    * Constructs a SitePathManager object.
    *
-   * @param \Drupal\path_alias\AliasManagerInterface $alias_manager
-   *   The path alias manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
@@ -92,8 +92,6 @@ class SitePathManager implements SitePathManagerInterface {
    *   A database connection for reading and writing path aliases.
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator
    *   The cache tag invalidator service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
@@ -113,10 +111,12 @@ class SitePathManager implements SitePathManagerInterface {
    */
   public function getPathFromSite(NodeInterface $site) {
     if (!empty($site->site_path)) {
-      return $site->site_path;
+      /** @var string $path */
+      $path = $site->site_path;
+      return $path;
     }
 
-    return $this->configFactoryOverride
+    return (string) $this->configFactoryOverride
       ->getOverride($site, 'site_settings')
       ->get('path');
   }
@@ -126,12 +126,15 @@ class SitePathManager implements SitePathManagerInterface {
    */
   public function lookupPathAlias($path) {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
+
+    /** @var \Drupal\path_alias\PathAliasInterface[] $path_alias */
     $path_alias = $this->pathAliasStorage->loadByProperties([
       'alias' => $path,
       'langcode' => $langcode,
     ]);
 
     if (!$path_alias) {
+      /** @var \Drupal\path_alias\PathAliasInterface[] $path_alias */
       $path_alias = $this->pathAliasStorage->loadByProperties([
         'path' => $path,
         'langcode' => $langcode,
@@ -187,7 +190,7 @@ class SitePathManager implements SitePathManagerInterface {
     foreach ($path_aliasses as $path_alias) {
       // Try to find the route parameters from the path source so we can use
       // them to construct cache tags which should be invalidated.
-      // @todo: Remove once https://www.drupal.org/node/2480077 is fixed.
+      // @todo Remove once https://www.drupal.org/node/2480077 is fixed.
       $url = Url::fromUserInput($path_alias->getPath());
 
       if ($url->isRouted()) {

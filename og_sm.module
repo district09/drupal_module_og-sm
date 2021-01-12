@@ -19,7 +19,6 @@ use Drupal\og_sm\OgSm;
 use Drupal\og_sm\Event\SiteEvents;
 use Drupal\og_sm\Event\SiteTypeEvent;
 use Drupal\og_sm\Event\SiteTypeEvents;
-use Zend\Diactoros\Exception\DeprecatedMethodException;
 
 /**
  * Implements hook_hook_info().
@@ -42,21 +41,6 @@ function og_sm_hook_info() {
 function og_sm_form_node_type_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   $form_state->loadInclude('og_sm', 'inc', 'og_sm.admin');
   _og_sm_form_node_type_form_alter($form, $form_state);
-}
-
-/**
- * Set the breadcrumb for the given Site.
- *
- * @param \Drupal\node\NodeInterface $site
- *   The site object to setthe breadcrumb for.
- * @param array $path
- *   Array of links to append to the breadcumb.
- *
- * @todo: Check if this is still needed.
- * @deprecated in Drupal 8.x and will be removed before stable release.
- */
-function og_sm_set_breadcrumb(NodeInterface $site, array $path = []) {
-  throw new DeprecatedMethodException('og_sm_set_breadcrumb() still needs to be ported.');
 }
 
 /**
@@ -219,7 +203,7 @@ function og_sm_site_user_access($operation, AccountInterface $account = NULL) {
     return FALSE;
   }
 
-  /* @var \Drupal\og\OgAccess $og_access */
+  /** @var \Drupal\og\OgAccess $og_access */
   $og_access = \Drupal::service('og.access');
   return $og_access->userAccess($site, $operation, $account)->isAllowed();
 }

@@ -7,8 +7,34 @@
         "Digipolis",
         "Organic Groups Site Manager"
     ],
-    "license": "GPL-2.0+",
     "homepage": "https://www.drupal.org/project/og_sm",
+    "license": "GPL-2.0+",
+    "require": {
+        "drupal/og": "^1.0"
+    },
+    "require-dev": {
+        "digipolisgent/qa-drupal": "~1.3.8",
+        "drupal/admin_toolbar": "2.x-dev",
+        "drupal/core": "^8.9",
+        "drupal/og_menu": "1.x-dev",
+        "drupal/pathauto": "1.x-dev",
+        "drupal/token": "1.x-dev",
+        "phpunit/phpunit": "^7.5"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "grumphp": {
+            "config-default-path": "vendor/digipolisgent/qa-drupal/configs/grumphp-extension.yml"
+        }
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    },
     "minimum-stability": "dev",
     "support": {
         "issues": "https://github.com/digipolisgent/drupal_module_og-sm/issues",

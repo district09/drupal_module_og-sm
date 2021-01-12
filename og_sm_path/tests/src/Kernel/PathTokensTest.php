@@ -5,7 +5,7 @@ namespace Drupal\Tests\og_sm_path\Kernel;
 use Drupal\og_sm\OgSm;
 use Drupal\og_sm_path\OgSmPath;
 use Drupal\Tests\og_sm\Kernel\OgSmKernelTestBase;
-use Drupal\token\Tests\TokenTestTrait;
+use Drupal\Tests\token\Functional\TokenTestTrait;
 
 /**
  * Tests Site Path tokens.
@@ -55,7 +55,7 @@ class PathTokensTest extends OgSmKernelTestBase {
   public function setUp() {
     parent::setUp();
 
-    // Create the Site node with his path.
+    // Create the Site node.
     $type = $this->createGroupNodeType(OgSmKernelTestBase::TYPE_IS_GROUP);
     OgSm::siteTypeManager()->setIsSiteType($type, TRUE);
     $type->save();

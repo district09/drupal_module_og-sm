@@ -45,6 +45,8 @@ namespace Drupal\og_sm\ProxyClass\ParamConverter {
          *   The container.
          * @param string $drupal_proxy_original_service_id
          *   The service ID of the original service.
+         *
+         * @SuppressWarnings(PHPMD.LongVariable)
          */
         public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container, $drupal_proxy_original_service_id)
         {

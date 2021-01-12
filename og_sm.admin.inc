@@ -20,8 +20,11 @@ use Drupal\og_sm\OgSm;
  * @see og_sm_form_node_type_form_alter()
  */
 function _og_sm_form_node_type_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+
   /** @var \Drupal\node\NodeTypeInterface $type */
-  $type = $form_state->getFormObject()->getEntity();
+  $type = $form_object->getEntity();
 
   $form['og_sm'] = [
     '#type' => 'details',
@@ -81,7 +84,7 @@ function og_sm_node_type_form_field_validate(array $element, FormStateInterface 
  * @param array $form
  *   The complete form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.*
+ *   The current state of the form.
  */
 function og_sm_node_type_form_builder($entity_type, NodeTypeInterface $type, array &$form, FormStateInterface $form_state) {
   OgSm::setSiteType($type, $form_state->getValue('og_sm_site_type'));

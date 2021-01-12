@@ -3,12 +3,11 @@
 namespace Drupal\og_sm_path;
 
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\og_sm\OgSm;
 use Drupal\og_sm\SiteManager;
 use Drupal\user\ToolbarLinkBuilder;
 
 /**
- * Class UserToolbarLinkBuilder.
+ * Link builder for the toolbar.
  */
 class UserToolbarLinkBuilder extends ToolbarLinkBuilder {
 

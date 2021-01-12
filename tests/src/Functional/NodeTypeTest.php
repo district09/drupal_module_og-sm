@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\og_sm\Functional;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\NodeType;
 use Drupal\og_sm\OgSm;
 
@@ -33,7 +34,7 @@ class NodeTypeTest extends OgSmWebTestBase {
     $url_is_group = 'admin/structure/types/manage/' . $type_is_group->id();
 
     // Form elements.
-    $submit = t('Save content type');
+    $submit = new TranslatableMarkup('Save content type');
 
     // Default no nodes as site.
     $site_type_manager = OgSm::siteTypeManager();
@@ -46,12 +47,12 @@ class NodeTypeTest extends OgSmWebTestBase {
     // Post the form with Site settings enabled for a non Group, this should
     // result in an error on screen.
     $this->drupalPostForm($url_not_group, ['og_sm_site_type' => TRUE], $submit);
-    $this->assertSession()->pageTextContains(t('A content type can only be a Site if it also a Group type.'));
+    $this->assertSession()->pageTextContains(new TranslatableMarkup('A content type can only be a Site if it also a Group type.'));
     $this->assertEquals([], $site_type_manager->getSiteTypes());
 
     // Post it for a Group node should be successful.
     $this->drupalPostForm($url_is_group, ['og_sm_site_type' => TRUE], $submit);
-    $this->assertSession()->responseContains(t('The content type %type has been updated.', ['%type' => $type_is_group->label()]));
+    $this->assertSession()->responseContains(new TranslatableMarkup('The content type %type has been updated.', ['%type' => $type_is_group->label()]));
     $type_is_group = NodeType::load($type_is_group->id());
     $this->assertEquals([$type_is_group->id() => $type_is_group], $site_type_manager->getSiteTypes());
 
@@ -61,7 +62,7 @@ class NodeTypeTest extends OgSmWebTestBase {
 
     // Remove a node type from the Site types.
     $this->drupalPostForm($url_is_group, ['og_sm_site_type' => FALSE], $submit);
-    $this->assertSession()->responseContains(t('The content type %type has been updated.', ['%type' => $type_is_group->label()]));
+    $this->assertSession()->responseContains(new TranslatableMarkup('The content type %type has been updated.', ['%type' => $type_is_group->label()]));
     $this->assertEquals([], $site_type_manager->getSiteTypes());
 
     // Check if the checkbox is no longer active.
@@ -81,7 +82,7 @@ class NodeTypeTest extends OgSmWebTestBase {
     $this->assertEquals([$type_is_group->id() => $type_is_group], $site_type_manager->getSiteTypes());
 
     $url_delete = 'admin/structure/types/manage/' . $type_is_group->id() . '/delete';
-    $this->drupalPostForm($url_delete, [], t('Delete'));
+    $this->drupalPostForm($url_delete, [], new TranslatableMarkup('Delete'));
     $this->assertEquals([], $site_type_manager->getSiteTypes());
   }
 

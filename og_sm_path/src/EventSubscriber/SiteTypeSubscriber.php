@@ -34,8 +34,10 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    $events = [];
     $events[SiteTypeEvents::ADD][] = 'onSiteTypeAdd';
     $events[SiteTypeEvents::REMOVE][] = 'onSiteTypeRemove';
+
     return $events;
   }
 
@@ -49,7 +51,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
     $node_type = $event->getNodeType();
     $pattern = $this->findPrimaryPattern($event->getNodeType());
     if (!$pattern) {
-      /* @var \Drupal\pathauto\PathautoPatternInterface $pattern */
+      /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */
       $pattern = $this->pathautoPatternStorage->create([
         'id' => 'node_' . $node_type->id(),
         'label' => 'Node: ' . $node_type->label(),
@@ -97,9 +99,9 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
     $patterns = $this->pathautoPatternStorage->loadByProperties(['type' => 'canonical_entities:node']);
 
     foreach ($patterns as $pattern) {
-      /* @var \Drupal\pathauto\PathautoPatternInterface $pattern */
+      /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */
       $default_bundles = [];
-      foreach ($pattern->getSelectionConditions() as $condition_id => $condition) {
+      foreach ($pattern->getSelectionConditions() as $condition) {
         if (in_array($condition->getPluginId(), ['entity_bundle:node', 'node_type'], TRUE)) {
           $default_bundles = $condition->getConfiguration()['bundles'];
         }
@@ -109,6 +111,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
         return $pattern;
       }
     }
+
     return FALSE;
   }
 

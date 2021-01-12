@@ -2,7 +2,6 @@
 
 namespace Drupal\og_sm\Plugin\views\filter;
 
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\filter\BooleanOperator;
@@ -16,7 +15,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @ViewsFilter("og_sm_manageable_sites_by_current_user")
  */
-class ManageableSitesByCurrentUser extends BooleanOperator implements ContainerFactoryPluginInterface {
+class ManageableSitesByCurrentUser extends BooleanOperator {
+
+  /**
+   * The value.
+   *
+   * @var \Drupal\Component\Render\MarkupInterface
+   */
+  public $value_value; // phpcs:ignore
 
   /**
    * The site manager.
@@ -67,15 +73,18 @@ class ManageableSitesByCurrentUser extends BooleanOperator implements ContainerF
    */
   public function query() {
     $this->ensureMyTable();
+
+    /** @var \Drupal\views\Plugin\views\query\Sql $query */
+    $query = $this->query;
     $field = "$this->tableAlias.$this->realField";
 
     $sites = $this->siteManager->getUserManageableSites();
     $siteIds = array_keys($sites);
     if (empty($this->value)) {
-      $this->query->addWhere(0, $field, $siteIds, 'NOT IN');
+      $query->addWhere(0, $field, $siteIds, 'NOT IN');
     }
     else {
-      $this->query->addWhere(0, $field, $siteIds, 'IN');
+      $query->addWhere(0, $field, $siteIds, 'IN');
     }
   }
 

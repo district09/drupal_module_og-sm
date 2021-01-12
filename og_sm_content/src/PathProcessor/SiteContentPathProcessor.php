@@ -46,6 +46,7 @@ class SiteContentPathProcessor implements InboundPathProcessorInterface, Outboun
    */
   public function processInbound($path, Request $request) {
     // Translate an admin path without alias back to its original path.
+    $parts = [];
     if (preg_match('#^([\w/_-]+)(/content.*)#', $path, $parts)) {
       $site = $this->sitePathManager->getSiteFromPath($parts[1]);
       if ($site) {
@@ -60,8 +61,8 @@ class SiteContentPathProcessor implements InboundPathProcessorInterface, Outboun
    * {@inheritdoc}
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
-    // Rewrite all outgoing site admin paths for paths that do not have an
-    // alias.
+    // Rewrite all outgoing site admin paths for paths that do not have an alias.
+    $parts = [];
     if (preg_match('#^/group/node/([0-9]+)(/content.*)#', $path, $parts)) {
       $site = $this->siteManager->load($parts[1]);
       if ($site) {

@@ -3,7 +3,7 @@
 namespace Drupal\og_sm_taxonomy\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Url;
 use Drupal\og_sm\SiteManagerInterface;
@@ -25,8 +25,8 @@ class TermDeleteForm extends TermDeleteFormBase {
   /**
    * Constructs a TermDeleteForm object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
@@ -34,8 +34,8 @@ class TermDeleteForm extends TermDeleteFormBase {
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, SiteManagerInterface $site_manager = NULL) {
-    parent::__construct($entity_manager, $entity_type_bundle_info, $time);
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, SiteManagerInterface $site_manager = NULL) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->siteManager = $site_manager;
   }
 
@@ -44,7 +44,7 @@ class TermDeleteForm extends TermDeleteFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager'),
+      $container->get('entity.repository'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
       $container->get('og_sm.site_manager')

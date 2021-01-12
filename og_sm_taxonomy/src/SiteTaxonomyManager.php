@@ -6,11 +6,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\ConditionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\GroupTypeManager;
 use Drupal\og\GroupTypeManagerInterface;
-use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\taxonomy\VocabularyInterface;
 
 /**
@@ -76,7 +72,12 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
       return [];
     }
 
-    return $this->entityTypeManager->getStorage('taxonomy_vocabulary')->loadMultiple($vids);
+    /** @var \Drupal\taxonomy\VocabularyInterface[] $vocabularies */
+    $vocabularies = $this->entityTypeManager
+      ->getStorage('taxonomy_vocabulary')
+      ->loadMultiple($vids);
+
+    return $vocabularies;
   }
 
   /**
@@ -92,6 +93,7 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
       // this condition contains several child conditions. In that case we need
       // loop through those to find the referenced vocabularies.
       if ($condition['field'] instanceof ConditionInterface) {
+        /** @var \Drupal\taxonomy\VocabularyInterface[] $vocabularies */
         $vocabularies = $this->getSiteVocabulariesFromConditions($table_aliases, $condition['field']->conditions(), $vocabularies);
         continue;
       }
@@ -112,13 +114,21 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
 
       switch ($field_parts[1]) {
         case 'vid':
-          $vids = (array) $condition['value'];
-          $vocabularies += $this->entityTypeManager->getStorage('taxonomy_vocabulary')->loadMultiple($vids);
+          /** @var \Drupal\taxonomy\VocabularyInterface[] $entities */
+          $entities = $this->entityTypeManager
+            ->getStorage('taxonomy_vocabulary')
+            ->loadMultiple((array) $condition['value']);
+          $vocabularies += $entities;
           break;
 
         case 'machine_name':
-          $machine_names = (array) $condition['value'];
-          $vocabularies += $this->entityTypeManager->getStorage('taxonomy_vocabulary')->loadByProperties(['machine_name' => $machine_names]);
+          /** @var \Drupal\taxonomy\VocabularyInterface[] $entities */
+          $entities = $this->entityTypeManager
+            ->getStorage('taxonomy_vocabulary')
+            ->loadByProperties([
+              'machine_name' => (array) $condition['value'],
+            ]);
+          $vocabularies += $entities;
           break;
       }
     }

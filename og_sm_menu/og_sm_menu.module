@@ -31,7 +31,7 @@ function og_sm_menu_menu_link_content_access(MenuLinkContentInterface $entity, $
   }
 
   $og_menu_instance_id = str_replace('ogmenu-', '', $entity->getMenuName());
-  /* @var \Drupal\og_menu\OgMenuInstanceInterface $menu */
+  /** @var \Drupal\og_menu\OgMenuInstanceInterface $menu */
   $menu = \Drupal::entityTypeManager()
     ->getStorage('ogmenu_instance')
     ->load($og_menu_instance_id);
@@ -39,7 +39,7 @@ function og_sm_menu_menu_link_content_access(MenuLinkContentInterface $entity, $
     return AccessResult::neutral();
   }
   $group = $menu->getGroup();
-  /* @var \Drupal\og\OgAccessInterface $og_access */
+  /** @var \Drupal\og\OgAccessInterface $og_access */
   $og_access = \Drupal::service('og.access');
 
   return $og_access->userAccess($group, "administer {$menu->getType()} menu items", $account);

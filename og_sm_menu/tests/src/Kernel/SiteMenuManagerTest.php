@@ -42,7 +42,7 @@ class SiteMenuManagerTest extends OgSmKernelTestBase {
     $site1 = $this->createGroup($site_type->id());
     $this->setOgContextToGroup($site1);
 
-    /* @var \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager */
+    /** @var \Drupal\og_sm_menu\SiteMenuManagerInterface $site_menu_manager */
     $site_menu_manager = $this->container->get('og_sm.site_menu_manager');
 
     $site1_menu = $site_menu_manager->getMenuBySite($site1);

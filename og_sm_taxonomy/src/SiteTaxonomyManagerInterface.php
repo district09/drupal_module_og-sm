@@ -11,8 +11,7 @@ use Drupal\taxonomy\VocabularyInterface;
 interface SiteTaxonomyManagerInterface {
 
   /**
-   * Get a list of vocabulary names that may reference an OG group of the
-   * specified type and bundle.
+   * Get the vocabulary names that may reference an OG group.
    *
    * @param string $entity_type_id
    *   The group entity ID.
@@ -25,8 +24,7 @@ interface SiteTaxonomyManagerInterface {
   public function getSiteVocabularyNames($entity_type_id, $bundle);
 
   /**
-   * Get all vocabulary objects that may reference an OG group of the
-   * specified type and bundle.
+   * Get all vocabulary objects that may reference an OG group.
    *
    * @param string $entity_type_id
    *   The group entity ID.

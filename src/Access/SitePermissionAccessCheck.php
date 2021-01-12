@@ -2,7 +2,6 @@
 
 namespace Drupal\og_sm\Access;
 
-use Drupal\Component\Annotation\Plugin;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
@@ -67,7 +66,7 @@ class SitePermissionAccessCheck implements AccessInterface {
    *   The permissions to check.
    * @param string $conjunction
    *   (optional) 'AND' if all permissions are required, 'OR' in case just one.
-   *   Defaults to 'AND'
+   *   Defaults to 'AND'.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   If the account has the permissions, isAllowed() will be TRUE, otherwise
@@ -107,24 +106,24 @@ class SitePermissionAccessCheck implements AccessInterface {
    * @param \Drupal\node\NodeInterface $node
    *   THe site node.
    *
-   * @return string
-   *   A \Drupal\Core\Access\AccessInterface constant value.
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public function access(Route $route, AccountInterface $account, NodeInterface $node) {
-    if ($this->siteManager->isSite($node)) {
-      $permission = $route->getRequirement('_site_permission');
-
-      // Allow to conjunct the permissions with OR ('+') or AND (',').
-      $split = explode(',', $permission);
-      if (count($split) > 1) {
-        return $this->allowedIfHasPermissions($node, $account, $split, 'AND');
-      }
-      else {
-        $split = explode('+', $permission);
-        return $this->allowedIfHasPermissions($node, $account, $split, 'OR');
-      }
+    if (!$this->siteManager->isSite($node)) {
+      return AccessResult::neutral();
     }
-    return AccessResult::neutral();
+
+    $permission = $route->getRequirement('_site_permission');
+
+    // Allow to conjunct the permissions with OR ('+') or AND (',').
+    $split = explode(',', $permission);
+    if (count($split) > 1) {
+      return $this->allowedIfHasPermissions($node, $account, $split, 'AND');
+    }
+
+    $split = explode('+', $permission);
+    return $this->allowedIfHasPermissions($node, $account, $split, 'OR');
   }
 
 }

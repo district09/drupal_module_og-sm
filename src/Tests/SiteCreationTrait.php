@@ -116,7 +116,7 @@ trait SiteCreationTrait {
    * @return \Drupal\Core\Session\AccountInterface
    *   The user object.
    */
-  protected function createGroupUser(array $permissions = [], array $groups = [], $site_permissions = []) {
+  protected function createGroupUser(array $permissions = [], array $groups = [], array $site_permissions = []) {
     $og_roles = [];
     $account = $this->createUser($permissions);
     // Add the group memberships (if any).

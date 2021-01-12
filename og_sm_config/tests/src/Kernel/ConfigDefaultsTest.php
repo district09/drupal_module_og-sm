@@ -38,7 +38,7 @@ class ConfigDefaultsTest extends OgSmKernelTestBase {
     $type->save();
     $site = $this->createGroup($type->id());
 
-    /* @var \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $config_factory_override */
+    /** @var \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $config_factory_override */
     $config_factory_override = $this->container->get('og_sm.config_factory_override');
 
     // Get the default variables as they should be have set during Site insert.
@@ -86,7 +86,7 @@ class ConfigDefaultsTest extends OgSmKernelTestBase {
    *   The config object.
    */
   protected function assertConfig(array $expected, $config_name) {
-    /* @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
     $config_factory = $this->container->get('config.factory');
     $config_factory->reset();
     $config = $config_factory->get($config_name);

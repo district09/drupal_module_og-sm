@@ -20,7 +20,7 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * The event dispatcher service.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcher
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
   protected $eventDispatcher;
 
@@ -48,6 +48,7 @@ class SiteRoutes implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    $events = [];
     $events[RoutingEvents::DYNAMIC] = 'onDynamicRouteEvent';
     return $events;
   }
@@ -57,11 +58,9 @@ class SiteRoutes implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Routing\RouteBuildEvent $event
    *   The route build event.
-   * @return array
    */
   public function onDynamicRouteEvent(RouteBuildEvent $event) {
-    $sites = $this->siteManager->getAllSites();
-    foreach ($sites as $site) {
+    foreach ($this->siteManager->getAllSites() as $site) {
       $site_routes = $this->getRoutesForSite($site);
       $event->getRouteCollection()->addCollection($site_routes);
     }
@@ -70,7 +69,7 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * Provides all routes for a given site node.
    *
-   * @param $site
+   * @param \Drupal\node\NodeInterface $site
    *   The site node.
    *
    * @return \Symfony\Component\Routing\RouteCollection
@@ -82,7 +81,7 @@ class SiteRoutes implements EventSubscriberInterface {
     // Collect all the routes for this site.
     $this->eventDispatcher->dispatch(SiteRoutingEvents::COLLECT, $event);
 
-    // allow altering the routes.
+    // Allow altering the routes.
     $this->eventDispatcher->dispatch(SiteRoutingEvents::ALTER, $event);
 
     // Prefix all the routes within the collection to avoid collision with other

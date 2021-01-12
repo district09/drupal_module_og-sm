@@ -30,7 +30,7 @@ class SiteMenuManager implements SiteMenuManagerInterface {
    * Constructs a SiteMenuManager object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager
+   *   The entity type manager.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager service.
    */
@@ -55,6 +55,7 @@ class SiteMenuManager implements SiteMenuManagerInterface {
    * {@inheritdoc}
    */
   public function getMenuBySite(NodeInterface $site) {
+    /** @var \Drupal\og_menu\OgMenuInstanceInterface[] $instances */
     $instances = $this->ogMenuInstanceStorage()->loadByProperties([
       'type' => SiteMenuManagerInterface::SITE_MENU_NAME,
       OgGroupAudienceHelperInterface::DEFAULT_FIELD => $site->id(),
@@ -66,7 +67,6 @@ class SiteMenuManager implements SiteMenuManagerInterface {
     return NULL;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -75,11 +75,11 @@ class SiteMenuManager implements SiteMenuManagerInterface {
       return NULL;
     }
 
-    $values = [
+    /** @var \Drupal\og_menu\OgMenuInstanceInterface $og_menu_instance */
+    $og_menu_instance = $this->ogMenuInstanceStorage()->create([
       'type' => SiteMenuManagerInterface::SITE_MENU_NAME,
       OgGroupAudienceHelperInterface::DEFAULT_FIELD => $site->id(),
-    ];
-    $og_menu_instance = $this->ogMenuInstanceStorage()->create($values);
+    ]);
     $og_menu_instance->save();
 
     return $og_menu_instance;
@@ -89,15 +89,19 @@ class SiteMenuManager implements SiteMenuManagerInterface {
    * {@inheritdoc}
    */
   public function getAllMenus() {
-    return $this->ogMenuInstanceStorage()->loadByProperties([
+    /** @var \Drupal\og_menu\OgMenuInstanceInterface[] $menus */
+    $menus = $this->ogMenuInstanceStorage()->loadByProperties([
       'type' => SiteMenuManagerInterface::SITE_MENU_NAME,
     ]);
+
+    return $menus;
   }
 
   /**
    * Gets the og-menu instance storage object.
    *
    * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The OG menu storage.
    */
   protected function ogMenuInstanceStorage() {
     return $this->entityTypeManager->getStorage('ogmenu_instance');

@@ -74,7 +74,7 @@ class SiteRoutingTest extends OgSmKernelTestBase {
    * @return string
    *   The actual route name.
    */
-  protected function getActualRouteName($route_name, $site) {
+  protected function getActualRouteName($route_name, NodeInterface $site) {
     return 'og_sm_site:' . $site->id() . ':' . $route_name;
   }
 
@@ -89,8 +89,8 @@ class SiteRoutingTest extends OgSmKernelTestBase {
    * @return \Symfony\Component\Routing\Route
    *   The site route.
    */
-  protected function getSiteRoute($route_name, $site) {
-    /* @var \Drupal\Core\Routing\RouteProviderInterface $route_provider */
+  protected function getSiteRoute($route_name, NodeInterface $site) {
+    /** @var \Drupal\Core\Routing\RouteProviderInterface $route_provider */
     $route_provider = $this->container->get('router.route_provider');
     $route_name = $this->getActualRouteName($route_name, $site);
     return $route_provider->getRouteByName($route_name);
@@ -106,7 +106,7 @@ class SiteRoutingTest extends OgSmKernelTestBase {
    * @param string $message
    *   Additional information about the test.
    */
-  protected function assertSiteRouteExists($route_name, $site, $message = '') {
+  protected function assertSiteRouteExists($route_name, NodeInterface $site, $message = '') {
     $route = $this->getSiteRoute($route_name, $site);
     $this->assertNotEmpty($route, $message);
   }

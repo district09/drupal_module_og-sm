@@ -103,14 +103,18 @@ class SiteConfigOverride extends StorableConfigBase {
    *
    * @return array
    *   An array of mixed data values.
+   *
+   * @SuppressWarnings(PHPMD.UnusedLocalVariable)
    */
   public function getMultipleByPattern($pattern) {
     $data = $this->get();
+
     foreach ($data as $key => $value) {
       if (!preg_match($pattern, $key)) {
         unset($data[$key]);
       }
     }
+
     return $data;
   }
 
