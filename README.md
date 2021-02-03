@@ -93,7 +93,7 @@ This module and its submodules adds functionality to support:
 
 
 ## Requirements
-The Sites functionality is build upon [Organic Groups][link-og].
+The Sites functionality is built upon [Organic Groups][link-og].
 
 Following modules are required to use the Sites functionality:
 
