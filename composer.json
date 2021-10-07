@@ -4,8 +4,11 @@
     "description": "Support to setup a platform supporting multiple (sub)sites using Organic Groups.",
     "keywords": [
         "Drupal",
-        "Digipolis",
-        "Organic Groups Site Manager"
+        "Organic Groups",
+        "Site Manager",
+        "Organic Groups Site Manager",
+        "District09",
+        "Digipolis"
     ],
     "homepage": "https://www.drupal.org/project/og_sm",
     "license": "GPL-2.0+",
