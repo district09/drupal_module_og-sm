@@ -1,7 +1,7 @@
 name: 'Site Context'
 description: 'Site context detection based on Site Alias, Site Content or Site Administration pages.'
 package: 'Organic Groups Site Manager'
-core_version_requirement: ^8.8 || ^9
 type: module
+core_version_requirement: ^8.8 || ^9
 dependencies:
   - og_sm:og_sm

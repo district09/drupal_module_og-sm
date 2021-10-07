@@ -1,10 +1,8 @@
-name: Site admin menu
-description: "Replaces the administrative menu with Site specific tasks."
+name: 'Site admin menu'
+description: 'Replaces the administrative menu with Site specific tasks.'
 package: 'Organic Groups Site Manager'
-
-core_version_requirement: ^8.8 || ^9
 type: module
-
+core_version_requirement: ^8.8 || ^9
 dependencies:
   - og_sm:og_sm
   - drupal:toolbar

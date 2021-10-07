@@ -1,7 +1,7 @@
 name: 'Site Manager'
 description: 'Support to setup a platform supporting multiple (sub)sites using Organic Groups.'
 package: 'Organic Groups Site Manager'
-core_version_requirement: ^8.8 || ^9
 type: module
+core_version_requirement: ^8.8 || ^9
 dependencies:
   - og:og
