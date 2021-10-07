@@ -2,6 +2,9 @@
 
 namespace Drupal\og_sm\Plugin\EntityReferenceSelection;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -36,8 +39,16 @@ trait SiteManagerTrait {
    *   The module handler service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface|null $entity_bundle_info
+   *   The entity type bundle info service.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
+   *
+   * @SuppressWarnings(PHPMD.ExcessiveParameterList)
    */
   public function __construct(
     array $configuration,
@@ -46,6 +57,9 @@ trait SiteManagerTrait {
     EntityTypeManagerInterface $entity_type_manager,
     ModuleHandlerInterface $module_handler,
     AccountInterface $current_user,
+    EntityFieldManagerInterface $entity_field_manager,
+    EntityTypeBundleInfoInterface $entity_bundle_info = NULL,
+    EntityRepositoryInterface $entity_repository,
     SiteManagerInterface $site_manager
   ) {
     parent::__construct(
@@ -54,7 +68,10 @@ trait SiteManagerTrait {
       $plugin_definition,
       $entity_type_manager,
       $module_handler,
-      $current_user
+      $current_user,
+      $entity_field_manager,
+      $entity_bundle_info,
+      $entity_repository
     );
 
     $this->siteManager = $site_manager;
@@ -71,6 +88,9 @@ trait SiteManagerTrait {
       $container->get('entity_type.manager'),
       $container->get('module_handler'),
       $container->get('current_user'),
+      $container->get('entity_field.manager'),
+      $container->get('entity_type.bundle.info'),
+      $container->get('entity.repository'),
       $container->get('og_sm.site_manager')
     );
   }

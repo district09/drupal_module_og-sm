@@ -5,7 +5,6 @@ namespace Drupal\og_sm;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\NodeTypeInterface;
 use Drupal\og\GroupTypeManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A manager to keep track of which content types are og_sm Site enabled.
@@ -20,13 +19,6 @@ class SiteTypeManager implements SiteTypeManagerInterface {
   protected $nodeTypeStorage;
 
   /**
-   * The event dispatcher.
-   *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   */
-  protected $eventDispatcher;
-
-  /**
    * The group type manager.
    *
    * @var \Drupal\og\GroupTypeManager
@@ -38,14 +30,14 @@ class SiteTypeManager implements SiteTypeManagerInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
    *   The entity type manager.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-   *   The event dispatcher.
    * @param \Drupal\og\GroupTypeManager $groupTypeManager
    *   The group type manager.
    */
-  public function __construct(EntityTypeManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher, GroupTypeManager $groupTypeManager) {
+  public function __construct(
+    EntityTypeManagerInterface $entityManager,
+    GroupTypeManager $groupTypeManager
+  ) {
     $this->nodeTypeStorage = $entityManager->getStorage('node_type');
-    $this->eventDispatcher = $eventDispatcher;
     $this->groupTypeManager = $groupTypeManager;
   }
 

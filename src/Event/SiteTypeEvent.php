@@ -3,7 +3,7 @@
 namespace Drupal\og_sm\Event;
 
 use Drupal\node\NodeTypeInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Defines the site type event.

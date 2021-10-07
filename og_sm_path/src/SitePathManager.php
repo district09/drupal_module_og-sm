@@ -8,11 +8,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\og_sm\EventDispatcherInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface;
 use Drupal\og_sm_path\Event\SitePathEvent;
 use Drupal\og_sm_path\Event\SitePathEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A manager to process site paths.
@@ -52,7 +52,7 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * The event dispatcher.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventDispatcherInterface
    */
   protected $eventDispatcher;
 
@@ -88,7 +88,7 @@ class SitePathManager implements SitePathManagerInterface {
    *   The site manager.
    * @param \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $config_override
    *   The site configuration override service.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventDispatcherInterface $event_dispatcher
    *   The event dispatcher.
    * @param \Drupal\Core\Database\Connection $connection
    *   A database connection for reading and writing path aliases.
@@ -238,7 +238,7 @@ class SitePathManager implements SitePathManagerInterface {
     // Trigger the path change event.
     if ($trigger_event) {
       $event = new SitePathEvent($site, $original_path, $path);
-      $this->eventDispatcher->dispatch(SitePathEvents::CHANGE, $event);
+      $this->eventDispatcher->dispatch($event, SitePathEvents::CHANGE);
     }
   }
 

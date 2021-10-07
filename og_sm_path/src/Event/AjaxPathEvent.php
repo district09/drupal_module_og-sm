@@ -2,7 +2,7 @@
 
 namespace Drupal\og_sm_path\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Defines the ajax event.

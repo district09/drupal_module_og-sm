@@ -6,11 +6,11 @@ use Drupal\Core\PathProcessor\InboundPathProcessorInterface;
 use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
+use Drupal\og_sm\EventDispatcherInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_path\Event\AjaxPathEvent;
 use Drupal\og_sm_path\Event\AjaxPathEvents;
 use Drupal\og_sm_path\SitePathManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -35,7 +35,7 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
   /**
    * The event dispatcher.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventDispatcherInterface
    */
   protected $eventDispatcher;
 
@@ -53,10 +53,14 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
    *   The site path manager.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventDispatcherInterface $event_dispatcher
    *   The event dispatcher.
    */
-  public function __construct(SitePathManagerInterface $site_path_manager, SiteManagerInterface $site_manager, EventDispatcherInterface $event_dispatcher) {
+  public function __construct(
+    SitePathManagerInterface $site_path_manager,
+    SiteManagerInterface $site_manager,
+    EventDispatcherInterface $event_dispatcher
+  ) {
     $this->sitePathManager = $site_path_manager;
     $this->siteManager = $site_manager;
     $this->eventDispatcher = $event_dispatcher;
@@ -74,7 +78,7 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
     }
 
     $event = new AjaxPathEvent();
-    $this->eventDispatcher->dispatch(AjaxPathEvents::COLLECT, $event);
+    $this->eventDispatcher->dispatch($event, AjaxPathEvents::COLLECT);
     $this->ajaxPaths = $event->getAjaxPaths();
     return $this->ajaxPaths;
   }
@@ -107,7 +111,7 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
   /**
    * {@inheritdoc}
    *
-   * This will check replace any destination (in the options > query) by its
+   * This will check & replace any destination (in the options > query) by its
    * path alias. Note: this will affect links outside a Site as well. We can
    * have links outside a Site context with a destination that is in a Site.
    */
