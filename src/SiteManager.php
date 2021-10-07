@@ -18,6 +18,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A manager to keep track of which nodes are og_sm Site enabled.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SiteManager implements SiteManagerInterface {
 

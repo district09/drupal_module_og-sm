@@ -18,7 +18,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $pathautoPatternStorage;
+  protected $patternStorage;
 
   /**
    * Constructs a PathProcessorAlias object.
@@ -27,7 +27,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
    *   The entity type manager.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->pathautoPatternStorage = $entity_type_manager->getStorage('pathauto_pattern');
+    $this->patternStorage = $entity_type_manager->getStorage('pathauto_pattern');
   }
 
   /**
@@ -52,7 +52,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
     $pattern = $this->findPrimaryPattern($event->getNodeType());
     if (!$pattern) {
       /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */
-      $pattern = $this->pathautoPatternStorage->create([
+      $pattern = $this->patternStorage->create([
         'id' => 'node_' . $node_type->id(),
         'label' => 'Node: ' . $node_type->label(),
         'type' => 'canonical_entities:node',
@@ -96,7 +96,7 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
    *   The pathauto pattern, FALSE if no pattern was found.
    */
   protected function findPrimaryPattern(NodeTypeInterface $node_type) {
-    $patterns = $this->pathautoPatternStorage->loadByProperties(['type' => 'canonical_entities:node']);
+    $patterns = $this->patternStorage->loadByProperties(['type' => 'canonical_entities:node']);
 
     foreach ($patterns as $pattern) {
       /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */

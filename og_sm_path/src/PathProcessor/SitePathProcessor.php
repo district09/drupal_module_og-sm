@@ -106,43 +106,66 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
 
   /**
    * {@inheritdoc}
+   *
+   * This will check replace any destination (in the options > query) by its
+   * path alias. Note: this will affect links outside a Site as well. We can
+   * have links outside a Site context with a destination that is in a Site.
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
+    $path = $this->getOutboundSitePath($path);
+
+    if (!isset($options['query']['destination'])) {
+      return $path;
+    }
+
+    $base_path = $request ? $request->getBasePath() . '/' : '/';
+    $destination = $options['query']['destination'];
+    if (strpos($destination, $base_path) === 0) {
+      $destination = substr($destination, strlen($base_path));
+    }
+
+    $destination = ltrim($destination, '/');
+    $parts = parse_url($destination);
+    if (!isset($parts['path'])) {
+      return $path;
+    }
+
+    $alias = Url::fromUserInput('/' . $parts['path']);
+    if (!empty($parts['query'])) {
+      $alias->setOption('query', $parts['query']);
+    }
+    $options['query']['destination'] = $alias->toString();
+
+    // Return proper path, destination is altered in $options array.
+    return $path;
+  }
+
+  /**
+   * Rewrite all outgoing site admin paths for paths that do not have an alias.
+   *
+   * @param string $path
+   *   The outbound path.
+   *
+   * @return string
+   *   The correct site path.
+   */
+  private function getOutboundSitePath(string $path): string {
     // Rewrite all outgoing site admin paths for paths that do not have an
     // alias.
     if (preg_match('#^/group/node/([0-9]+)/(admin.*)#', $path, $parts)) {
       $site = $this->siteManager->load($parts[1]);
       if ($site) {
-        $path = $this->sitePathManager->getPathFromSite($site) . '/' . $parts[2];
-      }
-    }
-    // Only check specific paths in a Site context.
-    elseif ($site = $this->siteManager->currentSite()) {
-      if (preg_match('#^(' . implode('|', $this->ajaxPaths()) . ')$#', $path, $parts)) {
-        $path = $this->sitePathManager->getPathFromSite($site) . $parts[1];
+        return $this->sitePathManager->getPathFromSite($site) . '/' . $parts[2];
       }
     }
 
-    // This will check replace any destination (in the options > query) by its
-    // path alias. Note: this will affect links outside a Site as well. We can
-    // have links outside a Site context with a destination that is in a Site.
-    if (isset($options['query']['destination'])) {
-      $base_path = $request ? $request->getBasePath() . '/' : '/';
-      $destination = $options['query']['destination'];
-      if (strpos($destination, $base_path) === 0) {
-        $destination = substr($destination, strlen($base_path));
-      }
-      $destination = ltrim($destination, '/');
-      $parts = parse_url($destination);
-      if (!isset($parts['path'])) {
-        return $path;
-      }
-      $alias = Url::fromUserInput('/' . $parts['path']);
-      if (!empty($parts['query'])) {
-        $alias->setOption('query', $parts['query']);
-      }
-      $options['query']['destination'] = $alias->toString();
+    // Only check specific paths in a Site context.
+    $site = $this->siteManager->currentSite();
+    if ($site && preg_match('#^(' . implode('|', $this->ajaxPaths()) . ')$#', $path, $parts)) {
+      return $this->sitePathManager->getPathFromSite($site) . $parts[1];
     }
+
+    // Fallback to original path.
     return $path;
   }
 

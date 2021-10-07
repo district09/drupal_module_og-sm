@@ -68,7 +68,8 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
    * {@inheritdoc}
    */
   public function getSiteVocabularies($entity_type_id, $bundle) {
-    if (!$vids = $this->getSiteVocabularyNames($entity_type_id, $bundle)) {
+    $vids = $this->getSiteVocabularyNames($entity_type_id, $bundle);
+    if (!$vids) {
       return [];
     }
 
@@ -82,6 +83,8 @@ class SiteTaxonomyManager implements SiteTaxonomyManagerInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   public function getSiteVocabulariesFromConditions(array $table_aliases, array $conditions, array $vocabularies = []) {
     foreach ($conditions as $condition) {

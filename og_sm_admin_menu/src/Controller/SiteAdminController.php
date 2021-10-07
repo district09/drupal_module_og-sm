@@ -88,32 +88,35 @@ class SiteAdminController extends ControllerBase {
    * Provides a single block from the administration menu as a page.
    */
   public function siteAdminMenuBlockPage() {
-    $link = NULL;
+    $output = [
+      '#markup' => $this->t('You do not have any administrative items.'),
+    ];
 
-    $menu_name = 'og_sm_admin_menu';
-    $route_name = $this->routeMatch->getRouteName();
-    if ($route_name) {
-      // Load links matching this route.
-      $links = $this->menuLinkManager->loadLinksByRoute($route_name, [], $menu_name);
-      // Select the first matching link.
-      if ($links) {
-        $link = reset($links);
-      }
+    $routeName = $this->routeMatch->getRouteName();
+    if (!$routeName) {
+      return $output;
     }
 
-    if ($link && $content = $this->systemManager->getAdminBlock($link)) {
-      $output = [
-        '#theme' => 'admin_block_content',
-        '#content' => $content,
-      ];
-    }
-    else {
-      $output = [
-        '#markup' => $this->t('You do not have any administrative items.'),
-      ];
+    // Load links matching this route.
+    $links = $this->menuLinkManager->loadLinksByRoute($routeName, [], 'og_sm_admin_menu');
+    if (!$links) {
+      return $output;
     }
 
-    return $output;
+    $link = reset($links);
+    if (!$link) {
+      return $output;
+    }
+
+    $content = $this->systemManager->getAdminBlock($link);
+    if (!$content) {
+      return $output;
+    }
+
+    return [
+      '#theme' => 'admin_block_content',
+      '#content' => $content,
+    ];
   }
 
 }

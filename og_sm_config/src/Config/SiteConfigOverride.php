@@ -40,6 +40,8 @@ class SiteConfigOverride extends StorableConfigBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
    */
   public function save($has_trusted_data = FALSE) {
     if (!$has_trusted_data) {

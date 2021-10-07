@@ -65,6 +65,8 @@ interface SitePathManagerInterface {
    *   is changed for a Site. This is not always wanted (eg. when a new Site is
    *   created). Set the parameter to FALSE to prevent the event from being
    *   triggered.
+   *
+   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
    */
   public function setPath(NodeInterface $site, $path, $trigger_event = TRUE);
 

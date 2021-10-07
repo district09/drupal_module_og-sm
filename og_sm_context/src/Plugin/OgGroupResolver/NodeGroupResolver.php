@@ -69,9 +69,11 @@ class NodeGroupResolver extends OgSmGroupResolverBase {
     if (!$route_object) {
       return;
     }
+
     if (strpos($route_object->getPath(), '/node/{node}') !== 0) {
       return;
     }
+
     $node = $this->routeMatch->getParameter('node');
     if (is_numeric($node)) {
       $node = $this->entityTypeManager->getStorage('node')->load($node);
@@ -80,14 +82,14 @@ class NodeGroupResolver extends OgSmGroupResolverBase {
     if ($this->siteManager->isSite($node)) {
       $collection->addGroup($node, ['url']);
       $this->stopPropagation();
-    }
-    elseif ($sites = $this->siteManager->getSitesFromEntity($node)) {
-      if (count($sites) === 1) {
-        $collection->addGroup(reset($sites), ['url']);
-        $this->stopPropagation();
-      }
+      return;
     }
 
+    $sites = $this->siteManager->getSitesFromEntity($node);
+    if (count($sites) === 1) {
+      $collection->addGroup(reset($sites), ['url']);
+      $this->stopPropagation();
+    }
   }
 
 }

@@ -92,6 +92,8 @@ function _og_sm_path_tokens_entity(array $tokens, EntityInterface $entity, array
  *
  * @return string|null
  *   Token string if any.
+ *
+ * @SuppressWarnings(PHPMD.ElseExpression)
  */
 function _og_sm_path_tokens_site_path(EntityInterface $entity, $sanitize) {
   $site_manager = OgSm::siteManager();

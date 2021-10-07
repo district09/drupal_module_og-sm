@@ -27,15 +27,20 @@ class TermDeleteForm extends TermDeleteFormBase {
    *
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository.
-   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_bundle_info
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
    */
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, SiteManagerInterface $site_manager = NULL) {
-    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+  public function __construct(
+    EntityRepositoryInterface $entity_repository,
+    EntityTypeBundleInfoInterface $entity_bundle_info = NULL,
+    TimeInterface $time = NULL,
+    SiteManagerInterface $site_manager = NULL
+  ) {
+    parent::__construct($entity_repository, $entity_bundle_info, $time);
     $this->siteManager = $site_manager;
   }
 

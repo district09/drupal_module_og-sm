@@ -69,15 +69,14 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
    */
   public function formAlter(array &$form, FormStateInterface $form_state) {
     $site = $this->siteManager->currentSite();
-
-    if ($site) {
-      $this->removeInaccessibleTerms($form);
-      $this->alterEmptyText($form, $form_state, $site);
-      $this->alterAlphabeticalSubmitHandler($form, $form_state, $site);
-    }
-    else {
+    if (!$site) {
       $this->addSiteTitles($form);
+      return;
     }
+
+    $this->removeInaccessibleTerms($form);
+    $this->alterEmptyText($form, $form_state, $site);
+    $this->alterAlphabeticalSubmitHandler($form, $form_state, $site);
   }
 
   /**

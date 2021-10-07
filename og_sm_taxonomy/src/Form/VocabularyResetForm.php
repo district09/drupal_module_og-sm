@@ -35,16 +35,20 @@ class VocabularyResetForm extends VocabularyResetFormBase {
    *
    * @param \Drupal\taxonomy\TermStorageInterface $term_storage
    *   The taxonomy term storage.
-   * @param \Drupal\og_sm\SiteManagerInterface $site_manager
+   * @param \Drupal\og_sm\SiteManagerInterface $siteManager
    *   The site manager.
-   * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager
+   * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $siteTaxonomyManager
    *   The site taxonomy manager.
    */
-  public function __construct(TermStorageInterface $term_storage, SiteManagerInterface $site_manager, SiteTaxonomyManagerInterface $site_taxonomy_manager) {
+  public function __construct(
+    TermStorageInterface $term_storage,
+    SiteManagerInterface $siteManager,
+    SiteTaxonomyManagerInterface $siteTaxonomyManager
+  ) {
     parent::__construct($term_storage);
 
-    $this->siteManager = $site_manager;
-    $this->siteTaxonomyManager = $site_taxonomy_manager;
+    $this->siteManager = $siteManager;
+    $this->siteTaxonomyManager = $siteTaxonomyManager;
   }
 
   /**

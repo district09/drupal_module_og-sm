@@ -80,12 +80,10 @@ class ManageableSitesByCurrentUser extends BooleanOperator {
 
     $sites = $this->siteManager->getUserManageableSites();
     $siteIds = array_keys($sites);
-    if (empty($this->value)) {
-      $query->addWhere(0, $field, $siteIds, 'NOT IN');
-    }
-    else {
-      $query->addWhere(0, $field, $siteIds, 'IN');
-    }
+
+    empty($this->value)
+      ? $query->addWhere(0, $field, $siteIds, 'NOT IN')
+      : $query->addWhere(0, $field, $siteIds, 'IN');
   }
 
 }

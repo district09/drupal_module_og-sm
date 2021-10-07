@@ -18,7 +18,7 @@ abstract class SiteConfigFormBase extends ConfigFormBase {
    *
    * @var \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface
    */
-  protected $configFactoryOverride;
+  protected $configOverride;
 
   /**
    * The site manager.
@@ -39,16 +39,20 @@ abstract class SiteConfigFormBase extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The factory for configuration objects.
-   * @param \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $configFactoryOverride
+   * @param \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $configOverride
    *   The site configuration override service.
    * @param \Drupal\og_sm\SiteManagerInterface $siteManager
    *   The site manager.
    */
-  public function __construct(ConfigFactoryInterface $configFactory, SiteConfigFactoryOverrideInterface $configFactoryOverride, SiteManagerInterface $siteManager) {
+  public function __construct(
+    ConfigFactoryInterface $configFactory,
+    SiteConfigFactoryOverrideInterface $configOverride,
+    SiteManagerInterface $siteManager
+  ) {
     parent::__construct($configFactory);
     $this->siteManager = $siteManager;
     $this->currentSite = $this->siteManager->currentSite();
-    $this->configFactoryOverride = $configFactoryOverride;
+    $this->configOverride = $configOverride;
   }
 
   /**
@@ -80,7 +84,7 @@ abstract class SiteConfigFormBase extends ConfigFormBase {
    */
   protected function config($name) {
     if ($this->currentSite) {
-      return $this->configFactoryOverride->getOverride($this->currentSite, $name);
+      return $this->configOverride->getOverride($this->currentSite, $name);
     }
 
     return parent::config($name);

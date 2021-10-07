@@ -19,6 +19,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Provides site overrides for the configuration factory.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements SiteConfigFactoryOverrideInterface {
 
