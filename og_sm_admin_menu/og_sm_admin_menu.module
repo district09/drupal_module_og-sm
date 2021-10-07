@@ -189,6 +189,11 @@ function og_sm_admin_menu_preprocess_html(&$variables) {
     $variables['page_top']['toolbar']['#access'] = $toolbar_access;
     $variables['page_top']['toolbar']['#cache']['contexts'][] = 'og_group_context';
     $variables['attributes'] = new Attribute($variables['attributes']);
-    $variables['attributes']->addClass(['toolbar-tray-open', 'toolbar-horizontal', 'toolbar-fixed', 'toolbar-loading']);
+    $variables['attributes']->addClass([
+      'toolbar-tray-open',
+      'toolbar-horizontal',
+      'toolbar-fixed',
+      'toolbar-loading',
+    ]);
   }
 }

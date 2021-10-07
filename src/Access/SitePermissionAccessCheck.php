@@ -56,7 +56,7 @@ class SitePermissionAccessCheck implements AccessInterface {
   }
 
   /**
-   * Creates an allowed access result if the permissions are present, neutral otherwise.
+   * Access allowed result if the permissions are present, neutral otherwise.
    *
    * @param \Drupal\node\NodeInterface $site
    *   The site node.

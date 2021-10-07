@@ -61,7 +61,7 @@ class SiteContentPathProcessor implements InboundPathProcessorInterface, Outboun
    * {@inheritdoc}
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
-    // Rewrite all outgoing site admin paths for paths that do not have an alias.
+    // Rewrite all outgoing site admin paths for paths that do not have alias.
     $parts = [];
     if (preg_match('#^/group/node/([0-9]+)(/content.*)#', $path, $parts)) {
       $site = $this->siteManager->load($parts[1]);

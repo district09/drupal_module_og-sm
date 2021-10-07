@@ -81,7 +81,7 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
   }
 
   /**
-   * Alters the terms administration form by adding the Site titles to the terms.
+   * Alters terms administration form by adding the Site titles to the terms.
    *
    * @param array $form
    *   The form structure.
@@ -176,8 +176,8 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
   /**
    * Custom submit handler for the alphabetical reset button.
    *
-   * Adds the current site to the reset alphabetical redirect url in order to keep
-   * site context on the confirm page.
+   * Adds the current site to the reset alphabetical redirect url in order to
+   * keep site context on the confirm page.
    *
    * @param array $form
    *   The form structure.

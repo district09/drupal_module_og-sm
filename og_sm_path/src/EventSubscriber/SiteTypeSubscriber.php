@@ -102,7 +102,8 @@ class SiteTypeSubscriber implements EventSubscriberInterface {
       /** @var \Drupal\pathauto\PathautoPatternInterface $pattern */
       $default_bundles = [];
       foreach ($pattern->getSelectionConditions() as $condition) {
-        if (in_array($condition->getPluginId(), ['entity_bundle:node', 'node_type'], TRUE)) {
+        $supported = ['entity_bundle:node', 'node_type'];
+        if (in_array($condition->getPluginId(), $supported, TRUE)) {
           $default_bundles = $condition->getConfiguration()['bundles'];
         }
       }
