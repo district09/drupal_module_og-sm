@@ -5,7 +5,7 @@ namespace Drupal\Tests\og_sm\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgContextInterface;
-use Drupal\simpletest\UserCreationTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\og_sm\Tests\SiteCreationTrait;
 
 /**
@@ -61,7 +61,7 @@ abstract class OgSmKernelTestBase extends KernelTestBase {
    *   Group node to set the context for.
    */
   protected function setOgContextToGroup(NodeInterface $group) {
-    $this->container->set('og.context', $this->getMock(OgContextInterface::class));
+    $this->container->set('og.context', $this->createMock(OgContextInterface::class));
     $this->container->get('og.context')
       ->method('getGroup')
       ->willReturn($group);
@@ -74,7 +74,7 @@ abstract class OgSmKernelTestBase extends KernelTestBase {
    * Reset the Og Context.
    */
   protected function resetOgContext() {
-    $this->container->set('og.context', $this->getMock(OgContextInterface::class));
+    $this->container->set('og.context', $this->createMock(OgContextInterface::class));
     $this->container->get('og.context')
       ->method('getGroup')
       ->willReturn(NULL);
