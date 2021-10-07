@@ -104,10 +104,6 @@ class SiteAdminController extends ControllerBase {
     }
 
     $link = reset($links);
-    if (!$link) {
-      return $output;
-    }
-
     $content = $this->systemManager->getAdminBlock($link);
     if (!$content) {
       return $output;
