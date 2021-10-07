@@ -40,7 +40,6 @@ install:
 script:
   - vendor/bin/grumphp run -n --tasks=composer,composer_normalize,git_branch_name,phpcpd,phpcs,phpmd,phpstan,yamllint
 
-
 after_script:
   # Run the Code Climate test reporter.
   - ./cc-test-reporter after-build --coverage-input-type clover --exit-code $TRAVIS_TEST_RESULT
