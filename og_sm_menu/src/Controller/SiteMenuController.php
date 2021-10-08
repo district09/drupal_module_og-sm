@@ -27,7 +27,7 @@ class SiteMenuController extends ControllerBase {
    *
    * @var \Drupal\og_menu\Controller\OgMenuInstanceController
    */
-  protected $ogMenuInstanceController;
+  protected $ogMenuController;
 
   /**
    * The site manager service.
@@ -52,7 +52,7 @@ class SiteMenuController extends ControllerBase {
    *   The site menu manager service.
    */
   public function __construct(ClassResolverInterface $class_resolver, SiteMenuManagerInterface $site_menu_manager) {
-    $this->ogMenuInstanceController = $class_resolver->getInstanceFromDefinition(OgMenuInstanceController::class);
+    $this->ogMenuController = $class_resolver->getInstanceFromDefinition(OgMenuInstanceController::class);
     $this->siteMenuManager = $site_menu_manager;
   }
 
@@ -73,7 +73,7 @@ class SiteMenuController extends ControllerBase {
    *   Returns the menu link creation form.
    */
   public function addLink() {
-    return $this->ogMenuInstanceController->addLink($this->siteMenuManager->getCurrentMenu());
+    return $this->ogMenuController->addLink($this->siteMenuManager->getCurrentMenu());
   }
 
   /**
@@ -89,7 +89,7 @@ class SiteMenuController extends ControllerBase {
     $site_menu = $this->siteMenuManager->getCurrentMenu();
 
     if ($site_menu) {
-      return $this->ogMenuInstanceController->addLinkAccess($site_menu, $account);
+      return $this->ogMenuController->addLinkAccess($site_menu, $account);
     }
 
     return AccessResult::neutral();

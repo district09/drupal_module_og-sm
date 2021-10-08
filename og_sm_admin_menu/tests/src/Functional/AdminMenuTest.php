@@ -50,7 +50,8 @@ class AdminMenuTest extends OgSmWebTestBase {
     $site_member = $this->createGroupUser(['access toolbar'], [$site]);
     $this->drupalLogin($site_member);
 
-    // Verify that a member doesn't have enough permissions to see the structure page.
+    // Verify that a member doesn't have enough permissions to see the structure
+    // page.
     $this->drupalGet($site_manager->getSiteHomePage($site));
     $this->assertSession()->linkByHrefNotExists("/group/node/{$site->id()}/admin/structure");
 
@@ -62,7 +63,7 @@ class AdminMenuTest extends OgSmWebTestBase {
     $this->drupalGet($site_manager->getSiteHomePage($site));
     $this->assertSession()->linkByHrefExists("/group/node/{$site->id()}/admin/structure");
 
-    // Verify that a site admin cannot see the site's structure links of other sites.
+    // Verify that site admin cannot see site's structure links of other sites.
     $site2 = $this->createGroup($site_type->id());
     $this->drupalGet($site_manager->getSiteHomePage($site));
     $this->assertSession()->linkByHrefNotExists("/group/node/{$site2->id()}/admin/structure");
@@ -90,7 +91,11 @@ class AdminMenuTest extends OgSmWebTestBase {
     $administrator = $this->createUser([], NULL, TRUE);
     $userDefault = $this->drupalCreateUser(['access toolbar']);
     $userSite1Admin = $this->createGroupUser(['access toolbar'], [$site1], ['administer site']);
-    $userSite1And2Admin = $this->createGroupUser(['access toolbar'], [$site1, $site2], ['administer site']);
+    $userSite1And2Admin = $this->createGroupUser(
+      ['access toolbar'],
+      [$site1, $site2],
+      ['administer site']
+    );
 
     // As administrator outside Sites.
     $this->drupalLogin($administrator);

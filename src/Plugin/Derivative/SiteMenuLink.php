@@ -100,6 +100,8 @@ class SiteMenuLink extends DeriverBase implements ContainerDeriverInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.LongVariable)
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     $yaml_discovery = new YamlDiscovery('site_links.menu', $this->moduleHandler->getModuleDirectories());

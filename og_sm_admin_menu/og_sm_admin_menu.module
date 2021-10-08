@@ -23,6 +23,8 @@ function og_sm_admin_menu_local_tasks_alter(&$local_tasks) {
 
 /**
  * Implements hook_toolbar().
+ *
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 function og_sm_admin_menu_toolbar() {
   $site_manager = OgSm::siteManager();
@@ -81,6 +83,7 @@ function og_sm_admin_menu_toolbar() {
     $cache_tags[] = 'node:' . $site->id();
   }
 
+  $items = [];
   $items['site_switcher'] = [
     '#type' => 'toolbar_item',
     'tab' => [
@@ -189,6 +192,11 @@ function og_sm_admin_menu_preprocess_html(&$variables) {
     $variables['page_top']['toolbar']['#access'] = $toolbar_access;
     $variables['page_top']['toolbar']['#cache']['contexts'][] = 'og_group_context';
     $variables['attributes'] = new Attribute($variables['attributes']);
-    $variables['attributes']->addClass(['toolbar-tray-open', 'toolbar-horizontal', 'toolbar-fixed', 'toolbar-loading']);
+    $variables['attributes']->addClass([
+      'toolbar-tray-open',
+      'toolbar-horizontal',
+      'toolbar-fixed',
+      'toolbar-loading',
+    ]);
   }
 }

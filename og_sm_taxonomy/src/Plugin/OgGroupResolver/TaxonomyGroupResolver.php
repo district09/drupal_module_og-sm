@@ -32,7 +32,8 @@ class TaxonomyGroupResolver extends NodeGroupResolver {
       $term = $this->entityTypeManager->getStorage('taxonomy_term')->load($term);
     }
 
-    if ($site = $this->siteManager->getSiteFromEntity($term)) {
+    $site = $this->siteManager->getSiteFromEntity($term);
+    if ($site) {
       $collection->addGroup($site, ['url']);
       $this->stopPropagation();
     }

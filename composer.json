@@ -4,8 +4,11 @@
     "description": "Support to setup a platform supporting multiple (sub)sites using Organic Groups.",
     "keywords": [
         "Drupal",
-        "Digipolis",
-        "Organic Groups Site Manager"
+        "Organic Groups",
+        "Site Manager",
+        "Organic Groups Site Manager",
+        "District09",
+        "Digipolis"
     ],
     "homepage": "https://www.drupal.org/project/og_sm",
     "license": "GPL-2.0+",
@@ -13,13 +16,14 @@
         "drupal/og": "^1.0"
     },
     "require-dev": {
-        "digipolisgent/qa-drupal": "~1.3.8",
+        "digipolisgent/qa-drupal": "^1.0",
         "drupal/admin_toolbar": "2.x-dev",
-        "drupal/core": "^8.9",
+        "drupal/core": "^9.1",
         "drupal/og_menu": "1.x-dev",
         "drupal/pathauto": "1.x-dev",
         "drupal/token": "1.x-dev",
-        "phpunit/phpunit": "^7.5"
+        "phpspec/prophecy-phpunit": "^2",
+        "psr/event-dispatcher": "1.0.x-dev"
     },
     "config": {
         "sort-packages": true
@@ -36,6 +40,16 @@
         }
     },
     "minimum-stability": "dev",
+    "scripts": {
+        "post-install-cmd": "vendor/bin/grumphp git:init",
+        "coverage": "vendor/bin/phpunit --configuration=phpunit.qa-drupal.xml --coverage-html build/coverage",
+        "grumphp": "vendor/bin/grumphp run",
+        "phpcpd": "vendor/bin/grumphp run --tasks=phpcpd",
+        "phpcs": "vendor/bin/grumphp run --tasks=phpcs",
+        "phpmd": "vendor/bin/grumphp run --tasks=phpmd",
+        "phpstan": "vendor/bin/grumphp run --tasks=phpstan",
+        "phpunit": "vendor/bin/phpunit --configuration=phpunit.qa-drupal.xml"
+    },
     "support": {
         "issues": "https://github.com/digipolisgent/drupal_module_og-sm/issues",
         "source": "https://github.com/digipolisgent/drupal_module_og-sm"

@@ -26,6 +26,11 @@ abstract class OgSmWebTestBase extends BrowserTestBase {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Node types to use in the test.
    */
   const TYPE_DEFAULT = 'og_sm_node_type_not_group';

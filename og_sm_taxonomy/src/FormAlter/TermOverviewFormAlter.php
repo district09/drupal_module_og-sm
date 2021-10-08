@@ -69,19 +69,18 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
    */
   public function formAlter(array &$form, FormStateInterface $form_state) {
     $site = $this->siteManager->currentSite();
-
-    if ($site) {
-      $this->removeInaccessibleTerms($form);
-      $this->alterEmptyText($form, $form_state, $site);
-      $this->alterAlphabeticalSubmitHandler($form, $form_state, $site);
-    }
-    else {
+    if (!$site) {
       $this->addSiteTitles($form);
+      return;
     }
+
+    $this->removeInaccessibleTerms($form);
+    $this->alterEmptyText($form, $form_state, $site);
+    $this->alterAlphabeticalSubmitHandler($form, $form_state, $site);
   }
 
   /**
-   * Alters the terms administration form by adding the Site titles to the terms.
+   * Alters terms administration form by adding the Site titles to the terms.
    *
    * @param array $form
    *   The form structure.
@@ -176,8 +175,8 @@ class TermOverviewFormAlter implements ContainerInjectionInterface {
   /**
    * Custom submit handler for the alphabetical reset button.
    *
-   * Adds the current site to the reset alphabetical redirect url in order to keep
-   * site context on the confirm page.
+   * Adds the current site to the reset alphabetical redirect url in order to
+   * keep site context on the confirm page.
    *
    * @param array $form
    *   The form structure.

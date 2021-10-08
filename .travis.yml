@@ -11,14 +11,11 @@ cache:
     - $HOME/.composer/cache
 
 env:
-  - DRUPAL=8.9 PHPUNIT=7.5
-  - DRUPAL=9.0 PHPUNIT=8.5
-  - DRUPAL=9.1 PHPUNIT=8.5
+  - DRUPAL=9.1 PHPUNIT=9
+  - DRUPAL=9.2 PHPUNIT=9
 
 jobs:
   fast_finish: true
-  allow_failures:
-    - php: 7.4
 
 before_install:
   # Configure the authentication mechanisms.
@@ -39,7 +36,6 @@ install:
 
 script:
   - vendor/bin/grumphp run -n --tasks=composer,composer_normalize,git_branch_name,phpcpd,phpcs,phpmd,phpstan,yamllint
-
 
 after_script:
   # Run the Code Climate test reporter.

@@ -56,7 +56,7 @@ class SitePermissionAccessCheck implements AccessInterface {
   }
 
   /**
-   * Creates an allowed access result if the permissions are present, neutral otherwise.
+   * Access allowed result if the permissions are present, neutral otherwise.
    *
    * @param \Drupal\node\NodeInterface $site
    *   The site node.
@@ -73,23 +73,11 @@ class SitePermissionAccessCheck implements AccessInterface {
    *   isNeutral() will be TRUE.
    */
   protected function allowedIfHasPermissions(NodeInterface $site, AccountInterface $account, array $permissions, $conjunction = 'AND') {
-    $access = FALSE;
+    $access = $conjunction === 'AND' && !empty($permissions);
 
-    if ($conjunction === 'AND' && !empty($permissions)) {
-      $access = TRUE;
-      foreach ($permissions as $permission) {
-        if (!$this->ogAccess->userAccess($site, $permission, $account)->isAllowed()) {
-          $access = FALSE;
-          break;
-        }
-      }
-    }
-    else {
-      foreach ($permissions as $permission) {
-        if ($this->ogAccess->userAccess($site, $permission, $account)->isAllowed()) {
-          $access = TRUE;
-          break;
-        }
+    foreach ($permissions as $permission) {
+      if ($this->ogAccess->userAccess($site, $permission, $account)->isAllowed()) {
+        return AccessResult::allowedIf(!$access);
       }
     }
 

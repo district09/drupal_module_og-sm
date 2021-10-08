@@ -62,6 +62,8 @@ class SiteMenuForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.ElseExpression)
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $menu = $this->siteMenuManager->getCurrentMenu();

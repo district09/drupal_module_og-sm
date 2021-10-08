@@ -1,4 +1,11 @@
+# Build artifacts.
 /build/
-/vendor/
 /.phpunit.result.cache
+
+# Dependencies.
+/vendor/
 /composer.lock
+
+# QA-Drupal
+/*.local.*
+/*.qa-drupal.*

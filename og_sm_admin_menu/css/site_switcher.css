@@ -2,8 +2,8 @@
  * Custom styling for the Administration menu.
  */
 .toolbar .toolbar-site-switcher {
-  background-image: none !important;
   background: #ff9933;
+  background-image: none !important;
   color: #000 !important;
 }
 .toolbar .toolbar-site-switcher + .toolbar-tray-horizontal ul.toolbar-menu li.platform {

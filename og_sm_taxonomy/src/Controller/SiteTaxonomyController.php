@@ -24,11 +24,11 @@ class SiteTaxonomyController extends ControllerBase {
   /**
    * Constructs a new SiteTaxonomyController.
    *
-   * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager
+   * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $siteTaxonomyManager
    *   The site taxonomy manager.
    */
-  public function __construct(SiteTaxonomyManagerInterface $site_taxonomy_manager) {
-    $this->siteTaxonomyManager = $site_taxonomy_manager;
+  public function __construct(SiteTaxonomyManagerInterface $siteTaxonomyManager) {
+    $this->siteTaxonomyManager = $siteTaxonomyManager;
   }
 
   /**

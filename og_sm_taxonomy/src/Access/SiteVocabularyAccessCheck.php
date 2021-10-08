@@ -31,14 +31,14 @@ class SiteVocabularyAccessCheck implements AccessInterface {
   /**
    * Constructs a new SiteVocabularyAccessCheck.
    *
-   * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager
+   * @param \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $siteTaxonomyManager
    *   The site taxonomy manager.
-   * @param \Drupal\og\OgAccessInterface $og_access
+   * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    */
-  public function __construct(SiteTaxonomyManagerInterface $site_taxonomy_manager, OgAccessInterface $og_access) {
-    $this->siteTaxonomyManager = $site_taxonomy_manager;
-    $this->ogAccess = $og_access;
+  public function __construct(SiteTaxonomyManagerInterface $siteTaxonomyManager, OgAccessInterface $ogAccess) {
+    $this->siteTaxonomyManager = $siteTaxonomyManager;
+    $this->ogAccess = $ogAccess;
   }
 
   /**

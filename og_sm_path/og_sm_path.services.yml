@@ -1,27 +1,41 @@
 services:
    og_sm.path.site_path_manager:
       class: Drupal\og_sm_path\SitePathManager
-      arguments: ['@entity_type.manager', '@language_manager', '@og_sm.site_manager', '@og_sm.config_factory_override', '@event_dispatcher', '@database', '@cache_tags.invalidator']
+      arguments:
+        - '@entity_type.manager'
+        - '@language_manager'
+        - '@og_sm.site_manager'
+        - '@og_sm.config_factory_override'
+        - '@og_sm.event_manager'
+        - '@database'
+        - '@cache_tags.invalidator'
    og_sm.path.site_path_processor:
       class: Drupal\og_sm_path\PathProcessor\SitePathProcessor
       tags:
         - { name: path_processor_inbound }
         - { name: path_processor_outbound }
-      arguments: ['@og_sm.path.site_path_manager', '@og_sm.site_manager', '@event_dispatcher']
+      arguments:
+        - '@og_sm.path.site_path_manager'
+        - '@og_sm.site_manager'
+        - '@og_sm.event_manager'
    og_sm.path.site_subscriber:
       class: Drupal\og_sm_path\EventSubscriber\SiteSubscriber
       tags:
         - { name: event_subscriber }
-      arguments: ['@og_sm.path.site_path_manager']
+      arguments:
+        - '@og_sm.path.site_path_manager'
    og_sm.path.site_type_subscriber:
       class: Drupal\og_sm_path\EventSubscriber\SiteTypeSubscriber
       tags:
         - { name: event_subscriber }
-      arguments: ['@entity_type.manager']
+      arguments:
+        - '@entity_type.manager'
    og_sm.path.event_subscriber:
       class: Drupal\og_sm_path\EventSubscriber\EventSubscriber
       tags:
         - { name: event_subscriber }
    og_sm.path.user_toolbar_link_builder:
       class: Drupal\og_sm_path\UserToolbarLinkBuilder
-      arguments: ['@current_user', '@og_sm.site_manager']
+      arguments:
+        - '@current_user'
+        - '@og_sm.site_manager'

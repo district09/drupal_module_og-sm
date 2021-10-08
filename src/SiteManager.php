@@ -14,10 +14,11 @@ use Drupal\og\Og;
 use Drupal\og\OgContextInterface;
 use Drupal\og_sm\Event\SiteEvent;
 use Drupal\og_sm\Event\SiteEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A manager to keep track of which nodes are og_sm Site enabled.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SiteManager implements SiteManagerInterface {
 
@@ -52,7 +53,7 @@ class SiteManager implements SiteManagerInterface {
   /**
    * The event dispatcher.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
   protected $eventDispatcher;
 
@@ -88,14 +89,22 @@ class SiteManager implements SiteManagerInterface {
    *   The entity type manager.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $eventDispatcher
    *   The event dispatcher.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The module handler.
    * @param \Drupal\Core\Session\AccountProxyInterface $accountProxy
    *   The service that contains the current active user.
    */
-  public function __construct(SiteTypeManagerInterface $siteTypeManager, OgContextInterface $ogContext, EntityTypeManagerInterface $entityTypeManager, MembershipManagerInterface $membershipManager, EventDispatcherInterface $eventDispatcher, ModuleHandlerInterface $moduleHandler, AccountProxyInterface $accountProxy) {
+  public function __construct(
+    SiteTypeManagerInterface $siteTypeManager,
+    OgContextInterface $ogContext,
+    EntityTypeManagerInterface $entityTypeManager,
+    MembershipManagerInterface $membershipManager,
+    EventManagerInterface $eventDispatcher,
+    ModuleHandlerInterface $moduleHandler,
+    AccountProxyInterface $accountProxy
+  ) {
     $this->siteTypeManager = $siteTypeManager;
     $this->ogContext = $ogContext;
     $this->entityTypeManager = $entityTypeManager;
@@ -189,7 +198,7 @@ class SiteManager implements SiteManagerInterface {
     }
 
     $event = new SiteEvent($node);
-    $this->eventDispatcher->dispatch($action, $event);
+    $this->eventDispatcher->dispatch($event, $action);
 
     // Dispatch the save event for insert/update operations.
     $actions = [SiteEvents::INSERT, SiteEvents::UPDATE];

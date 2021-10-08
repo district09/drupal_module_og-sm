@@ -39,8 +39,8 @@ interface SiteTaxonomyManagerInterface {
   /**
    * Fetches an array vocabularies referenced in an array query conditions.
    *
-   * This helper function will loop recursively through the conditions and return
-   * an array of referenced vocabularies.
+   * This helper function will loop recursively through the conditions and
+   * returns an array of referenced vocabularies.
    *
    * @param string[] $table_aliases
    *   An array of taxonomy table aliases.

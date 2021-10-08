@@ -194,7 +194,8 @@ class ConfigTest extends OgSmKernelTestBase {
     $this->assertEquals([], $site2_config->get(), 'Site 2 has no variables.');
 
     // Copy Variables by their names.
-    $site2_config->merge($site1_config->getMultiple(['prefix_1_variable_1', 'prefix_2_variable_1']))->save();
+    $names = ['prefix_1_variable_1', 'prefix_2_variable_1'];
+    $site2_config->merge($site1_config->getMultiple($names))->save();
     $expected = [
       'prefix_1_variable_1' => 'value 1-1',
       'prefix_2_variable_1' => 'value 2-1',

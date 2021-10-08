@@ -13,12 +13,14 @@ use Drupal\node\NodeInterface;
 use Drupal\og_sm\Event\SiteEvent;
 use Drupal\og_sm\Event\SiteEvents;
 use Drupal\og_sm\OgSm;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Provides site overrides for the configuration factory.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements SiteConfigFactoryOverrideInterface {
 
@@ -183,10 +185,10 @@ class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Sit
   /**
    * Sets the default site when the request dispatching has started.
    *
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
    *   The Event to process.
    */
-  public function onKernelRequestSetSite(GetResponseEvent $event) {
+  public function onKernelRequestSetSite(RequestEvent $event) {
     if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
       return;
     }

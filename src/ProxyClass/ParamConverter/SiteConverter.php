@@ -22,7 +22,7 @@ namespace Drupal\og_sm\ProxyClass\ParamConverter {
          *
          * @var string
          */
-        protected $drupalProxyOriginalServiceId;
+        protected $originalServiceId;
 
         /**
          * The real proxied service, after it was lazy loaded.
@@ -43,15 +43,15 @@ namespace Drupal\og_sm\ProxyClass\ParamConverter {
          *
          * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
          *   The container.
-         * @param string $drupal_proxy_original_service_id
+         * @param string $originalServiceId
          *   The service ID of the original service.
          *
          * @SuppressWarnings(PHPMD.LongVariable)
          */
-        public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container, $drupal_proxy_original_service_id)
+        public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container, $originalServiceId)
         {
             $this->container = $container;
-            $this->drupalProxyOriginalServiceId = $drupal_proxy_original_service_id;
+            $this->originalServiceId = $originalServiceId;
         }
 
         /**
@@ -63,7 +63,7 @@ namespace Drupal\og_sm\ProxyClass\ParamConverter {
         protected function lazyLoadItself()
         {
             if (!isset($this->service)) {
-                $this->service = $this->container->get($this->drupalProxyOriginalServiceId);
+                $this->service = $this->container->get($this->originalServiceId);
             }
 
             return $this->service;

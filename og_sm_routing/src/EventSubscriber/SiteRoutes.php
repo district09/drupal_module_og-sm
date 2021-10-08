@@ -5,10 +5,10 @@ namespace Drupal\og_sm_routing\EventSubscriber;
 use Drupal\Core\Routing\RouteBuildEvent;
 use Drupal\Core\Routing\RoutingEvents;
 use Drupal\node\NodeInterface;
+use Drupal\og_sm\EventManagerInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_routing\Event\SiteRoutingEvent;
 use Drupal\og_sm_routing\Event\SiteRoutingEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -20,7 +20,7 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * The event dispatcher service.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
   protected $eventDispatcher;
 
@@ -34,12 +34,15 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * Constructs a PathProcessorAlias object.
    *
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $event_dispatcher
    *   The event dispatcher service.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site path manager.
    */
-  public function __construct(EventDispatcherInterface $event_dispatcher, SiteManagerInterface $site_manager) {
+  public function __construct(
+    EventManagerInterface $event_dispatcher,
+    SiteManagerInterface $site_manager
+  ) {
     $this->eventDispatcher = $event_dispatcher;
     $this->siteManager = $site_manager;
   }
@@ -79,10 +82,10 @@ class SiteRoutes implements EventSubscriberInterface {
     $collection = new RouteCollection();
     $event = new SiteRoutingEvent($site, $collection);
     // Collect all the routes for this site.
-    $this->eventDispatcher->dispatch(SiteRoutingEvents::COLLECT, $event);
+    $this->eventDispatcher->dispatch($event, SiteRoutingEvents::COLLECT);
 
     // Allow altering the routes.
-    $this->eventDispatcher->dispatch(SiteRoutingEvents::ALTER, $event);
+    $this->eventDispatcher->dispatch($event, SiteRoutingEvents::ALTER);
 
     // Prefix all the routes within the collection to avoid collision with other
     // site routes.

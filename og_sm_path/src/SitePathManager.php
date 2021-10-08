@@ -8,14 +8,16 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\og_sm\EventManagerInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface;
 use Drupal\og_sm_path\Event\SitePathEvent;
 use Drupal\og_sm_path\Event\SitePathEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A manager to process site paths.
+ *
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
 class SitePathManager implements SitePathManagerInterface {
 
@@ -45,12 +47,12 @@ class SitePathManager implements SitePathManagerInterface {
    *
    * @var \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface
    */
-  protected $configFactoryOverride;
+  protected $configOverride;
 
   /**
    * The event dispatcher.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
   protected $eventDispatcher;
 
@@ -84,9 +86,9 @@ class SitePathManager implements SitePathManagerInterface {
    *   The language manager.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site manager.
-   * @param \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $config_factory_override
+   * @param \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $config_override
    *   The site configuration override service.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $event_dispatcher
    *   The event dispatcher.
    * @param \Drupal\Core\Database\Connection $connection
    *   A database connection for reading and writing path aliases.
@@ -96,11 +98,19 @@ class SitePathManager implements SitePathManagerInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager, SiteManagerInterface $site_manager, SiteConfigFactoryOverrideInterface $config_factory_override, EventDispatcherInterface $event_dispatcher, Connection $connection, CacheTagsInvalidatorInterface $invalidator) {
+  public function __construct(
+    EntityTypeManagerInterface $entity_type_manager,
+    LanguageManagerInterface $language_manager,
+    SiteManagerInterface $site_manager,
+    SiteConfigFactoryOverrideInterface $config_override,
+    EventManagerInterface $event_dispatcher,
+    Connection $connection,
+    CacheTagsInvalidatorInterface $invalidator
+  ) {
     $this->pathAliasStorage = $entity_type_manager->getStorage('path_alias');
     $this->languageManager = $language_manager;
     $this->siteManager = $site_manager;
-    $this->configFactoryOverride = $config_factory_override;
+    $this->configOverride = $config_override;
     $this->eventDispatcher = $event_dispatcher;
     $this->connection = $connection;
     $this->invalidator = $invalidator;
@@ -116,7 +126,7 @@ class SitePathManager implements SitePathManagerInterface {
       return $path;
     }
 
-    return (string) $this->configFactoryOverride
+    return (string) $this->configOverride
       ->getOverride($site, 'site_settings')
       ->get('path');
   }
@@ -171,7 +181,8 @@ class SitePathManager implements SitePathManagerInterface {
    * {@inheritdoc}
    */
   public function deleteSiteAliases(NodeInterface $site) {
-    if (!$path = $this->getPathFromSite($site)) {
+    $path = $this->getPathFromSite($site);
+    if (!$path) {
       return;
     }
 
@@ -210,9 +221,11 @@ class SitePathManager implements SitePathManagerInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
    */
   public function setPath(NodeInterface $site, $path, $trigger_event = TRUE) {
-    $config = $this->configFactoryOverride->getOverride($site, 'site_settings');
+    $config = $this->configOverride->getOverride($site, 'site_settings');
     $original_path = $config->get('path');
     if ($original_path === $path) {
       // No change.
@@ -225,7 +238,7 @@ class SitePathManager implements SitePathManagerInterface {
     // Trigger the path change event.
     if ($trigger_event) {
       $event = new SitePathEvent($site, $original_path, $path);
-      $this->eventDispatcher->dispatch(SitePathEvents::CHANGE, $event);
+      $this->eventDispatcher->dispatch($event, SitePathEvents::CHANGE);
     }
   }
 

@@ -87,12 +87,9 @@ class SitesFilter extends InOperator implements ContainerFactoryPluginInterface 
       return NULL;
     }
 
-    if ($this->options['manageable_sites']) {
-      $sites = $this->siteManager->getUserManageableSites();
-    }
-    else {
-      $sites = $this->siteManager->getAllSites();
-    }
+    $sites = $this->options['manageable_sites']
+      ? $this->siteManager->getUserManageableSites()
+      : $this->siteManager->getAllSites();
 
     $options = [];
     foreach ($sites as $site) {
