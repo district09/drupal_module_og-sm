@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\og_sm\EventDispatcherInterface;
+use Drupal\og_sm\EventManagerInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface;
 use Drupal\og_sm_path\Event\SitePathEvent;
@@ -52,7 +52,7 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * The event dispatcher.
    *
-   * @var \Drupal\og_sm\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
   protected $eventDispatcher;
 
@@ -88,7 +88,7 @@ class SitePathManager implements SitePathManagerInterface {
    *   The site manager.
    * @param \Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface $config_override
    *   The site configuration override service.
-   * @param \Drupal\og_sm\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $event_dispatcher
    *   The event dispatcher.
    * @param \Drupal\Core\Database\Connection $connection
    *   A database connection for reading and writing path aliases.
@@ -103,7 +103,7 @@ class SitePathManager implements SitePathManagerInterface {
     LanguageManagerInterface $language_manager,
     SiteManagerInterface $site_manager,
     SiteConfigFactoryOverrideInterface $config_override,
-    EventDispatcherInterface $event_dispatcher,
+    EventManagerInterface $event_dispatcher,
     Connection $connection,
     CacheTagsInvalidatorInterface $invalidator
   ) {

@@ -1,6 +1,6 @@
 services:
-  og_sm.event_dispatcher:
-    class: Drupal\og_sm\EventDispatcher
+  og_sm.event_manager:
+    class: Drupal\og_sm\EventManager
     arguments:
       - '@event_dispatcher'
 
@@ -11,7 +11,7 @@ services:
       - '@og.context'
       - '@entity_type.manager'
       - '@og.membership_manager'
-      - '@og_sm.event_dispatcher'
+      - '@og_sm.event_manager'
       - '@module_handler'
       - '@current_user'
   og_sm.site_type_manager:

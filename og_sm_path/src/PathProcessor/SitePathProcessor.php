@@ -6,7 +6,7 @@ use Drupal\Core\PathProcessor\InboundPathProcessorInterface;
 use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
-use Drupal\og_sm\EventDispatcherInterface;
+use Drupal\og_sm\EventManagerInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_path\Event\AjaxPathEvent;
 use Drupal\og_sm_path\Event\AjaxPathEvents;
@@ -33,11 +33,11 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
   protected $siteManager;
 
   /**
-   * The event dispatcher.
+   * The event manager.
    *
-   * @var \Drupal\og_sm\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
-  protected $eventDispatcher;
+  protected $eventManager;
 
   /**
    * An array of ajax paths.
@@ -49,21 +49,21 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
   /**
    * Constructs a SitePathProcessor object.
    *
-   * @param \Drupal\og_sm_path\SitePathManagerInterface $site_path_manager
+   * @param \Drupal\og_sm_path\SitePathManagerInterface $sitePathManager
    *   The site path manager.
-   * @param \Drupal\og_sm\SiteManagerInterface $site_manager
+   * @param \Drupal\og_sm\SiteManagerInterface $siteManager
    *   The site manager.
-   * @param \Drupal\og_sm\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $eventManager
    *   The event dispatcher.
    */
   public function __construct(
-    SitePathManagerInterface $site_path_manager,
-    SiteManagerInterface $site_manager,
-    EventDispatcherInterface $event_dispatcher
+    SitePathManagerInterface $sitePathManager,
+    SiteManagerInterface $siteManager,
+    EventManagerInterface $eventManager
   ) {
-    $this->sitePathManager = $site_path_manager;
-    $this->siteManager = $site_manager;
-    $this->eventDispatcher = $event_dispatcher;
+    $this->sitePathManager = $sitePathManager;
+    $this->siteManager = $siteManager;
+    $this->eventManager = $eventManager;
   }
 
   /**
@@ -78,7 +78,7 @@ class SitePathProcessor implements InboundPathProcessorInterface, OutboundPathPr
     }
 
     $event = new AjaxPathEvent();
-    $this->eventDispatcher->dispatch($event, AjaxPathEvents::COLLECT);
+    $this->eventManager->dispatch($event, AjaxPathEvents::COLLECT);
     $this->ajaxPaths = $event->getAjaxPaths();
     return $this->ajaxPaths;
   }

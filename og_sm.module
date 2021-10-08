@@ -47,14 +47,15 @@ function og_sm_form_node_type_form_alter(array &$form, FormStateInterface $form_
  * Implements hook_entity_field_values_init().
  */
 function og_sm_entity_field_values_init(FieldableEntityInterface $entity) {
-  if (!$site = OgSm::siteManager()->currentSite()) {
+  $site = OgSm::siteManager()->currentSite();
+  if (!$site) {
     return;
   }
 
-  /** @var \Drupal\og\OgGroupAudienceHelperInterface $group_audience_helper */
-  $group_audience_helper = Drupal::service('og.group_audience_helper');
+  /** @var \Drupal\og\OgGroupAudienceHelperInterface $groupAudienceHelper */
+  $groupAudienceHelper = Drupal::service('og.group_audience_helper');
 
-  $fields = $group_audience_helper->getAllGroupAudienceFields(
+  $fields = $groupAudienceHelper->getAllGroupAudienceFields(
     $entity->getEntityTypeId(),
     $entity->bundle(),
     $site->getEntityTypeId(),
@@ -133,23 +134,21 @@ function og_sm_node_type_insert(NodeTypeInterface $node_type) {
  *   The node type.
  */
 function _og_sm_node_type_save(NodeTypeInterface $node_type) {
-  $is_site_type_original = FALSE;
+  $isSiteTypeOriginal = FALSE;
   if (isset($node_type->original)) {
-    $is_site_type_original = OgSm::isSiteType($node_type->original);
+    $isSiteTypeOriginal = OgSm::isSiteType($node_type->original);
   }
 
   $is_site_type = OgSm::isSiteType($node_type);
-  if ($is_site_type_original === $is_site_type) {
+  if ($isSiteTypeOriginal === $is_site_type) {
     return;
   }
 
   $event = new SiteTypeEvent($node_type);
-  if ($is_site_type) {
-    $event_name = SiteTypeEvents::ADD;
-  }
-  else {
-    $event_name = SiteTypeEvents::REMOVE;
-  }
+  $event_name = $is_site_type
+    ? SiteTypeEvents::ADD
+    : SiteTypeEvents::REMOVE;
+
   \Drupal::service('event_dispatcher')->dispatch($event_name, $event);
 }
 

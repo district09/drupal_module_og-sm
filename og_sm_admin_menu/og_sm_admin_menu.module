@@ -23,6 +23,8 @@ function og_sm_admin_menu_local_tasks_alter(&$local_tasks) {
 
 /**
  * Implements hook_toolbar().
+ *
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 function og_sm_admin_menu_toolbar() {
   $site_manager = OgSm::siteManager();
@@ -81,6 +83,7 @@ function og_sm_admin_menu_toolbar() {
     $cache_tags[] = 'node:' . $site->id();
   }
 
+  $items = [];
   $items['site_switcher'] = [
     '#type' => 'toolbar_item',
     'tab' => [

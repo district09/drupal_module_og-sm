@@ -6,7 +6,7 @@ services:
         - '@language_manager'
         - '@og_sm.site_manager'
         - '@og_sm.config_factory_override'
-        - '@og_sm.event_dispatcher'
+        - '@og_sm.event_manager'
         - '@database'
         - '@cache_tags.invalidator'
    og_sm.path.site_path_processor:
@@ -17,7 +17,7 @@ services:
       arguments:
         - '@og_sm.path.site_path_manager'
         - '@og_sm.site_manager'
-        - '@event_dispatcher'
+        - '@og_sm.event_manager'
    og_sm.path.site_subscriber:
       class: Drupal\og_sm_path\EventSubscriber\SiteSubscriber
       tags:

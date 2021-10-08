@@ -5,7 +5,7 @@ namespace Drupal\og_sm_routing\EventSubscriber;
 use Drupal\Core\Routing\RouteBuildEvent;
 use Drupal\Core\Routing\RoutingEvents;
 use Drupal\node\NodeInterface;
-use Drupal\og_sm\EventDispatcherInterface;
+use Drupal\og_sm\EventManagerInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_routing\Event\SiteRoutingEvent;
 use Drupal\og_sm_routing\Event\SiteRoutingEvents;
@@ -20,7 +20,7 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * The event dispatcher service.
    *
-   * @var \Drupal\og_sm\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
   protected $eventDispatcher;
 
@@ -34,13 +34,13 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * Constructs a PathProcessorAlias object.
    *
-   * @param \Drupal\og_sm\EventDispatcherInterface $event_dispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $event_dispatcher
    *   The event dispatcher service.
    * @param \Drupal\og_sm\SiteManagerInterface $site_manager
    *   The site path manager.
    */
   public function __construct(
-    EventDispatcherInterface $event_dispatcher,
+    EventManagerInterface $event_dispatcher,
     SiteManagerInterface $site_manager
   ) {
     $this->eventDispatcher = $event_dispatcher;

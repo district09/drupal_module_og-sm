@@ -2,7 +2,7 @@ name: 'Site Manager Path'
 description: 'Functionality to create a Site Path Prefix for all Site related pages.'
 package: 'Organic Groups Site Manager'
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9.1
 dependencies:
   - og_sm:og_sm
   - og_sm:og_sm_config

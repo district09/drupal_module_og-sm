@@ -2,7 +2,7 @@ name: 'Site Taxonomy'
 description: 'Use global vocabularies with Site specific terms.'
 package: 'Organic Groups Site Manager'
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9.1
 dependencies:
   - og_sm:og_sm_context
   - drupal:taxonomy

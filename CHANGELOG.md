@@ -1,24 +1,33 @@
 # Changelog
+
 All Notable changes to **Organic Groups Site Manager** module suite.
 
-## [Unreleased]
+## [2.0.0]
 
-### [1.2.0]
+This release adds proper support for Drupal 9.1 and higher, older versions will
+not work with this release!
 
-- Updated qa-drupal to 1.4.x.
-- Updated info files.
+### Changed
+
+- Change minimal PHP version to 7.2.
+- Change minimal Drupal version to 9.1.
+
+### Updated
+
+- Update qa-drupal to 1.4.x.
+- Update info files.
 
 ### Fixed
 
-- Fixed PHPCS, PHPMD & PHPStan issues.
-- Fixed deprecations.
+- Fixe PHPCS, PHPMD & PHPStan issues.
+- Fixe deprecations.
 
 ## [1.1.0]
 
 ### Added
 
 - Add qa-drupal to validate code quality using GrumPHP.
-- Add access handling for entity reference fields that cannot reference the 
+- Add access handling for entity reference fields that cannot reference the
   current site.
 - Add support for Paragraphs type permissions.
 - Add support for taxonomy with an optional group reference.

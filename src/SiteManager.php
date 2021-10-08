@@ -53,7 +53,7 @@ class SiteManager implements SiteManagerInterface {
   /**
    * The event dispatcher.
    *
-   * @var \Drupal\og_sm\EventDispatcherInterface
+   * @var \Drupal\og_sm\EventManagerInterface
    */
   protected $eventDispatcher;
 
@@ -89,7 +89,7 @@ class SiteManager implements SiteManagerInterface {
    *   The entity type manager.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager.
-   * @param \Drupal\og_sm\EventDispatcherInterface $eventDispatcher
+   * @param \Drupal\og_sm\EventManagerInterface $eventDispatcher
    *   The event dispatcher.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The module handler.
@@ -101,7 +101,7 @@ class SiteManager implements SiteManagerInterface {
     OgContextInterface $ogContext,
     EntityTypeManagerInterface $entityTypeManager,
     MembershipManagerInterface $membershipManager,
-    EventDispatcherInterface $eventDispatcher,
+    EventManagerInterface $eventDispatcher,
     ModuleHandlerInterface $moduleHandler,
     AccountProxyInterface $accountProxy
   ) {

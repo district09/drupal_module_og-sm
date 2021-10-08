@@ -30,9 +30,13 @@ function og_sm_content_theme_registry_alter(&$theme_registry) {
 
 /**
  * Implements hook_entity_field_access().
+ *
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 function og_sm_content_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
-  if (!$site = OgSm::siteManager()->currentSite()) {
+  $site = OgSm::siteManager()->currentSite();
+  if (!$site) {
     return AccessResult::neutral();
   }
 
@@ -63,7 +67,8 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
 
       try {
         // Get all bundles of the referenced entity type.
-        if (!$bundle_ids = Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type)) {
+        $bundle_ids = Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);
+        if (!$bundle_ids) {
           return AccessResult::neutral();
         }
 
@@ -78,21 +83,21 @@ function og_sm_content_entity_field_access($operation, FieldDefinitionInterface 
         $group_type_manager = Drupal::service('og.group_type_manager');
 
         // Get the group content bundles of $entity_type.
-        $group_content_bundle_ids = $group_type_manager->getAllGroupContentBundlesByEntityType($entity_type);
+        $content_bundle_ids = $group_type_manager->getAllGroupContentBundlesByEntityType($entity_type);
 
         // Return neutral if none of the bundles are group content or
         // if at least one none-group content bundle can be referenced.
-        if (!$group_content_bundle_ids || array_diff($bundle_ids, $group_content_bundle_ids)) {
+        if (!$content_bundle_ids || array_diff($bundle_ids, $content_bundle_ids)) {
           return AccessResult::neutral();
         }
 
         // Get the group content bundles of $entity_type that may be referenced
         // by the current site.
-        $group_content_bundle_ids = $group_type_manager->getGroupContentBundleIdsByGroupBundle($site->getEntityTypeId(), $site->bundle());
-        $group_content_bundle_ids = $group_content_bundle_ids[$entity_type] ?? [];
+        $content_bundle_ids = $group_type_manager->getGroupContentBundleIdsByGroupBundle($site->getEntityTypeId(), $site->bundle());
+        $content_bundle_ids = $content_bundle_ids[$entity_type] ?? [];
 
         // Deny access if none of the allowed bundles are listed.
-        if (!$group_content_bundle_ids || !array_intersect($bundle_ids, $group_content_bundle_ids)) {
+        if (!$content_bundle_ids || !array_intersect($bundle_ids, $content_bundle_ids)) {
           return AccessResult::forbidden();
         }
       }

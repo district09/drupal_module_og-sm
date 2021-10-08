@@ -63,7 +63,8 @@ function og_sm_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $ope
  * Implements hook_ENTITY_TYPE_create_access() for 'taxonomy_term'.
  */
 function og_sm_taxonomy_taxonomy_term_create_access(AccountInterface $account, $context, $entity_bundle) {
-  if (!$site = OgSm::siteManager()->currentSite()) {
+  $site = OgSm::siteManager()->currentSite();
+  if (!$site) {
     return AccessResult::neutral();
   }
 
@@ -109,14 +110,14 @@ function og_sm_taxonomy_query_term_access_alter(AlterableInterface $query) {
   }
   $table_alias = reset($table_aliases);
 
-  /** @var \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $site_taxonomy_manager */
-  $site_taxonomy_manager = \Drupal::service('og_sm_taxonomy.site_manager');
+  /** @var \Drupal\og_sm_taxonomy\SiteTaxonomyManagerInterface $siteTaxonomyManager */
+  $siteTaxonomyManager = \Drupal::service('og_sm_taxonomy.site_manager');
 
   // Get the vocabularies from the query conditions.
-  $vocabularies = $site_taxonomy_manager->getSiteVocabulariesFromConditions($table_aliases, $query->conditions());
+  $vocabularies = $siteTaxonomyManager->getSiteVocabulariesFromConditions($table_aliases, $query->conditions());
   foreach ($vocabularies as $vocabulary) {
     // Only when the vocabulary is a Site vocabulary.
-    if (!$site_taxonomy_manager->isSiteVocabulary($vocabulary->id())) {
+    if (!$siteTaxonomyManager->isSiteVocabulary($vocabulary->id())) {
       continue;
     }
 

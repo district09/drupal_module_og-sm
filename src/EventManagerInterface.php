@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Wrapper around the event dispatcher to avoid deprecations.
  */
-interface EventDispatcherInterface {
+interface EventManagerInterface {
 
   /**
    * Dispatch a new event.
