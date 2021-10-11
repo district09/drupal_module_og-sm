@@ -1,7 +1,9 @@
 /**
  * Custom styling for the Administration menu.
  */
-.toolbar .toolbar-site-switcher {
+.toolbar .toolbar-site-switcher,
+.adminimal-admin-toolbar .toolbar .toolbar-bar .toolbar-tab > .toolbar-site-switcher.is-active,
+.adminimal-admin-toolbar .toolbar .toolbar-bar .toolbar-tab > .toolbar-site-switcher:focus {
   background: #ff9933;
   background-image: none !important;
   color: #000 !important;

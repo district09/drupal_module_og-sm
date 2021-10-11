@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\node\NodeInterface;
+use Drupal\node\NodeTypeInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\og_sm\SiteTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -112,6 +113,23 @@ class SiteContentController extends ControllerBase {
     $build['#content'] = $content;
 
     return $build;
+  }
+
+  /**
+   * Provides the node submission form.
+   *
+   * @param \Drupal\node\NodeTypeInterface $node_type
+   *   The node type entity for the node.
+   *
+   * @return array
+   *   A node submission form.
+   */
+  public function add(NodeTypeInterface $node_type): array {
+    $node = $this->entityTypeManager()->getStorage('node')->create([
+      'type' => $node_type->id(),
+    ]);
+
+    return $this->entityFormBuilder()->getForm($node);
   }
 
 }
