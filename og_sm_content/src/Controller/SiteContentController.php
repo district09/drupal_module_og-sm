@@ -118,8 +118,6 @@ class SiteContentController extends ControllerBase {
   /**
    * Provides the node submission form.
    *
-   * @param \Drupal\node\NodeInterface $node
-   *   The site to create the node for.
    * @param \Drupal\node\NodeTypeInterface $node_type
    *   The node type entity for the node.
    *
