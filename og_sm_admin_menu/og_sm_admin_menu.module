@@ -8,7 +8,7 @@
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\og_sm\OgSm;
-use Drupal\og_sm_admin_menu\Render\Element\AdminToolbar;
+use Drupal\og_sm_admin_menu\Render\Element\SiteManagerAdminToolbar;
 
 /**
  * Implements hook_local_tasks_alter().
@@ -129,7 +129,7 @@ function og_sm_admin_menu_toolbar() {
  */
 function og_sm_admin_menu_toolbar_alter(&$items) {
   $items['administration']['tray']['toolbar_administration']['#pre_render'] = [
-    [AdminToolbar::class, 'preRenderTray'],
+    [SiteManagerAdminToolbar::class, 'preRenderTray'],
   ];
   $items['administration']['#cache']['contexts'][] = 'og_group_context';
 }

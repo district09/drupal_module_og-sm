@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\og_sm_admin_menu\Render\Element;
 
+use Drupal\admin_toolbar\Render\Element\AdminToolbar;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\og_sm\OgSm;
@@ -12,7 +13,7 @@ use Drupal\og_sm_admin_menu\Controller\ToolbarController;
 /**
  * Pre render callbacks for the AdminToolbar.
  */
-class AdminToolbar implements TrustedCallbackInterface {
+class SiteManagerAdminToolbar implements TrustedCallbackInterface {
 
   /**
    * {@inheritdoc}
@@ -28,37 +29,37 @@ class AdminToolbar implements TrustedCallbackInterface {
    *   The build to alter.
    *
    * @return array
-   *   Tha altered render array.
+   *   The altered render array.
    */
   public static function preRenderTray(array $build): array {
-    $site_manager = OgSm::siteManager();
+    $siteManager = OgSm::siteManager();
 
-    $admin_toolbar_exists = \Drupal::moduleHandler()->moduleExists('admin_toolbar');
+    $adminToolbarExists = \Drupal::moduleHandler()->moduleExists('admin_toolbar');
 
-    if (!$site_manager->currentSite()) {
+    if (!$siteManager->currentSite()) {
       // If there's no site context, render the toolbar as usual.
-      return $admin_toolbar_exists
+      return $adminToolbarExists
         ? AdminToolbar::preRenderTray($build)
         : ToolbarController::preRenderAdministrationTray($build);
     }
 
     // @todo This can be simplified once https://www.drupal.org/node/1869638 has
     // been implemented in core and the "admin_toolbar" module.
-    /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_tree */
-    $menu_tree = \Drupal::service('toolbar.menu_tree');
+    /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree */
+    $menuTree = \Drupal::service('toolbar.menu_tree');
     $parameters = new MenuTreeParameters();
     // Depending on whether the 'admin_toolbar' module exists we should change
     // the menu depth shown in the toolbar.
-    $max_depth = $admin_toolbar_exists ? 4 : 2;
+    $max_depth = $adminToolbarExists ? 4 : 2;
     $parameters->setMinDepth(2)->setMaxDepth($max_depth)->onlyEnabledLinks();
-    $tree = $menu_tree->load('og_sm_admin_menu', $parameters);
+    $tree = $menuTree->load('og_sm_admin_menu', $parameters);
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
-      ['callable' => $admin_toolbar_exists ? 'toolbar_tools_menu_navigation_links' : 'toolbar_menu_navigation_links'],
+      ['callable' => $adminToolbarExists ? 'toolbar_tools_menu_navigation_links' : 'toolbar_menu_navigation_links'],
     ];
-    $tree = $menu_tree->transform($tree, $manipulators);
-    $build['administration_menu'] = $menu_tree->build($tree);
+    $tree = $menuTree->transform($tree, $manipulators);
+    $build['administration_menu'] = $menuTree->build($tree);
 
     return $build;
   }
