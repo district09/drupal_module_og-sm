@@ -16,7 +16,7 @@
         "drupal/og": "^1.0"
     },
     "require-dev": {
-        "digipolisgent/qa-drupal": "^1.0",
+        "digipolisgent/qa-drupal": "^1.6",
         "drupal/admin_toolbar": "2.x-dev",
         "drupal/core": "^9.1",
         "drupal/og_menu": "1.x-dev",
