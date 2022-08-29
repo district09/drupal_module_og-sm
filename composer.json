@@ -1,7 +1,8 @@
 {
     "name": "gent-drupal/og_sm",
-    "type": "drupal-module",
     "description": "Support to setup a platform supporting multiple (sub)sites using Organic Groups.",
+    "license": "GPL-2.0+",
+    "type": "drupal-module",
     "keywords": [
         "Drupal",
         "Organic Groups",
@@ -11,27 +12,23 @@
         "Digipolis"
     ],
     "homepage": "https://www.drupal.org/project/og_sm",
-    "license": "GPL-2.0+",
+    "support": {
+        "issues": "https://github.com/digipolisgent/drupal_module_og-sm/issues",
+        "source": "https://github.com/digipolisgent/drupal_module_og-sm"
+    },
     "require": {
+        "php": "^7.4 || ^8.0",
         "drupal/og": "^1.0"
     },
     "require-dev": {
-        "digipolisgent/qa-drupal": "^1.0",
+        "digipolisgent/qa-drupal": "^1.7",
         "drupal/admin_toolbar": "2.x-dev",
-        "drupal/core": "^9.1",
+        "drupal/core": "^9.3",
         "drupal/og_menu": "1.x-dev",
         "drupal/pathauto": "1.x-dev",
         "drupal/token": "1.x-dev",
         "phpspec/prophecy-phpunit": "^2",
         "psr/event-dispatcher": "1.0.x-dev"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "grumphp": {
-            "config-default-path": "vendor/digipolisgent/qa-drupal/configs/grumphp-extension.yml"
-        }
     },
     "repositories": {
         "drupal": {
@@ -40,6 +37,19 @@
         }
     },
     "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp-shim": true,
+            "ergebnis/composer-normalize": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "grumphp": {
+            "config-default-path": "vendor/digipolisgent/qa-drupal/configs/grumphp-extension.yml"
+        }
+    },
     "scripts": {
         "post-install-cmd": "vendor/bin/grumphp git:init",
         "coverage": "vendor/bin/phpunit --configuration=phpunit.qa-drupal.xml --coverage-html build/coverage",
@@ -49,9 +59,5 @@
         "phpmd": "vendor/bin/grumphp run --tasks=phpmd",
         "phpstan": "vendor/bin/grumphp run --tasks=phpstan",
         "phpunit": "vendor/bin/phpunit --configuration=phpunit.qa-drupal.xml"
-    },
-    "support": {
-        "issues": "https://github.com/digipolisgent/drupal_module_og-sm/issues",
-        "source": "https://github.com/digipolisgent/drupal_module_og-sm"
     }
 }

@@ -16,6 +16,7 @@ class OgSmContentServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function alter(ContainerBuilder $container) {
+    /** @var array $modules */
     $modules = $container->getParameter('container.modules');
     if (isset($modules['og_sm_path'])) {
       $service_definition = new Definition('Drupal\og_sm_content\PathProcessor\SiteContentPathProcessor', [

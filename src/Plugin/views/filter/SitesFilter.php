@@ -83,7 +83,9 @@ class SitesFilter extends InOperator implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function getValueOptions() {
-    if (isset($this->valueOptions)) {
+    /** @var array|null $valueOptions */
+    $valueOptions = $this->valueOptions;
+    if (isset($valueOptions)) {
       return NULL;
     }
 
@@ -96,9 +98,8 @@ class SitesFilter extends InOperator implements ContainerFactoryPluginInterface 
       $options[$site->id()] = $site->label();
     }
     asort($options);
-    $this->valueOptions = $options;
 
-    return $this->valueOptions;
+    return $options;
   }
 
   /**

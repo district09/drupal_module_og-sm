@@ -2,6 +2,7 @@
 
 namespace Drupal\og_sm_path\EventSubscriber;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\og_sm\Event\SiteEvent;
 use Drupal\og_sm\Event\SiteEvents;
 use Drupal\og_sm_path\Event\SitePathEvent;
@@ -22,13 +23,23 @@ class SiteSubscriber implements EventSubscriberInterface {
   protected $sitePathManager;
 
   /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * Constructs a SiteSubscriber object.
    *
    * @param \Drupal\og_sm_path\SitePathManagerInterface $site_path_manager
    *   The site path manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
    */
-  public function __construct(SitePathManagerInterface $site_path_manager) {
+  public function __construct(SitePathManagerInterface $site_path_manager, ModuleHandlerInterface $module_handler) {
     $this->sitePathManager = $site_path_manager;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -89,7 +100,7 @@ class SiteSubscriber implements EventSubscriberInterface {
    */
   public function onSitePathChange(SitePathEvent $event) {
     // Update all aliases for the Site when its alias changes.
-    module_load_include('inc', 'og_sm_path', 'og_sm_path.batch');
+    $this->moduleHandler->loadInclude('og_sm_path', 'inc', 'og_sm_path.batch');
     og_sm_path_site_alias_update_batch($event->getSite());
   }
 

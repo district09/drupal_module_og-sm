@@ -24,6 +24,7 @@ services:
         - { name: event_subscriber }
       arguments:
         - '@og_sm.path.site_path_manager'
+        - '@module_handler'
    og_sm.path.site_type_subscriber:
       class: Drupal\og_sm_path\EventSubscriber\SiteTypeSubscriber
       tags:
