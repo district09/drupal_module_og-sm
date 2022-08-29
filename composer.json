@@ -17,6 +17,7 @@
         "source": "https://github.com/digipolisgent/drupal_module_og-sm"
     },
     "require": {
+        "php": "^7.4 || ^8.0",
         "drupal/og": "^1.0"
     },
     "require-dev": {

@@ -18,7 +18,7 @@ use Drupal\field\Entity\FieldStorageConfig;
  *   The Site to create the batch for.
  */
 function og_sm_path_site_alias_update_batch(NodeInterface $site) {
-  $file = drupal_get_path('module', 'og_sm_path') . '/og_sm_path.batch.inc';
+  $file = \Drupal::service('extension.list.module')->getPath('og_sm_path') . '/og_sm_path.batch.inc';
 
   $batch = [
     'title' => t('Update Site content aliases'),

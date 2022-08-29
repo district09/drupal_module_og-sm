@@ -27,7 +27,7 @@ namespace Drupal\og_sm\ProxyClass\ParamConverter {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\og_sm\ParamConverter\SiteConverter
+         * @var \Drupal\og_sm\ParamConverter\SiteConverter|null
          */
         protected $service;
 
