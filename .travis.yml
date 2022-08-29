@@ -11,8 +11,8 @@ cache:
     - $HOME/.composer/cache
 
 env:
-  - DRUPAL=9.3 PHPUNIT=9
-  - DRUPAL=9.4 PHPUNIT=9
+  - DRUPAL=9.3
+  - DRUPAL=9.4
 
 jobs:
   fast_finish: true
@@ -23,7 +23,7 @@ before_install:
   - composer config -ga http-basic.digipolis.repo.repman.io token $REPMAN_TOKEN
 
   # Require Drupal core.
-  - composer require -n --no-update --sort-packages -w --dev drupal/core:~$DRUPAL.0 phpunit/phpunit:^$PHPUNIT
+  - composer require -n --no-update --sort-packages -w --dev drupal/core:~$DRUPAL.0
 
   # Get and run the Code Climate test reporter.
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
