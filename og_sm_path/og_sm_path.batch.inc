@@ -150,6 +150,7 @@ function _og_sm_path_site_alias_update_content_get_site_content(NodeInterface $s
   // Retrieve the next batch.
   $query = \Drupal::entityQuery('node');
   $result = $query
+    ->accessCheck()
     ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $site->id())
     ->condition('nid', $context['sandbox']['last_id'], '>')
     ->sort('nid', 'ASC')

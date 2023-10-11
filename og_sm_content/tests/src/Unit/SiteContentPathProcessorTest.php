@@ -9,6 +9,7 @@ use Drupal\og_sm_content\PathProcessor\SiteContentPathProcessor;
 use Drupal\og_sm_path\SitePathManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
