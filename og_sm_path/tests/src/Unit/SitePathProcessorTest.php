@@ -13,6 +13,7 @@ use Drupal\og_sm_path\PathProcessor\SitePathProcessor;
 use Drupal\og_sm_path\SitePathManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;

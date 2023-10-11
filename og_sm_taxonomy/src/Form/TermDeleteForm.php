@@ -3,17 +3,21 @@
 namespace Drupal\og_sm_taxonomy\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Entity\ContentEntityDeleteForm;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Url;
 use Drupal\og_sm\SiteManagerInterface;
-use Drupal\taxonomy\Form\TermDeleteForm as TermDeleteFormBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Extends TermDeleteForm to override the cancel url based on site context.
+ *
+ * Overrides TermDeleteForm to change the CancelUrl.
+ *
+ * @todo: Move functionality to form_alter.
  */
-class TermDeleteForm extends TermDeleteFormBase {
+class TermDeleteForm extends ContentEntityDeleteForm {
 
   /**
    * The site manager.
@@ -63,13 +67,36 @@ class TermDeleteForm extends TermDeleteFormBase {
     $site = $this->siteManager->currentSite();
 
     if (!$site) {
-      return parent::getCancelUrl();
+      // The cancel URL is the vocabulary collection, terms have no global
+      // list page.
+      return new Url('entity.taxonomy_vocabulary.collection');
     }
 
     return new Url('og_sm_taxonomy.vocabulary.term_overview', [
       'node' => $site->id(),
       'taxonomy_vocabulary' => $this->getBundleEntity()->id(),
     ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getRedirectUrl() {
+    return $this->getCancelUrl();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->t('Deleting a term will delete all its children if there are any. This action cannot be undone.');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDeletionMessage() {
+    return $this->t('Deleted term %name.', ['%name' => $this->entity->label()]);
   }
 
 }

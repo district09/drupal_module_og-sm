@@ -3,7 +3,6 @@ language: php
 sudo: false
 
 php:
-  - 7.4
   - 8.1
 
 cache:
@@ -11,8 +10,8 @@ cache:
     - $HOME/.composer/cache
 
 env:
-  - DRUPAL=9.3
-  - DRUPAL=9.4
+  - DRUPAL=9.5
+  - DRUPAL=10.1
 
 jobs:
   fast_finish: true
