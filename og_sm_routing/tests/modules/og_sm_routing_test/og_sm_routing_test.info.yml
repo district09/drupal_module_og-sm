@@ -1,7 +1,7 @@
 name: 'Site Routing TEST'
 description: 'Module to support tests for the og_sm_routing module.'
 package: 'Organic Groups Site Manager'
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 type: module
 hidden: true
 dependencies:

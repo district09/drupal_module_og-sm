@@ -76,7 +76,7 @@ class SitePathFormTest extends OgSmWebTestBase {
       'title[0][value]' => 'Site node test 1',
       'site_path' => '/site-node-test-me',
     ];
-    $this->drupalPostForm('node/add/is_site_type', $edit, 'Save');
+    $this->submitForm('node/add/is_site_type', $edit, 'Save');
     $site_node = $this->getNodeByTitle('Site node test 1');
     $this->assertEquals($edit['site_path'], OgSmPath::sitePathManager()->getPathFromSite($site_node), 'Site path is saved as Site variable');
 
@@ -85,7 +85,7 @@ class SitePathFormTest extends OgSmWebTestBase {
       'title[0][value]' => 'Site node test 2',
       'site_path' => '/site-node-test-me',
     ];
-    $this->drupalPostForm('node/add/is_site_type', $edit, 'Save');
+    $this->submitForm('node/add/is_site_type', $edit, 'Save');
     $this->assertSession()->pageTextContains('The Site path /site-node-test-me is already in use.');
 
     // Creating a new Site with an invalid path should result in a form error.
@@ -93,13 +93,13 @@ class SitePathFormTest extends OgSmWebTestBase {
       'title[0][value]' => 'Site node test 2',
       'site_path' => '/site path not valid',
     ];
-    $this->drupalPostForm('node/add/is_site_type', $edit, 'Save');
+    $this->submitForm('node/add/is_site_type', $edit, 'Save');
     $this->assertSession()->pageTextContains('The Site path may contain only lowercase letters, numbers and dashes.');
     $edit = [
       'title[0][value]' => 'Site node test 2',
       'site_path' => 'site-path-not-valid',
     ];
-    $this->drupalPostForm('node/add/is_site_type', $edit, 'Save');
+    $this->submitForm('node/add/is_site_type', $edit, 'Save');
     $this->assertSession()->pageTextContains('The alias needs to start with a slash.');
 
     // The site path should be in the edit form for users with the proper

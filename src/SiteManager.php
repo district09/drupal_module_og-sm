@@ -234,6 +234,7 @@ class SiteManager implements SiteManagerInterface {
     /** @var int[] $ids */
     $ids = $this->getNodeStorage()
       ->getQuery()
+      ->accessCheck()
       ->condition('type', array_keys($siteTypes), 'IN')
       ->execute();
 

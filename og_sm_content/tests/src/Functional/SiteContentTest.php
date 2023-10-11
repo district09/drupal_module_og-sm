@@ -228,14 +228,14 @@ class SiteContentTest extends OgSmWebTestBase {
     // Login as admin.
     $this->drupalLogin($this->userAdministrator);
     // Create a node as admin on site 2.
-    $this->drupalPostForm($site2_path . '/content/add', [
+    $this->submitForm($site2_path . '/content/add', [
       'title[0][value]' => 'test site 2 content by admin',
     ], 'Save');
     $site2_node = $this->getNodeByTitle('test site 2 content by admin');
     // Verify that the newly created node is linked to site 2.
     $this->assertEquals($this->site2->id(), $site_manager->getSiteFromEntity($site2_node)->id());
 
-    $this->drupalPostForm($site1_path . '/content/add', [
+    $this->submitForm($site1_path . '/content/add', [
       'title[0][value]' => 'test site 1 content by admin',
     ], 'Save');
     $site1_node = $this->getNodeByTitle('test site 1 content by admin');
@@ -252,7 +252,7 @@ class SiteContentTest extends OgSmWebTestBase {
     // Verify that the site manager can access the promote checkbox.
     $this->assertSession()->fieldExists('promote[value]');
 
-    $this->drupalPostForm($site1_path . '/content/add', [
+    $this->submitForm($site1_path . '/content/add', [
       'title[0][value]' => 'test site 1 content by site manager',
     ], 'Save');
     $site1_node2 = $this->getNodeByTitle('test site 1 content by site manager');
@@ -264,7 +264,7 @@ class SiteContentTest extends OgSmWebTestBase {
     $this->assertSession()->statusCodeEquals(403);
     $this->drupalGet('node/' . $site1_node2->id() . '/edit');
     $this->assertSession()->statusCodeEquals(403);
-    $this->drupalPostForm($site1_path . '/content/add', [
+    $this->submitForm($site1_path . '/content/add', [
       'title[0][value]' => 'test site 1 content by site editor',
     ], 'Save');
     $site1_node3 = $this->getNodeByTitle('test site 1 content by site editor');
