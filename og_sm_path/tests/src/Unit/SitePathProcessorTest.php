@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SitePathProcessorTest extends UnitTestCase {
 
+  use ProphecyTrait;
+
   /**
    * The mocked request stack.
    *
@@ -169,7 +171,7 @@ class SitePathProcessorTest extends UnitTestCase {
   public function testProcessOutbound($original_path, array $original_options, $expected_path, array $expected_options) {
     $path = $this->sitePathProcessor->processOutbound($original_path, $original_options, $this->request, $this->bubbleableMetadata);
     $this->assertEquals($expected_path, $path);
-    $this->assertArrayEquals($expected_options, $original_options);
+    $this->assertEquals($expected_options, $original_options);
   }
 
   /**

@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SiteContentPathProcessorTest extends UnitTestCase {
 
+  use ProphecyTrait;
+
   /**
    * The mocked request stack.
    *

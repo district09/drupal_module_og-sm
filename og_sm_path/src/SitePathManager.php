@@ -187,6 +187,7 @@ class SitePathManager implements SitePathManagerInterface {
     }
 
     $path_alias_ids = $this->pathAliasStorage->getQuery()
+      ->accessCheck()
       ->condition('alias', $path, 'STARTS_WITH')
       ->execute();
 

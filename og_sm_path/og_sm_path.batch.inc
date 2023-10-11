@@ -123,7 +123,7 @@ function _og_sm_path_site_alias_update_content_init(NodeInterface $site, array &
 
   // Count relevant nodes.
   $query = \Drupal::entityQuery('node');
-  $total = $query
+  $total = $query->accessCheck()
     ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $site->id())
     ->count()->execute();
   $context['sandbox']['progress'] = 0;
