@@ -2,7 +2,7 @@ name: 'Site Menu'
 description: 'Extends the Organic Groups Menu module to manage a site menu from within a site.'
 package: 'Organic Groups Site Manager'
 type: module
-core_version_requirement: ^9.1 || ^10
+core_version_requirement: ^9.5 || ^10
 dependencies:
   - og_sm:og_sm
   - og_menu:og_menu
