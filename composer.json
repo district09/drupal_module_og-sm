@@ -17,11 +17,11 @@
         "source": "https://github.com/digipolisgent/drupal_module_og-sm"
     },
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "drupal/og": "^1.0"
     },
     "require-dev": {
-        "digipolisgent/qa-drupal": "^1.7",
+        "digipolisgent/qa-drupal": "^2",
         "drupal/admin_toolbar": "2.x-dev",
         "drupal/core": "^9.5",
         "drupal/og_menu": "1.x-dev",
