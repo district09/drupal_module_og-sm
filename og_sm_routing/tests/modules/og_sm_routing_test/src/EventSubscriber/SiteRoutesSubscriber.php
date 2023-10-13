@@ -17,7 +17,7 @@ class SiteRoutesSubscriber extends SiteRoutesSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents():array {
+  public static function getSubscribedEvents(): array {
     $events = parent::getSubscribedEvents();
     $events[SiteRoutingEvents::ALTER] = 'alterRoutes';
     return $events;

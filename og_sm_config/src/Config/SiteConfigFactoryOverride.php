@@ -14,7 +14,6 @@ use Drupal\og_sm\Event\SiteEvent;
 use Drupal\og_sm\Event\SiteEvents;
 use Drupal\og_sm\OgSm;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -126,7 +125,7 @@ class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Sit
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents():array {
+  public static function getSubscribedEvents(): array {
     $events = parent::getSubscribedEvents();
     $events[KernelEvents::REQUEST][] = ['onKernelRequestSetSite'];
     // Set the priority of the delete event low, we only want to remove the
@@ -189,7 +188,11 @@ class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Sit
    *   The Event to process.
    */
   public function onKernelRequestSetSite(RequestEvent $event) {
-    if ($event->getRequestType() !== HttpKernelInterface::MAIN_REQUEST) {
+    // Using hardcoded value 1 to ensure compatibility with both Drupal 9
+    // HttpKernelInterface::MASTER_REQUEST and Drupal 10,
+    // HttpKernelInterface::MAIN_REQUEST as described in more detail at
+    // https://www.drupal.org/node/3236639
+    if ($event->getRequestType() !== 1) {
       return;
     }
     $currentSite = OgSm::siteManager()->currentSite();

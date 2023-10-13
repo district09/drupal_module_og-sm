@@ -50,7 +50,7 @@ class SiteRoutes implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents():array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     $events[RoutingEvents::DYNAMIC] = 'onDynamicRouteEvent';
     return $events;
