@@ -189,7 +189,7 @@ class SiteConfigFactoryOverride extends ConfigFactoryOverrideBase implements Sit
    *   The Event to process.
    */
   public function onKernelRequestSetSite(RequestEvent $event) {
-    if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+    if ($event->getRequestType() !== HttpKernelInterface::MAIN_REQUEST) {
       return;
     }
     $currentSite = OgSm::siteManager()->currentSite();
