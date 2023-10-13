@@ -7,17 +7,14 @@ use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\og\Event\PermissionEventInterface;
 use Drupal\og\GroupPermission;
 use Drupal\og\OgRoleInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Group permission event subscriber for og_sm.
  */
-class GroupPermissionEventSubscriber implements EventSubscriberInterface, ContainerAwareInterface {
+class GroupPermissionEventSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
-  use ContainerAwareTrait;
 
   /**
    * Constructor.

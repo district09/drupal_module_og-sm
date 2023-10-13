@@ -20,9 +20,9 @@ class ManageableSitesByCurrentUser extends BooleanOperator {
   /**
    * The value.
    *
-   * @var \Drupal\Component\Render\MarkupInterface
+   * @var string
    */
-  public $value_value; // phpcs:ignore
+  public string $value_value; // phpcs:ignore
 
   /**
    * The site manager.
