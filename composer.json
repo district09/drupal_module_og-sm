@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "digipolisgent/qa-drupal": "^2",
-        "drupal/admin_toolbar": "2.x-dev",
+        "drupal/admin_toolbar": "^3.4",
         "drupal/core": "^9.5",
         "drupal/og_menu": "1.x-dev",
         "drupal/pathauto": "1.x-dev",
