@@ -57,7 +57,7 @@ interface SiteTypeManagerInterface {
   /**
    * Get a list of content types that can be used to create Site content.
    *
-   * @return \Drupal\node\NodeTypeInterface[]
+   * @return array
    *   Content types that are OG types, sorted by their name.
    */
   public function getContentTypes();

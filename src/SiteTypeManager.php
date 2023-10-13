@@ -80,7 +80,8 @@ class SiteTypeManager implements SiteTypeManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getContentTypes() {
+  public function getContentTypes():array {
+    /** @var \Drupal\node\NodeTypeInterface[] $types */
     $types = &drupal_static(__FUNCTION__, []);
 
     if (!empty($types)) {

@@ -17,6 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class VocabularyResetForm extends EntityConfirmFormBase {
 
   /**
+   * The term storage.
+   *
+   * @var \Drupal\taxonomy\TermStorageInterface
+   */
+  protected $termStorage;
+
+  /**
    * The site manager.
    *
    * @var \Drupal\og_sm\SiteManagerInterface
@@ -45,8 +52,7 @@ class VocabularyResetForm extends EntityConfirmFormBase {
     SiteManagerInterface $siteManager,
     SiteTaxonomyManagerInterface $siteTaxonomyManager
   ) {
-    parent::__construct($term_storage);
-
+    $this->termStorage = $term_storage;
     $this->siteManager = $siteManager;
     $this->siteTaxonomyManager = $siteTaxonomyManager;
   }

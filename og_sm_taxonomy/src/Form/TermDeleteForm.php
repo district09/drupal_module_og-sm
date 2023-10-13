@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * Overrides TermDeleteForm to change the CancelUrl.
  *
- * @todo: Move functionality to form_alter.
+ * @todo Move functionality to form_alter.
  */
 class TermDeleteForm extends ContentEntityDeleteForm {
 

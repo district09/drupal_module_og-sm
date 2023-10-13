@@ -32,7 +32,7 @@ class SiteSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents():array {
     $events[SiteEvents::INSERT][] = 'onSiteInsert';
     $events[SiteEvents::DELETE][] = 'onSiteDelete';
     $events[SiteEvents::UPDATE][] = 'onSiteUpdate';

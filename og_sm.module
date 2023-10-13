@@ -6,19 +6,19 @@
  */
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeTypeInterface;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\og_sm\OgSm;
 use Drupal\og_sm\Event\SiteEvents;
 use Drupal\og_sm\Event\SiteTypeEvent;
 use Drupal\og_sm\Event\SiteTypeEvents;
+use Drupal\og_sm\OgSm;
 
 /**
  * Implements hook_hook_info().
