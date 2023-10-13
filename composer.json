@@ -24,9 +24,9 @@
         "digipolisgent/qa-drupal": "^2",
         "drupal/admin_toolbar": "^3.4",
         "drupal/core": "^9.5",
-        "drupal/og_menu": "1.x-dev",
-        "drupal/pathauto": "1.x-dev",
-        "drupal/token": "1.x-dev",
+        "drupal/og_menu": "^2.0@alpha",
+        "drupal/pathauto": "^1.12",
+        "drupal/token": "^1.12",
         "phpspec/prophecy-phpunit": "^2",
         "psr/event-dispatcher": "1.0.x-dev"
     },
