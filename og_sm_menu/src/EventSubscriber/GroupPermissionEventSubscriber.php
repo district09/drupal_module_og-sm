@@ -36,7 +36,7 @@ class GroupPermissionEventSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents():array {
     return [
       PermissionEventInterface::EVENT_NAME => [['provideDefaultOgPermissions']],
     ];

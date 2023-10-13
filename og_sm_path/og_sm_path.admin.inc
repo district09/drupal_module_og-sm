@@ -5,10 +5,10 @@
  * Admin pages & functionality.
  */
 
-use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
+use Drupal\Core\Url;
 use Drupal\node\Entity\NodeType;
+use Drupal\node\NodeInterface;
 use Drupal\og_sm\OgSm;
 use Drupal\og_sm_path\OgSmPath;
 
@@ -122,7 +122,7 @@ function _og_sm_path_field_site_path_validate(array $element, FormStateInterface
  *   The current state of the form.
  */
 function og_sm_path_site_node_form_builder($entity_type, NodeInterface $node, array &$form, FormStateInterface $form_state) {
-  $node->site_path = $form_state->getValue('site_path');
+  $node->set('site_path', $form_state->getValue('site_path'));
 }
 
 /**

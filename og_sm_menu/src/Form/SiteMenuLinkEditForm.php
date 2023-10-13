@@ -2,15 +2,43 @@
 
 namespace Drupal\og_sm_menu\Form;
 
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\node\NodeInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form to edit site menu links.
  */
 class SiteMenuLinkEditForm extends FormBase {
+
+  /**
+   * The class resolver.
+   *
+   * @var \Drupal\Core\DependencyInjection\ClassResolverInterface
+   */
+  protected $classResolver;
+
+  /**
+   * Constructs a MenuLinkEditForm object.
+   *
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
+   *   The class resolver.
+   */
+  public function __construct(ClassResolverInterface $class_resolver) {
+    $this->classResolver = $class_resolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('class_resolver')
+    );
+  }
 
   /**
    * {@inheritdoc}

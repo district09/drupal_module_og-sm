@@ -4,9 +4,9 @@ namespace Drupal\og_sm\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Plugin\Discovery\YamlDiscovery;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
+use Drupal\Core\Plugin\Discovery\YamlDiscovery;
 use Drupal\og_sm\SiteManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

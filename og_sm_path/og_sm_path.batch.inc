@@ -6,10 +6,10 @@
  */
 
 use Drupal\Core\Cache\Cache;
-use Drupal\node\NodeInterface;
-use Drupal\node\Entity\Node;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 
 /**
  * Create a batch for a single Site to update ALL aliases (admin & content).

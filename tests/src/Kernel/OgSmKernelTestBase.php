@@ -5,8 +5,8 @@ namespace Drupal\Tests\og_sm\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgContextInterface;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\og_sm\Tests\SiteCreationTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Base class to do kernel tests for OG Site Manager functionality.
