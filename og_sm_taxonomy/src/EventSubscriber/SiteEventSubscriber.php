@@ -32,7 +32,7 @@ class SiteEventSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents():array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     $events[SiteEvents::DELETE][] = 'onSiteDelete';
 
