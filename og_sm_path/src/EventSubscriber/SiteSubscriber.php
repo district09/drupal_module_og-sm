@@ -62,9 +62,10 @@ class SiteSubscriber implements EventSubscriberInterface {
    *   The site event.
    */
   public function onSiteInsert(SiteEvent $event) {
+    /** @var \Drupal\og_sm\Entity\SiteNodeInterface $site */
     $site = $event->getSite();
-    if (isset($site->site_path)) {
-      $this->sitePathManager->setPath($site, $site->site_path, FALSE);
+    if ($site->getSitePath() !== NULL) {
+      $this->sitePathManager->setPath($site, $site->getSitePath(), FALSE);
     }
   }
 
@@ -75,9 +76,10 @@ class SiteSubscriber implements EventSubscriberInterface {
    *   The site event.
    */
   public function onSiteUpdate(SiteEvent $event) {
+    /** @var \Drupal\og_sm\Entity\SiteNodeInterface $site */
     $site = $event->getSite();
-    if (isset($site->site_path)) {
-      $this->sitePathManager->setPath($site, $site->site_path);
+    if ($site->getSitePath() !== NULL) {
+      $this->sitePathManager->setPath($site, $site->getSitePath());
     }
   }
 
