@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\og_sm\Entity\SiteNodeInterface;
 use Drupal\og_sm\EventManagerInterface;
 use Drupal\og_sm\SiteManagerInterface;
 use Drupal\og_sm_config\Config\SiteConfigFactoryOverrideInterface;
@@ -119,10 +120,10 @@ class SitePathManager implements SitePathManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getPathFromSite(NodeInterface $site) {
-    if (!empty($site->site_path)) {
+  public function getPathFromSite(SiteNodeInterface $site) {
+    if (!empty($site->getSitePath())) {
       /** @var string $path */
-      $path = $site->site_path;
+      $path = $site->getSitePath();
       return $path;
     }
 

@@ -3,6 +3,7 @@
 namespace Drupal\og_sm_path;
 
 use Drupal\node\NodeInterface;
+use Drupal\og_sm\Entity\SiteNodeInterface;
 
 /**
  * Interface for site path manager classes.
@@ -12,13 +13,13 @@ interface SitePathManagerInterface {
   /**
    * Gets a site path based on the passed site node.
    *
-   * @param \Drupal\node\NodeInterface $site
+   * @param SiteNodeInterface $site
    *   The site node.
    *
    * @return string
    *   The site path.
    */
-  public function getPathFromSite(NodeInterface $site);
+  public function getPathFromSite(SiteNodeInterface $site);
 
   /**
    * Returns an alias of Drupal system URL.
@@ -41,7 +42,7 @@ interface SitePathManagerInterface {
    *   The site path.
    *
    * @return \Drupal\node\NodeInterface|false
-   *   Tge site node, FALSE if the passed path is not a site path.
+   *   The site node, FALSE if the passed path is not a site path.
    */
   public function getSiteFromPath($path);
 

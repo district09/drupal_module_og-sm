@@ -122,7 +122,8 @@ function _og_sm_path_field_site_path_validate(array $element, FormStateInterface
  *   The current state of the form.
  */
 function og_sm_path_site_node_form_builder($entity_type, NodeInterface $node, array &$form, FormStateInterface $form_state) {
-  $node->set('site_path', $form_state->getValue('site_path'));
+  /** @var \Drupal\og_sm\Entity\SiteNodeInterface $node */
+  $node->setSitePath($form_state->getValue('site_path'));
 }
 
 /**

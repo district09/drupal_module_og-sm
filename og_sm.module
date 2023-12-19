@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeTypeInterface;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og_sm\Entity\SiteNode;
 use Drupal\og_sm\Event\SiteEvents;
 use Drupal\og_sm\Event\SiteTypeEvent;
 use Drupal\og_sm\Event\SiteTypeEvents;
@@ -205,4 +206,19 @@ function og_sm_site_user_access($operation, AccountInterface $account = NULL) {
   /** @var \Drupal\og\OgAccess $og_access */
   $og_access = \Drupal::service('og.access');
   return $og_access->userAccess($site, $operation, $account)->isAllowed();
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ *
+ * Adds custom class for site path.
+ */
+function og_sm_entity_bundle_info_alter(array &$bundles): void {
+  $siteTypeManager = \Drupal::service('og_sm.site_type_manager');
+
+  foreach (array_keys($bundles['node']) as $bundle) {
+    if ($siteTypeManager->isSiteTypeId($bundle)) {
+      $bundles['node'][$bundle]['class'] = SiteNode::class;
+    }
+  }
 }
