@@ -14,24 +14,22 @@ final class SiteNode extends Node implements SiteNodeInterface {
   /**
    * The site path.
    *
-   * @var string
+   * @var null|string
    */
-  protected string $site_path;
+  private ?string $sitePath;
 
   /**
    * {@inheritDoc}
    */
   public function getSitePath(): ?string {
-    return $this->get('site_path')->getString() ?: NULL;
+    return $this->sitePath ?? NULL;
   }
 
   /**
    * {@inheritDoc}
    */
-  public function setSitePath($site_path): SiteNodeInterface {
-    $this->site_path = $site_path;
-
-    return $this;
+  public function setSitePath(string $sitePath): void {
+    $this->sitePath = $sitePath;
   }
 
 }

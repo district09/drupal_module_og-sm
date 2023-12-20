@@ -22,11 +22,8 @@ interface SiteNodeInterface extends NodeInterface {
   /**
    * Set the site path.
    *
-   * @param $site_path
+   * @param string $sitePath
    *   The path of the site.
-   *
-   * @return SiteNodeInterface
-   *    The site node.
    */
-  public function setSitePath($site_path): SiteNodeInterface;
+  public function setSitePath(string $sitePath): void;
 }
