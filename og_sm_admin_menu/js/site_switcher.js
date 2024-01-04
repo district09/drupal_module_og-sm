@@ -3,7 +3,7 @@
  * Extends toolbar behaviour to support the site toolbar.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   /**
    * Prevents the site-switcher tab from being open on page load.
@@ -16,7 +16,7 @@
         return;
       }
 
-      $(context).find('#toolbar-administration').once('site-toolbar').each(function () {
+      $(once('site-toolbar', '#toolbar-administration', context)).each(function () {
         var activeTab = Drupal.toolbar.models.toolbarModel.get('activeTab');
         if ($(activeTab).data('toolbar-tray') === 'toolbar-item-site-switcher-tray') {
           Drupal.toolbar.models.toolbarModel.set({
@@ -27,4 +27,4 @@
     }
   };
 
-}(jQuery, Drupal));
+}(jQuery, Drupal, once));
