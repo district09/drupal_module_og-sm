@@ -1,6 +1,10 @@
 og_sm.site_switcher:
   js:
     js/site_switcher.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
   css:
     theme:
       css/site_switcher.css: {}
