@@ -150,7 +150,7 @@ function _og_sm_node_type_save(NodeTypeInterface $node_type) {
     ? SiteTypeEvents::ADD
     : SiteTypeEvents::REMOVE;
 
-  \Drupal::service('event_dispatcher')->dispatch($event_name, $event);
+  \Drupal::service('event_dispatcher')->dispatch($event, $event_name);
 }
 
 /**
@@ -159,7 +159,7 @@ function _og_sm_node_type_save(NodeTypeInterface $node_type) {
 function og_sm_node_type_delete(NodeTypeInterface $node_type) {
   if (OgSm::isSiteType($node_type)) {
     $event = new SiteTypeEvent($node_type);
-    \Drupal::service('event_dispatcher')->dispatch(SiteTypeEvents::REMOVE, $event);
+    \Drupal::service('event_dispatcher')->dispatch($event, SiteTypeEvents::REMOVE);
   }
 }
 
