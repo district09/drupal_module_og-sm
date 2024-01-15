@@ -29,7 +29,7 @@ function og_sm_taxonomy_entity_type_alter(array &$entity_types) {
  * Implements hook_ENTITY_TYPE_access() for taxonomy_vocabulary entities.
  */
 function og_sm_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($operation !== 'access taxonomy overview') {
+  if ($operation !== 'access taxonomy overview' && $operation !== 'reset all weights') {
     return AccessResult::neutral();
   }
 
