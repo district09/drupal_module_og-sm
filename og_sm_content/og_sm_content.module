@@ -8,6 +8,7 @@
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\og_sm\OgSm;
@@ -126,19 +127,19 @@ function og_sm_content_preprocess_node_add_list(&$variables) {
     return;
   }
 
-  /** @var \Drupal\Core\Utility\LinkGeneratorInterface $link_generator */
-  $link_generator = \Drupal::service('link_generator');
   foreach ($variables['content'] as $type) {
     /** @var \Drupal\node\NodeTypeInterface $type */
     $url = new Url('og_sm.site_content.add', [
       'node' => $site->id(),
       'node_type' => $type->id(),
     ]);
-    $variables['types'][$type->id()]['add_link'] = $link_generator->generate($type->label(), $url);
+    $variables['types'][$type->id()]['add_link'] = Link::fromTextAndUrl($type->label(), $url);
     // Also set the url key since themes like seven have a custom template for
     // node_add_list.
     $variables['types'][$type->id()]['url'] = $url;
   }
+  // Claro/Gin use the bundle variable in their templates (cfr entity_add_list)
+  $variables['bundles'] = $variables['types'];
 }
 
 /**
